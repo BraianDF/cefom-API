@@ -1,0 +1,39 @@
+package com.projeto.sistema.controller;
+
+import com.projeto.sistema.dto.response.EnderecoListarResponseDTO;
+import com.projeto.sistema.dto.response.EnderecoResponseDTO;
+import com.projeto.sistema.service.EnderecoService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/escolas")
+public class EnderecoEscolaController {
+
+    private final EnderecoService enderecoService;
+
+    public EnderecoEscolaController(EnderecoService enderecoService) {
+        this.enderecoService = enderecoService;
+    }
+
+    @GetMapping("/{idEscola}/enderecos")
+    public ResponseEntity<List<EnderecoListarResponseDTO>> listarEscola(@PathVariable Integer idEscola) {
+        List<EnderecoListarResponseDTO> response = enderecoService.listarEscola(idEscola);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/{idEscola}/enderecos/{idEndereco}")
+    public ResponseEntity<EnderecoResponseDTO> buscarEscolaPorId(@PathVariable Integer idEscola, @PathVariable Integer idEndereco) {
+        EnderecoResponseDTO response = enderecoService.buscarEscolaPorId(idEscola, idEndereco);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @DeleteMapping("/{idEscola}/enderecos/{idEndereco}")
+    public ResponseEntity<Void> excluirEscolaPorId(@PathVariable Integer idEscola, @PathVariable Integer idEndereco) {
+        enderecoService.excluirEscolaPorId(idEscola, idEndereco);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+}

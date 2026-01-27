@@ -1,0 +1,215 @@
+package com.projeto.sistema.service;
+
+import com.projeto.sistema.dto.request.EmailAtualizarRequestDTO;
+import com.projeto.sistema.dto.response.EmailListarResponseDTO;
+import com.projeto.sistema.dto.response.EmailResponseDTO;
+import com.projeto.sistema.enums.TitularContato;
+import com.projeto.sistema.exceptions.RecursoNaoEncontradoException;
+import com.projeto.sistema.exceptions.RegraNegocioException;
+import com.projeto.sistema.mapper.EmailMapper;
+import com.projeto.sistema.model.Adolescente;
+import com.projeto.sistema.model.Email;
+import com.projeto.sistema.model.Empresa;
+import com.projeto.sistema.repository.EmpresaRepository;
+import com.projeto.sistema.repository.EmailRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.List;
+
+@Service
+public class EmailService {
+
+    public final EmailRepository emailRepository;
+    private final AdolescenteService adolescenteService;
+    private final EmailMapper emailMapper;
+    private final EmpresaRepository empresaRepository;
+
+    public EmailService(EmailRepository emailRepository, AdolescenteService adolescenteService, EmailMapper emailMapper, EmpresaRepository empresaRepository) {
+        this.emailRepository = emailRepository;
+        this.adolescenteService = adolescenteService;
+        this.emailMapper = emailMapper;
+        this.empresaRepository = empresaRepository;
+    }
+
+    @Transactional
+    public EmailResponseDTO atualizar(Integer idAdolescente, EmailAtualizarRequestDTO dto) {
+        LocalDate dataModificacao = dto.dataModificacao();
+        if(dataModificacao == null) {
+            dataModificacao = LocalDate.now();
+        }
+
+        //Verifica se o adolescente existe e retorna ele
+        Adolescente adolescente = adolescenteService.buscarAdolescente(idAdolescente);
+
+        //Atualiza
+        atualizarEmail(dto.emailAdolescente(), adolescente, dataModificacao);
+
+        //Salva o adolescente no banco
+        Adolescente adolescenteSalvo = adolescenteService.salvar(adolescente);
+
+        //Retorna o ResponseDTO
+        return emailMapper.toResponseDTO(adolescenteSalvo, dataModificacao);
+    }
+
+    @Transactional(readOnly = true)
+    public List<EmailListarResponseDTO> listar(Integer idAdolescente) {
+        //Verifica se o adolescente existe e retorna ele
+        Adolescente adolescente = adolescenteService.buscarAdolescente(idAdolescente);
+
+        //Retorna todos que o adolescente tiver
+        return emailRepository.findByAdolescenteIdAdolescenteOrderByDataInicioDesc(idAdolescente)
+                .stream()
+                .map(emailMapper::toListarResponseDTO)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public EmailResponseDTO buscarPorId(Integer idAdolescente, Integer idEmail) {
+        Email email = buscarEmailAdolescente(idAdolescente, idEmail);
+        return emailMapper.toResponseDTO(email);
+    }
+
+    @Transactional
+    public void excluirPorId(Integer idAdolescente, Integer idEmail) {
+        Email email = buscarEmailAdolescente(idAdolescente, idEmail);
+        emailRepository.deleteById(idEmail);
+    }
+
+    public void atualizarEmail(String dto, Adolescente adolescente, LocalDate data) {
+        Email emailAtual = adolescente.getEmails().stream()
+                .filter(e -> e.getTitular() == TitularContato.ADOLESCENTE)
+                .filter(e -> e.getDataFim() == null)
+                .max(Comparator.comparing(Email::getDataInicio))
+                .orElse(null);
+
+        if (dto == null || dto.isBlank()) {
+            if (emailAtual != null) {
+                emailAtual.setDataFim(data);
+            }
+            return;
+        }
+
+        if (emailAtual != null && emailAtual.getEmail().equals(dto)) {
+            return;
+        }
+
+        if (emailAtual != null) {
+            emailAtual.setDataFim(data);
+        }
+
+        criarEmail(dto, TitularContato.ADOLESCENTE, adolescente, data);
+    }
+
+    public void criarEmail(String emailNovo, TitularContato titular, Adolescente adolescente, LocalDate data) {
+        Email email = new Email();
+        email.setEmail(emailNovo);
+        email.setTitular(titular);
+        email.setDataInicio(data);
+
+        adolescente.adicionarEmail(email);
+    }
+
+    public void atualizarEmail(String dto, Empresa empresa, LocalDate data) {
+        Email emailAtual = empresa.getEmails().stream()
+                .filter(e -> e.getTitular() == TitularContato.EMPRESA)
+                .filter(e -> e.getDataFim() == null)
+                .max(Comparator.comparing(Email::getDataInicio))
+                .orElse(null);
+
+        if (dto == null || dto.isBlank()) {
+            if (emailAtual != null) {
+                emailAtual.setDataFim(data);
+            }
+            return;
+        }
+
+        if (emailAtual != null && emailAtual.getEmail().equals(dto)) {
+            return;
+        }
+
+        if (emailAtual != null) {
+            emailAtual.setDataFim(data);
+        }
+
+        criarEmail(dto, TitularContato.EMPRESA, empresa, data);
+    }
+
+    public void criarEmail(String emailNovo, TitularContato titular, Empresa empresa, LocalDate data) {
+        Email email = new Email();
+        email.setEmail(emailNovo);
+        email.setTitular(titular);
+        email.setDataInicio(data);
+
+        empresa.adicionarEmail(email);
+    }
+
+    private Email buscarEmailAdolescente(Integer idAdolescente, Integer idEmail) {
+        Adolescente adolescente = adolescenteService.buscarAdolescente(idAdolescente);
+
+        Email email = emailRepository.findById(idEmail)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Email com ID "+idEmail+" não encontrada."));
+
+        if (email.getAdolescente() == null) {
+            throw new RegraNegocioException("Email não pertence a um adolescente.");
+        }
+
+        if (!email.getAdolescente().getIdAdolescente().equals(idAdolescente)) {
+            throw new RegraNegocioException("Email não pertence ao adolescente.");
+        }
+
+        return email;
+    }
+
+    private Empresa buscarEmpresa(Integer idEmpresa) {
+        Empresa empresa = empresaRepository.findById(idEmpresa)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Empresa com ID "+idEmpresa+" não encontrada."));
+        return empresa;
+    }
+
+    private Email buscarEmailEmpresa(Integer idEmpresa, Integer idEmail) {
+        Empresa empresa = buscarEmpresa(idEmpresa);
+
+        Email email = emailRepository.findById(idEmail)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Email com ID "+idEmail+" não encontrada."));
+
+        if (email.getEmpresa() == null) {
+            throw new RegraNegocioException("Email não pertence a uma empresa.");
+        }
+
+        if (!email.getEmpresa().getIdEmpresa().equals(idEmpresa)) {
+            throw new RegraNegocioException("Email não pertence a empresa.");
+        }
+
+        return email;
+    }
+
+
+    @Transactional(readOnly = true)
+    public List<EmailListarResponseDTO> listarEmpresa(Integer idEmpresa) {
+        //Verifica se a empresa existe e retorna ela
+        Empresa empresa = buscarEmpresa(idEmpresa);
+
+        //Retorna todos que a empresa tiver
+        return emailRepository.findByEmpresaIdEmpresaOrderByDataInicioDesc(idEmpresa)
+                .stream()
+                .map(emailMapper::toListarResponseDTO)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public EmailResponseDTO buscarEmpresaPorId(Integer idEmpresa, Integer idEmail) {
+        Email email = buscarEmailEmpresa(idEmpresa, idEmail);
+        return emailMapper.toResponseDTO(email);
+    }
+
+    @Transactional
+    public void excluirEmpresaPorId(Integer idEmpresa, Integer idEmail) {
+        Email email = buscarEmailEmpresa(idEmpresa, idEmail);
+        emailRepository.deleteById(idEmail);
+    }
+
+
+}

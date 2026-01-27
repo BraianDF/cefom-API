@@ -1,0 +1,54 @@
+package com.projeto.sistema.controller;
+
+import com.projeto.sistema.dto.request.AfastamentoRequestDTO;
+import com.projeto.sistema.dto.response.AfastamentoListarResponseDTO;
+import com.projeto.sistema.dto.response.AfastamentoResponseDTO;
+import com.projeto.sistema.service.AfastamentoService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/adolescentes/{idAdolescente}/matriculas/{idMatricula}/contratos/{idContrato}")
+public class AfastamentoController {
+
+    private final AfastamentoService afastamentoService;
+
+    public AfastamentoController(AfastamentoService afastamentoService) {
+        this.afastamentoService = afastamentoService;
+    }
+
+    @PostMapping("/afastamentos")
+    public ResponseEntity<AfastamentoResponseDTO> criar(@PathVariable Integer idAdolescente, @PathVariable Integer idMatricula, @PathVariable Integer idContrato, @Valid @RequestBody AfastamentoRequestDTO dto) {
+        AfastamentoResponseDTO response = afastamentoService.criar(idAdolescente, idMatricula, idContrato, dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PutMapping("/afastamentos/{idAfastamento}")
+    public ResponseEntity<AfastamentoResponseDTO> atualizar(@PathVariable Integer idAdolescente, @PathVariable Integer idMatricula, @PathVariable Integer idContrato, @PathVariable Integer idAfastamento, @Valid @RequestBody AfastamentoRequestDTO dto) {
+        AfastamentoResponseDTO response = afastamentoService.atualizar(idAdolescente, idMatricula, idContrato, idAfastamento, dto);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/afastamentos")
+    public ResponseEntity<List<AfastamentoListarResponseDTO>> listar(@PathVariable Integer idAdolescente, @PathVariable Integer idMatricula, @PathVariable Integer idContrato) {
+        List<AfastamentoListarResponseDTO> response = afastamentoService.listar(idAdolescente, idMatricula, idContrato);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/afastamentos/{idAfastamento}")
+    public ResponseEntity<AfastamentoResponseDTO> buscarPorId(@PathVariable Integer idAdolescente, @PathVariable Integer idMatricula, @PathVariable Integer idContrato, @PathVariable Integer idAfastamento) {
+        AfastamentoResponseDTO response = afastamentoService.buscarPorId(idAdolescente, idMatricula, idContrato, idAfastamento);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @DeleteMapping("/afastamentos/{idAfastamento}")
+    public ResponseEntity<Void> excluirPorId(@PathVariable Integer idAdolescente, @PathVariable Integer idMatricula, @PathVariable Integer idContrato, @PathVariable Integer idAfastamento) {
+        afastamentoService.excluirPorId(idAdolescente, idMatricula, idContrato, idAfastamento);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+}
