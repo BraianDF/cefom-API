@@ -24,13 +24,13 @@ public class EntrevistaController {
     }
 
     @PostMapping
-    public ResponseEntity<EntrevistaResponseDTO> criar(@RequestBody EntrevistaRequestDTO dto) {
+    public ResponseEntity<EntrevistaResponseDTO> criar(@Valid @RequestBody EntrevistaRequestDTO dto) {
         EntrevistaResponseDTO response = entrevistaService.criar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/{idEntrevista}")
-    public ResponseEntity<EntrevistaResponseDTO> atualizar(@PathVariable Integer idEntrevista, @RequestBody @Valid EntrevistaRequestDTO dto) {
+    public ResponseEntity<EntrevistaResponseDTO> atualizar(@PathVariable Integer idEntrevista, @Valid @RequestBody EntrevistaRequestDTO dto) {
         EntrevistaResponseDTO response = entrevistaService.atualizar(idEntrevista, dto);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

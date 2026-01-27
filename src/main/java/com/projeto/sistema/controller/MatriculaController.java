@@ -22,7 +22,7 @@ public class MatriculaController {
     }
 
     // OK
-    @GetMapping("/matriculas/status")
+    @PostMapping("/matriculas/status")
     public ResponseEntity<StatusCpfMatriculaResponseDTO> verificarCpf(@Valid @RequestBody DocumentoCpfRequestDTO dto) {
         StatusCpfMatriculaResponseDTO response = matriculaService.verificarCpf(dto.cpf());
         return ResponseEntity.status(HttpStatus.OK).body(response);
