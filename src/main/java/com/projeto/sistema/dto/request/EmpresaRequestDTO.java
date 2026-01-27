@@ -2,6 +2,7 @@ package com.projeto.sistema.dto.request;
 
 import com.projeto.sistema.enums.TipoContratacao;
 import com.projeto.sistema.enums.TipoEmpresa;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -24,9 +25,12 @@ public record EmpresaRequestDTO(
         @NotNull(message = "Taxa administrativa é obrigatório.")
         BigDecimal taxaAdministrativa,
         String email,
+        @Valid
         TelefonesEmpresaRequestDTO telefones,
+        @Valid
         @NotNull(message = "Endereço é obrigatório.")
         EnderecoRequestDTO endereco,
+        @Valid
         @NotNull(message = "Responsáveis pela empresa são obrigatórios.")
         ResponsavelEmpresaRequestDTO responsaveis
 ) {

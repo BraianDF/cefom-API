@@ -1,6 +1,7 @@
 package com.projeto.sistema.dto.request;
 
 import com.projeto.sistema.enums.TipoEscola;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -14,6 +15,7 @@ public record EscolaRequestDTO(
         TipoEscola tipo,
 
         // Endereço
+        @Valid
         @NotNull(message = "Endereço da escola é obrigatório.")
         EnderecoRequestDTO endereco
 ) {
