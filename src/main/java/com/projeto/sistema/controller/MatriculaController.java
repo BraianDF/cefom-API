@@ -1,5 +1,6 @@
 package com.projeto.sistema.controller;
 
+import com.projeto.sistema.dto.request.DocumentoCpfRequestDTO;
 import com.projeto.sistema.dto.request.MatriculaAtualizarRequestDTO;
 import com.projeto.sistema.dto.request.MatriculaCriarRequestDTO;
 import com.projeto.sistema.dto.request.MatriculaEncerrarRequestDTO;
@@ -21,9 +22,9 @@ public class MatriculaController {
     }
 
     // OK
-    @GetMapping("/matriculas/status/{cpf}")
-    public ResponseEntity<StatusCpfMatriculaResponseDTO> verificarCpf(@PathVariable String cpf) {
-        StatusCpfMatriculaResponseDTO response = matriculaService.verificarCpf(cpf);
+    @GetMapping("/matriculas/status")
+    public ResponseEntity<StatusCpfMatriculaResponseDTO> verificarCpf(@Valid @RequestBody DocumentoCpfRequestDTO dto) {
+        StatusCpfMatriculaResponseDTO response = matriculaService.verificarCpf(dto.cpf());
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
