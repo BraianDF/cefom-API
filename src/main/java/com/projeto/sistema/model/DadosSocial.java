@@ -195,6 +195,7 @@ public class DadosSocial extends Vigencia implements Serializable {
     public BigDecimal getRendaFamiliarEm(LocalDate data) {
         BigDecimal renda = adolescente.getFamiliares().stream()
                 .filter(f -> f.estaValidoEm(data))
+                .filter(f -> !f.isResponsavel() || Boolean.TRUE.equals(f.getReside()))
                 .map(Familiar::getRenda) // pega a renda do familiar
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
