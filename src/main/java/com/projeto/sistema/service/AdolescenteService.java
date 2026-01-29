@@ -13,6 +13,8 @@ import com.projeto.sistema.mapper.AdolescenteMapper;
 import com.projeto.sistema.model.Adolescente;
 import com.projeto.sistema.model.Empresa;
 import com.projeto.sistema.repository.AdolescenteRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +37,16 @@ public class AdolescenteService {
                 .stream()
                 .map(adolescenteMapper::toListarResponseDTO)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AdolescenteListarResponseDTO> listar(Pageable pageable, String nome) {
+        if (nome == null || nome.isBlank()) {
+            return adolescenteRepository.findAll(pageable)
+                    .map(adolescenteMapper::toListarResponseDTO);
+        }
+        return adolescenteRepository.findByNomeContainingIgnoreCase(nome, pageable)
+                .map(adolescenteMapper::toListarResponseDTO);
     }
 
     /* //LISTAR MAIS EFICIENTE

@@ -11,6 +11,9 @@ import com.projeto.sistema.dto.response.EmpresaListarResponseDTO;
 import com.projeto.sistema.mapper.EmpresaMapper;
 import com.projeto.sistema.model.Empresa;
 import com.projeto.sistema.repository.EmpresaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -171,6 +174,16 @@ public class EmpresaService {
                 .stream()
                 .map(empresaMapper::toListarResponseDTO)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<EmpresaListarResponseDTO> listar(Pageable pageable, String nome) {
+        if (nome == null || nome.isBlank()) {
+            return empresaRepository.findAll(pageable)
+                    .map(empresaMapper::toListarResponseDTO);
+        }
+        return empresaRepository.findByApelidoContainingIgnoreCase(nome, pageable)
+                .map(empresaMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)

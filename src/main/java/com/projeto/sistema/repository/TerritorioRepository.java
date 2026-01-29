@@ -1,6 +1,8 @@
 package com.projeto.sistema.repository;
 
 import com.projeto.sistema.model.Territorio;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,5 +25,6 @@ public interface TerritorioRepository extends JpaRepository<Territorio, Integer>
 
     boolean existsByResultado(String territorioResultado);
     boolean existsByResultadoAndIdTerritorioNot(String territorioResultado, Integer idTerritorio);
+    Page<Territorio> findByResultadoContainingIgnoreCase(String nome, Pageable pageable);
 
 }
