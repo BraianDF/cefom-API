@@ -2,6 +2,8 @@ package com.projeto.sistema.repository;
 
 import com.projeto.sistema.model.Inscricao;
 import com.projeto.sistema.model.Matricula;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +16,6 @@ public interface InscricaoRepository extends JpaRepository<Inscricao, Integer> {
 
     Optional<Inscricao> findTopByAdolescenteIdAdolescenteOrderByDataInicioDesc(Integer idAdolescente);
 
-    List<Inscricao> findByAdolescenteIdAdolescenteOrderByDataInicioDesc(Integer idAdolescente);
+    Page<Inscricao> findByAdolescenteIdAdolescenteOrderByDataInicioDesc(Integer idAdolescente, Pageable pageable);
 
 }

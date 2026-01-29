@@ -9,6 +9,8 @@ import com.projeto.sistema.mapper.SalarioMapper;
 import com.projeto.sistema.model.Contrato;
 import com.projeto.sistema.model.Salario;
 import com.projeto.sistema.repository.SalarioRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,12 +50,10 @@ public class SalarioService {
 
 
     @Transactional(readOnly = true)
-    public List<SalarioListarResponseDTO> listar(Integer idAdolescente, Integer idMatricula, Integer idContrato) {
+    public Page<SalarioListarResponseDTO> listar(Integer idAdolescente, Integer idMatricula, Integer idContrato, Pageable pageable) {
         contratoService.buscarContratoMatricula(idAdolescente,idMatricula,idContrato);
-        return salarioRepository.findAllByContratoIdContrato(idContrato)
-                .stream()
-                .map(salarioMapper::toListarResponseDTO)
-                .toList();
+        return salarioRepository.findAllByContratoIdContrato(idContrato, pageable)
+                .map(salarioMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)

@@ -20,6 +20,8 @@ import com.projeto.sistema.model.Empresa;
 import com.projeto.sistema.repository.EmpresaRepository;
 import com.projeto.sistema.repository.EnderecoRepository;
 import com.projeto.sistema.repository.EscolaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -243,13 +245,11 @@ public class EnderecoService {
     }
 
     @Transactional(readOnly = true)
-    public List<EnderecoListarResponseDTO> listarAdolescente(Integer idAdolescente) {
+    public Page<EnderecoListarResponseDTO> listarAdolescente(Integer idAdolescente, Pageable pageable) {
         Adolescente adolescente = adolescenteService.buscarAdolescente(idAdolescente);
 
-        return enderecoRepository.findByAdolescenteIdAdolescenteOrderByDataInicioDesc(idAdolescente)
-                .stream()
-                .map(enderecoMapper::toListarResponseDTO)
-                .toList();
+        return enderecoRepository.findByAdolescenteIdAdolescenteOrderByDataInicioDesc(idAdolescente, pageable)
+                .map(enderecoMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)
@@ -265,12 +265,10 @@ public class EnderecoService {
     }
 
     @Transactional(readOnly = true)
-    public List<EnderecoListarResponseDTO> listarEscola(Integer idEscola) {
+    public Page<EnderecoListarResponseDTO> listarEscola(Integer idEscola, Pageable pageable) {
         Escola escola = buscarEscola(idEscola);
-        return enderecoRepository.findByEscolaIdEscolaOrderByDataInicioDesc(idEscola)
-                .stream()
-                .map(enderecoMapper::toListarResponseDTO)
-                .toList();
+        return enderecoRepository.findByEscolaIdEscolaOrderByDataInicioDesc(idEscola, pageable)
+                .map(enderecoMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)
@@ -286,12 +284,10 @@ public class EnderecoService {
     }
 
     @Transactional(readOnly = true)
-    public List<EnderecoListarResponseDTO> listarEmpresa(Integer idEmpresa) {
+    public Page<EnderecoListarResponseDTO> listarEmpresa(Integer idEmpresa, Pageable pageable) {
         Empresa empresa = buscarEmpresa(idEmpresa);
-        return enderecoRepository.findByEmpresaIdEmpresaOrderByDataInicioDesc(idEmpresa)
-                .stream()
-                .map(enderecoMapper::toListarResponseDTO)
-                .toList();
+        return enderecoRepository.findByEmpresaIdEmpresaOrderByDataInicioDesc(idEmpresa, pageable)
+                .map(enderecoMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)

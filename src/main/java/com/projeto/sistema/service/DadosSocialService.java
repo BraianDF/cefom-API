@@ -10,6 +10,8 @@ import com.projeto.sistema.mapper.DadosSocialMapper;
 import com.projeto.sistema.model.Adolescente;
 import com.projeto.sistema.model.DadosSocial;
 import com.projeto.sistema.repository.DadosSocialRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,15 +54,13 @@ public class DadosSocialService {
     }
 
     @Transactional(readOnly = true)
-    public List<DadosSocialListarResponseDTO> listar(Integer idAdolescente) {
+    public Page<DadosSocialListarResponseDTO> listar(Integer idAdolescente, Pageable pageable) {
         //Verifica se o adolescente existe e retorna ele
         Adolescente adolescente = adolescenteService.buscarAdolescente(idAdolescente);
 
         //Retorna todos que o adolescente tiver
-        return dadosSocialRepository.findByAdolescenteIdAdolescenteOrderByDataInicioDesc(idAdolescente)
-                .stream()
-                .map(dadosSocialMapper::toListarResponseDTO)
-                .toList();
+        return dadosSocialRepository.findByAdolescenteIdAdolescenteOrderByDataInicioDesc(idAdolescente, pageable)
+                .map(dadosSocialMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)

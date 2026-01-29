@@ -12,6 +12,8 @@ import com.projeto.sistema.model.Adolescente;
 import com.projeto.sistema.model.Caracteristica;
 import com.projeto.sistema.model.Escolaridade;
 import com.projeto.sistema.repository.CaracteristicaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -60,15 +62,13 @@ public class CaracteristicaService {
     }
 
     @Transactional(readOnly = true)
-    public List<CaracteristicaListarResponseDTO> listar(Integer idAdolescente) {
+    public Page<CaracteristicaListarResponseDTO> listar(Integer idAdolescente, Pageable pageable) {
         //Verifica se o adolescente existe e retorna ele
         Adolescente adolescente = adolescenteService.buscarAdolescente(idAdolescente);
 
         //Retorna todos que o adolescente tiver
-        return caracteristicaRepository.findByAdolescenteIdAdolescenteOrderByDataInicioDesc(idAdolescente)
-                .stream()
-                .map(caracteristicaMapper::toListarResponseDTO)
-                .toList();
+        return caracteristicaRepository.findByAdolescenteIdAdolescenteOrderByDataInicioDesc(idAdolescente, pageable)
+                .map(caracteristicaMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)

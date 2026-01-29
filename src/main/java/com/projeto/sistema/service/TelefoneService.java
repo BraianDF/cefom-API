@@ -15,6 +15,8 @@ import com.projeto.sistema.dto.request.TelefonesEmpresaRequestDTO;
 import com.projeto.sistema.model.Empresa;
 import com.projeto.sistema.repository.EmpresaRepository;
 import com.projeto.sistema.repository.TelefoneRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,15 +61,13 @@ public class TelefoneService {
     }
 
     @Transactional(readOnly = true)
-    public List<TelefoneListarResponseDTO> listar(Integer idAdolescente) {
+    public Page<TelefoneListarResponseDTO> listar(Integer idAdolescente, Pageable pageable) {
         //Verifica se o adolescente existe e retorna ele
         Adolescente adolescente = adolescenteService.buscarAdolescente(idAdolescente);
 
         //Retorna todos que o adolescente tiver
-        return telefoneRepository.findByAdolescenteIdAdolescenteOrderByDataInicioDesc(idAdolescente)
-                .stream()
-                .map(telefoneMapper::toListarResponseDTO)
-                .toList();
+        return telefoneRepository.findByAdolescenteIdAdolescenteOrderByDataInicioDesc(idAdolescente, pageable)
+                .map(telefoneMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)
@@ -258,15 +258,13 @@ public class TelefoneService {
     }
 
     @Transactional(readOnly = true)
-    public List<TelefoneListarResponseDTO> listarEmpresa(Integer idEmpresa) {
+    public Page<TelefoneListarResponseDTO> listarEmpresa(Integer idEmpresa, Pageable pageable) {
         //Verifica se o adolescente existe e retorna ele
         Empresa empresa = buscarEmpresa(idEmpresa);
 
         //Retorna todos que o adolescente tiver
-        return telefoneRepository.findByEmpresaIdEmpresaOrderByDataInicioDesc(idEmpresa)
-                .stream()
-                .map(telefoneMapper::toListarResponseDTO)
-                .toList();
+        return telefoneRepository.findByEmpresaIdEmpresaOrderByDataInicioDesc(idEmpresa, pageable)
+                .map(telefoneMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)

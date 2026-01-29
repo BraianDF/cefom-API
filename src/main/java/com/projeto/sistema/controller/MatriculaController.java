@@ -7,6 +7,9 @@ import com.projeto.sistema.dto.request.MatriculaEncerrarRequestDTO;
 import com.projeto.sistema.dto.response.*;
 import com.projeto.sistema.service.MatriculaService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,8 +54,8 @@ public class MatriculaController {
 
     // OK
     @GetMapping("/{idAdolescente}/matriculas")
-    public ResponseEntity<List<MatriculaListarResponseDTO>> listarPorId(@PathVariable Integer idAdolescente) {
-        List<MatriculaListarResponseDTO> response = matriculaService.listarPorId(idAdolescente);
+    public ResponseEntity<Page<MatriculaListarResponseDTO>> listarPorId(@PathVariable Integer idAdolescente, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+        Page<MatriculaListarResponseDTO> response = matriculaService.listarPorId(idAdolescente, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

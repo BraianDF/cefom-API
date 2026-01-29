@@ -10,6 +10,8 @@ import com.projeto.sistema.mapper.AfastamentoMapper;
 import com.projeto.sistema.model.Afastamento;
 import com.projeto.sistema.model.Contrato;
 import com.projeto.sistema.repository.AfastamentoRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,12 +64,10 @@ public class AfastamentoService {
 
 
     @Transactional(readOnly = true)
-    public List<AfastamentoListarResponseDTO> listar(Integer idAdolescente, Integer idMatricula, Integer idContrato) {
+    public Page<AfastamentoListarResponseDTO> listar(Integer idAdolescente, Integer idMatricula, Integer idContrato, Pageable pageable) {
         contratoService.buscarContratoMatricula(idAdolescente,idMatricula,idContrato);
-        return afastamentoRepository.findAllByContratoIdContrato(idContrato)
-                .stream()
-                .map(afastamentoMapper::toListarResponseDTO)
-                .toList();
+        return afastamentoRepository.findAllByContratoIdContrato(idContrato, pageable)
+                .map(afastamentoMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)

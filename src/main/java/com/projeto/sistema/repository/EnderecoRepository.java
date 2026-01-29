@@ -1,6 +1,8 @@
 package com.projeto.sistema.repository;
 
 import com.projeto.sistema.model.Endereco;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,9 +12,9 @@ import java.util.Optional;
 @Repository
 public interface EnderecoRepository extends JpaRepository<Endereco, Integer> {
 
-    List<Endereco> findByAdolescenteIdAdolescenteOrderByDataInicioDesc(Integer idAdolescente);
+    Page<Endereco> findByAdolescenteIdAdolescenteOrderByDataInicioDesc(Integer idAdolescente, Pageable pageable);
 
-    List<Endereco> findByEscolaIdEscolaOrderByDataInicioDesc(Integer idEscola);
+    Page<Endereco> findByEscolaIdEscolaOrderByDataInicioDesc(Integer idEscola, Pageable pageable);
 
-    List<Endereco> findByEmpresaIdEmpresaOrderByDataInicioDesc(Integer idEmpresa);
+    Page<Endereco> findByEmpresaIdEmpresaOrderByDataInicioDesc(Integer idEmpresa, Pageable pageable);
 }

@@ -9,6 +9,8 @@ import com.projeto.sistema.dto.response.ContratoResponseDTO;
 import com.projeto.sistema.enums.DiaSemana;
 import com.projeto.sistema.mapper.ContratoMapper;
 import com.projeto.sistema.repository.ContratoRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -100,11 +102,9 @@ public class ContratoService {
     }
 
     @Transactional(readOnly = true)
-    public List<ContratoListarResponseDTO> listar(Integer idAdolescente) {
-        return contratoRepository.findAllByMatriculaAdolescenteIdAdolescente(idAdolescente)
-                .stream()
-                .map(contratoMapper::toListarResponseDTO)
-                .toList();
+    public Page<ContratoListarResponseDTO> listar(Integer idAdolescente, Pageable pageable) {
+        return contratoRepository.findAllByMatriculaAdolescenteIdAdolescente(idAdolescente, pageable)
+                .map(contratoMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)
