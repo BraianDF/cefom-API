@@ -7,7 +7,9 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Entity
@@ -213,11 +215,18 @@ public class DadosSocial extends Vigencia implements Serializable {
     }
 
     public String getComposicaoFamiliarEm(LocalDate data) {
-        Map<Parentesco, Long> agrupamento = adolescente.getFamiliares().stream()
+        Map<Parentesco, Long> agrupamento = Optional.ofNullable(adolescente.getFamiliares())
+                .orElse(Collections.emptyList())
+                .stream()
                 .filter(f -> f.estaValidoEm(data))
+                .filter(f -> !f.isResponsavel() || Boolean.TRUE.equals(f.getReside()))
                 .collect(Collectors.groupingBy(Familiar::getParentesco, Collectors.counting()));
 
-        return agrupamento.entrySet().stream()
+        if (agrupamento.isEmpty()) {
+            return "Adolescente";
+        }
+
+        String familiares = agrupamento.entrySet().stream()
                 .map(entry -> {
                     long count = entry.getValue();
                     Parentesco parentesco = entry.getKey();
@@ -231,6 +240,8 @@ public class DadosSocial extends Vigencia implements Serializable {
                     }
                 })
                 .collect(Collectors.joining(", "));
+
+        return "Adolescente + " + familiares;
     }
 
     private String pluralizar(String palavra) {
