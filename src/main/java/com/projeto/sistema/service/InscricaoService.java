@@ -15,6 +15,8 @@ import com.projeto.sistema.image.FotoAdolescenteService;
 import com.projeto.sistema.mapper.InscricaoMapper;
 import com.projeto.sistema.model.*;
 import com.projeto.sistema.repository.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -267,13 +269,11 @@ public class InscricaoService {
     }
 
     @Transactional(readOnly = true)
-    public List<InscricaoListarResponseDTO> listarPorId(Integer idAdolescente) {
+    public Page<InscricaoListarResponseDTO> listarPorId(Integer idAdolescente, Pageable pageable) {
         Adolescente adolescente = adolescenteService.buscarAdolescente(idAdolescente);
 
-        return inscricaoRepository.findByAdolescenteIdAdolescenteOrderByDataInicioDesc(idAdolescente)
-                .stream()
-                .map(inscricaoMapper::toListarResponseDTO)
-                .toList();
+        return inscricaoRepository.findByAdolescenteIdAdolescenteOrderByDataInicioDesc(idAdolescente, pageable)
+                .map(inscricaoMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)

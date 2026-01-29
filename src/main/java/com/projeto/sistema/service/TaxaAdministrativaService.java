@@ -9,6 +9,8 @@ import com.projeto.sistema.model.Empresa;
 import com.projeto.sistema.model.TaxaAdministrativa;
 import com.projeto.sistema.repository.EmpresaRepository;
 import com.projeto.sistema.repository.TaxaAdministrativaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,15 +84,13 @@ public class TaxaAdministrativaService {
 
 
     @Transactional(readOnly = true)
-    public List<TaxaAdministrativaListarResponseDTO> listarEmpresa(Integer idEmpresa) {
+    public Page<TaxaAdministrativaListarResponseDTO> listarEmpresa(Integer idEmpresa, Pageable pageable) {
         //Verifica se a empresa existe e retorna ela
         Empresa empresa = buscarEmpresa(idEmpresa);
 
         //Retorna todos que a empresa tiver
-        return taxaAdministrativaRepository.findByEmpresaIdEmpresaOrderByDataInicioDesc(idEmpresa)
-                .stream()
-                .map(taxaAdministrativaMapper::toListarResponseDTO)
-                .toList();
+        return taxaAdministrativaRepository.findByEmpresaIdEmpresaOrderByDataInicioDesc(idEmpresa, pageable)
+                .map(taxaAdministrativaMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)

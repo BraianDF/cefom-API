@@ -5,6 +5,9 @@ import com.projeto.sistema.dto.response.EnderecoListarResponseDTO;
 import com.projeto.sistema.dto.response.EnderecoMatriculaResponseDTO;
 import com.projeto.sistema.service.EnderecoService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +31,8 @@ public class EnderecoAdolescenteController {
     }
 
     @GetMapping("/{idAdolescente}/enderecos")
-    public ResponseEntity<List<EnderecoListarResponseDTO>> listarAdolescente(@PathVariable Integer idAdolescente) {
-        List<EnderecoListarResponseDTO> response = enderecoService.listarAdolescente(idAdolescente);
+    public ResponseEntity<Page<EnderecoListarResponseDTO>> listarAdolescente(@PathVariable Integer idAdolescente, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+        Page<EnderecoListarResponseDTO> response = enderecoService.listarAdolescente(idAdolescente, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

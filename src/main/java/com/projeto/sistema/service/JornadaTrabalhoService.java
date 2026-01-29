@@ -10,6 +10,8 @@ import com.projeto.sistema.mapper.JornadaTrabalhoMapper;
 import com.projeto.sistema.model.Contrato;
 import com.projeto.sistema.model.JornadaTrabalho;
 import com.projeto.sistema.repository.JornadaTrabalhoRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,12 +51,10 @@ public class JornadaTrabalhoService {
 
 
     @Transactional(readOnly = true)
-    public List<JornadaTrabalhoListarResponseDTO> listar(Integer idAdolescente, Integer idMatricula, Integer idContrato) {
+    public Page<JornadaTrabalhoListarResponseDTO> listar(Integer idAdolescente, Integer idMatricula, Integer idContrato, Pageable pageable) {
         contratoService.buscarContratoMatricula(idAdolescente,idMatricula,idContrato);
-        return jornadaTrabalhoRepository.findAllByContratoIdContrato(idContrato)
-                .stream()
-                .map(jornadaTrabalhoMapper::toListarResponseDTO)
-                .toList();
+        return jornadaTrabalhoRepository.findAllByContratoIdContrato(idContrato, pageable)
+                .map(jornadaTrabalhoMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)

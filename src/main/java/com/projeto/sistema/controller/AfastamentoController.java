@@ -5,6 +5,9 @@ import com.projeto.sistema.dto.response.AfastamentoListarResponseDTO;
 import com.projeto.sistema.dto.response.AfastamentoResponseDTO;
 import com.projeto.sistema.service.AfastamentoService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +37,8 @@ public class AfastamentoController {
     }
 
     @GetMapping("/afastamentos")
-    public ResponseEntity<List<AfastamentoListarResponseDTO>> listar(@PathVariable Integer idAdolescente, @PathVariable Integer idMatricula, @PathVariable Integer idContrato) {
-        List<AfastamentoListarResponseDTO> response = afastamentoService.listar(idAdolescente, idMatricula, idContrato);
+    public ResponseEntity<Page<AfastamentoListarResponseDTO>> listar(@PathVariable Integer idAdolescente, @PathVariable Integer idMatricula, @PathVariable Integer idContrato, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+        Page<AfastamentoListarResponseDTO> response = afastamentoService.listar(idAdolescente, idMatricula, idContrato, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

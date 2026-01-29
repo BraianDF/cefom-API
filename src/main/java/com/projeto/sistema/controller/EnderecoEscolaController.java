@@ -3,6 +3,9 @@ package com.projeto.sistema.controller;
 import com.projeto.sistema.dto.response.EnderecoListarResponseDTO;
 import com.projeto.sistema.dto.response.EnderecoResponseDTO;
 import com.projeto.sistema.service.EnderecoService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +23,8 @@ public class EnderecoEscolaController {
     }
 
     @GetMapping("/{idEscola}/enderecos")
-    public ResponseEntity<List<EnderecoListarResponseDTO>> listarEscola(@PathVariable Integer idEscola) {
-        List<EnderecoListarResponseDTO> response = enderecoService.listarEscola(idEscola);
+    public ResponseEntity<Page<EnderecoListarResponseDTO>> listarEscola(@PathVariable Integer idEscola, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+        Page<EnderecoListarResponseDTO> response = enderecoService.listarEscola(idEscola, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

@@ -12,6 +12,8 @@ import com.projeto.sistema.model.Email;
 import com.projeto.sistema.model.Empresa;
 import com.projeto.sistema.repository.EmpresaRepository;
 import com.projeto.sistema.repository.EmailRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,15 +57,13 @@ public class EmailService {
     }
 
     @Transactional(readOnly = true)
-    public List<EmailListarResponseDTO> listar(Integer idAdolescente) {
+    public Page<EmailListarResponseDTO> listar(Integer idAdolescente, Pageable pageable) {
         //Verifica se o adolescente existe e retorna ele
         Adolescente adolescente = adolescenteService.buscarAdolescente(idAdolescente);
 
         //Retorna todos que o adolescente tiver
-        return emailRepository.findByAdolescenteIdAdolescenteOrderByDataInicioDesc(idAdolescente)
-                .stream()
-                .map(emailMapper::toListarResponseDTO)
-                .toList();
+        return emailRepository.findByAdolescenteIdAdolescenteOrderByDataInicioDesc(idAdolescente, pageable)
+                .map(emailMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)
@@ -188,15 +188,13 @@ public class EmailService {
 
 
     @Transactional(readOnly = true)
-    public List<EmailListarResponseDTO> listarEmpresa(Integer idEmpresa) {
+    public Page<EmailListarResponseDTO> listarEmpresa(Integer idEmpresa, Pageable pageable) {
         //Verifica se a empresa existe e retorna ela
         Empresa empresa = buscarEmpresa(idEmpresa);
 
         //Retorna todos que a empresa tiver
-        return emailRepository.findByEmpresaIdEmpresaOrderByDataInicioDesc(idEmpresa)
-                .stream()
-                .map(emailMapper::toListarResponseDTO)
-                .toList();
+        return emailRepository.findByEmpresaIdEmpresaOrderByDataInicioDesc(idEmpresa, pageable)
+                .map(emailMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)

@@ -14,6 +14,8 @@ import com.projeto.sistema.model.Adolescente;
 import com.projeto.sistema.model.Escolaridade;
 import com.projeto.sistema.model.Familiar;
 import com.projeto.sistema.repository.FamiliarRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -63,15 +65,13 @@ public class FamiliarService {
     }
 
     @Transactional(readOnly = true)
-    public List<FamiliarListarResponseDTO> listar(Integer idAdolescente) {
+    public Page<FamiliarListarResponseDTO> listar(Integer idAdolescente, Pageable pageable) {
         //Verifica se o adolescente existe e retorna ele
         Adolescente adolescente = adolescenteService.buscarAdolescente(idAdolescente);
 
         //Retorna todos que o adolescente tiver
-        return familiarRepository.findByAdolescenteIdAdolescenteOrderByDataInicioDesc(idAdolescente)
-                .stream()
-                .map(familiarMapper::toListarResponseDTO)
-                .toList();
+        return familiarRepository.findByAdolescenteIdAdolescenteOrderByDataInicioDesc(idAdolescente, pageable)
+                .map(familiarMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)

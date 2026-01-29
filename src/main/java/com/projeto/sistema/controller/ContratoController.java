@@ -7,6 +7,9 @@ import com.projeto.sistema.dto.response.ContratoListarResponseDTO;
 import com.projeto.sistema.dto.response.ContratoResponseDTO;
 import com.projeto.sistema.service.ContratoService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +44,8 @@ public class ContratoController {
     }
 
     @GetMapping("/contratos")
-    public ResponseEntity<List<ContratoListarResponseDTO>> listar(@PathVariable Integer idAdolescente) {
-        List<ContratoListarResponseDTO> response = contratoService.listar(idAdolescente);
+    public ResponseEntity<Page<ContratoListarResponseDTO>> listar(@PathVariable Integer idAdolescente, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+        Page<ContratoListarResponseDTO> response = contratoService.listar(idAdolescente, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

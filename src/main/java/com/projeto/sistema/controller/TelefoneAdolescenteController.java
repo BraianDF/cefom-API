@@ -4,6 +4,9 @@ import com.projeto.sistema.dto.request.TelefonesAtualizarRequestDTO;
 import com.projeto.sistema.dto.response.*;
 import com.projeto.sistema.service.TelefoneService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +29,8 @@ public class TelefoneAdolescenteController {
     }
 
     @GetMapping("/{idAdolescente}/telefones")
-    public ResponseEntity<List<TelefoneListarResponseDTO>> listar(@PathVariable Integer idAdolescente) {
-        List<TelefoneListarResponseDTO> response = telefoneService.listar(idAdolescente);
+    public ResponseEntity<Page<TelefoneListarResponseDTO>> listar(@PathVariable Integer idAdolescente, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+        Page<TelefoneListarResponseDTO> response = telefoneService.listar(idAdolescente, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

@@ -11,6 +11,8 @@ import com.projeto.sistema.model.Empresa;
 import com.projeto.sistema.model.ResponsavelEmpresa;
 import com.projeto.sistema.repository.EmpresaRepository;
 import com.projeto.sistema.repository.ResponsavelEmpresaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -131,15 +133,13 @@ public class ResponsavelEmpresaService {
     }
 
     @Transactional(readOnly = true)
-    public List<ResponsavelEmpresaListarResponseDTO> listarEmpresa(Integer idEmpresa) {
+    public Page<ResponsavelEmpresaListarResponseDTO> listarEmpresa(Integer idEmpresa, Pageable pageable) {
         //Verifica se a empresa existe e retorna ela
         Empresa empresa = buscarEmpresa(idEmpresa);
 
         //Retorna todos que a empresa tiver
-        return responsavelEmpresaRepository.findByEmpresaIdEmpresaOrderByDataInicioDesc(idEmpresa)
-                .stream()
-                .map(responsavelEmpresaMapper::toListarResponseDTO)
-                .toList();
+        return responsavelEmpresaRepository.findByEmpresaIdEmpresaOrderByDataInicioDesc(idEmpresa, pageable)
+                .map(responsavelEmpresaMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)

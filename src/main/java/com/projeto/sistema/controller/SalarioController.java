@@ -5,6 +5,9 @@ import com.projeto.sistema.dto.response.SalarioListarResponseDTO;
 import com.projeto.sistema.dto.response.SalarioResponseDTO;
 import com.projeto.sistema.service.SalarioService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +31,8 @@ public class SalarioController {
     }
 
     @GetMapping("/salarios")
-    public ResponseEntity<List<SalarioListarResponseDTO>> listar(@PathVariable Integer idAdolescente, @PathVariable Integer idMatricula, @PathVariable Integer idContrato) {
-        List<SalarioListarResponseDTO> response = salarioService.listar(idAdolescente, idMatricula, idContrato);
+    public ResponseEntity<Page<SalarioListarResponseDTO>> listar(@PathVariable Integer idAdolescente, @PathVariable Integer idMatricula, @PathVariable Integer idContrato, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+        Page<SalarioListarResponseDTO> response = salarioService.listar(idAdolescente, idMatricula, idContrato, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

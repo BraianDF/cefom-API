@@ -19,6 +19,8 @@ import com.projeto.sistema.model.Matricula;
 import com.projeto.sistema.model.SequenceNumMatricula;
 import com.projeto.sistema.repository.MatriculaRepository;
 import com.projeto.sistema.repository.SequenceNumMatriculaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -295,13 +297,11 @@ public class MatriculaService {
     }
 
     @Transactional(readOnly = true)
-    public List<MatriculaListarResponseDTO> listarPorId(Integer idAdolescente) {
+    public Page<MatriculaListarResponseDTO> listarPorId(Integer idAdolescente, Pageable pageable) {
         Adolescente adolescente = adolescenteService.buscarAdolescente(idAdolescente);
 
-        return matriculaRepository.findByAdolescenteIdAdolescenteOrderByDataInicioDesc(idAdolescente)
-                .stream()
-                .map(matriculaMapper::toListarResponseDTO)
-                .toList();
+        return matriculaRepository.findByAdolescenteIdAdolescenteOrderByDataInicioDesc(idAdolescente, pageable)
+                .map(matriculaMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)

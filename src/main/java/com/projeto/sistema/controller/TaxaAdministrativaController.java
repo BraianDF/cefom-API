@@ -3,6 +3,9 @@ package com.projeto.sistema.controller;
 import com.projeto.sistema.dto.response.TaxaAdministrativaListarResponseDTO;
 import com.projeto.sistema.dto.response.TaxaAdministrativaResponseDTO;
 import com.projeto.sistema.service.TaxaAdministrativaService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +22,8 @@ public class TaxaAdministrativaController {
     }
 
     @GetMapping("/{idEmpresa}/taxasadministrativas")
-    public ResponseEntity<List<TaxaAdministrativaListarResponseDTO>> listar(@PathVariable Integer idEmpresa) {
-        List<TaxaAdministrativaListarResponseDTO> response = taxaAdministrativaService.listarEmpresa(idEmpresa);
+    public ResponseEntity<Page<TaxaAdministrativaListarResponseDTO>> listar(@PathVariable Integer idEmpresa, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+        Page<TaxaAdministrativaListarResponseDTO> response = taxaAdministrativaService.listarEmpresa(idEmpresa, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

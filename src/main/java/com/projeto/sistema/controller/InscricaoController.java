@@ -10,6 +10,9 @@ import com.projeto.sistema.dto.response.InscricaoResponseDTO;
 import com.projeto.sistema.dto.response.StatusCpfInscricaoResponseDTO;
 import com.projeto.sistema.service.InscricaoService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -61,8 +64,8 @@ public class InscricaoController {
     }
 
     @GetMapping("/{idAdolescente}/inscricoes")
-    public ResponseEntity<List<InscricaoListarResponseDTO>> listarPorId(@PathVariable Integer idAdolescente) {
-        List<InscricaoListarResponseDTO> response = inscricaoService.listarPorId(idAdolescente);
+    public ResponseEntity<Page<InscricaoListarResponseDTO>> listarPorId(@PathVariable Integer idAdolescente, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+        Page<InscricaoListarResponseDTO> response = inscricaoService.listarPorId(idAdolescente, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

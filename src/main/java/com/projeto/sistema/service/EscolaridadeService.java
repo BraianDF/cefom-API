@@ -12,6 +12,8 @@ import com.projeto.sistema.model.Endereco;
 import com.projeto.sistema.model.Escola;
 import com.projeto.sistema.model.Escolaridade;
 import com.projeto.sistema.repository.EscolaridadeRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -60,15 +62,13 @@ public class EscolaridadeService {
     }
 
     @Transactional(readOnly = true)
-    public List<EscolaridadeListarResponseDTO> listar(Integer idAdolescente) {
+    public Page<EscolaridadeListarResponseDTO> listar(Integer idAdolescente, Pageable pageable) {
         //Verifica se o adolescente existe e retorna ele
         Adolescente adolescente = adolescenteService.buscarAdolescente(idAdolescente);
 
         //Retorna todos que o adolescente tiver
-        return escolaridadeRepository.findByAdolescenteIdAdolescenteOrderByDataInicioDesc(idAdolescente)
-                .stream()
-                .map(escolaridadeMapper::toListarResponseDTO)
-                .toList();
+        return escolaridadeRepository.findByAdolescenteIdAdolescenteOrderByDataInicioDesc(idAdolescente, pageable)
+                .map(escolaridadeMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)

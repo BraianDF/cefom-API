@@ -4,6 +4,9 @@ import com.projeto.sistema.dto.request.EmailAtualizarRequestDTO;
 import com.projeto.sistema.dto.response.EmailListarResponseDTO;
 import com.projeto.sistema.dto.response.EmailResponseDTO;
 import com.projeto.sistema.service.EmailService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +23,8 @@ public class EmailEmpresaController {
     }
 
     @GetMapping("/{idEmpresa}/emails")
-    public ResponseEntity<List<EmailListarResponseDTO>> listar(@PathVariable Integer idEmpresa) {
-        List<EmailListarResponseDTO> response = emailService.listarEmpresa(idEmpresa);
+    public ResponseEntity<Page<EmailListarResponseDTO>> listar(@PathVariable Integer idEmpresa, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+        Page<EmailListarResponseDTO> response = emailService.listarEmpresa(idEmpresa, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
