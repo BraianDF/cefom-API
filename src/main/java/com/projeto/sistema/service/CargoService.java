@@ -8,6 +8,8 @@ import com.projeto.sistema.dto.response.CargoResponseDTO;
 import com.projeto.sistema.mapper.CargoMapper;
 import com.projeto.sistema.model.Cargo;
 import com.projeto.sistema.repository.CargoRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,6 +61,16 @@ public class CargoService {
                 .stream()
                 .map(cargoMapper::toListarResponseDTO)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<CargoListarResponseDTO> listar(Pageable pageable, String nome) {
+        if (nome == null || nome.isBlank()) {
+            return cargoRepository.findAll(pageable)
+                    .map(cargoMapper::toListarResponseDTO);
+        }
+        return cargoRepository.findByFuncaoContainingIgnoreCase(nome, pageable)
+                .map(cargoMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)

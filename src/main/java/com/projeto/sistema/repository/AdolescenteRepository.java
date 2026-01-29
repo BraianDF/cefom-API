@@ -2,6 +2,8 @@ package com.projeto.sistema.repository;
 
 import com.projeto.sistema.dto.base.AdolescenteListarBaseDTO;
 import com.projeto.sistema.model.Adolescente;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -21,4 +23,5 @@ public interface AdolescenteRepository extends JpaRepository<Adolescente, Intege
     order by a.nome
 """)
     List<AdolescenteListarBaseDTO> listarBaseParaSelect();
+    Page<Adolescente> findByNomeContainingIgnoreCase(String nome, Pageable pageable);
 }

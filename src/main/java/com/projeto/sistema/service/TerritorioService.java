@@ -9,6 +9,8 @@ import com.projeto.sistema.exceptions.RegraNegocioException;
 import com.projeto.sistema.mapper.TerritorioMapper;
 import com.projeto.sistema.model.Territorio;
 import com.projeto.sistema.repository.TerritorioRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -115,6 +117,17 @@ public class TerritorioService {
                 .map(territorioMapper::toListarResponseDTO)
                 .toList();
     }
+
+    @Transactional(readOnly = true)
+    public Page<TerritorioListarResponseDTO> listar(Pageable pageable, String nome) {
+        if (nome == null || nome.isBlank()) {
+            return territorioRepository.findAll(pageable)
+                    .map(territorioMapper::toListarResponseDTO);
+        }
+        return territorioRepository.findByResultadoContainingIgnoreCase(nome, pageable)
+                .map(territorioMapper::toListarResponseDTO);
+    }
+
 
     @Transactional
     public void excluirPorId(Integer idTerritorio) {

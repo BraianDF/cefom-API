@@ -8,6 +8,9 @@ import com.projeto.sistema.dto.response.EntrevistaListarResponseDTO;
 import com.projeto.sistema.dto.response.EntrevistaResponseDTO;
 import com.projeto.sistema.service.EntrevistaService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,8 +45,8 @@ public class EntrevistaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<EntrevistaListarResponseDTO>> listar() {
-        List<EntrevistaListarResponseDTO> response = entrevistaService.listar();
+    public ResponseEntity<Page<EntrevistaListarResponseDTO>> listar(@PageableDefault(page = 0, size = 10) Pageable pageable, @RequestParam(defaultValue = "") String nome) {
+        Page<EntrevistaListarResponseDTO> response = entrevistaService.listar(pageable, nome);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

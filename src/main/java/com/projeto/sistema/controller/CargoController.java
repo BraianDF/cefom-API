@@ -5,6 +5,9 @@ import com.projeto.sistema.dto.response.CargoListarResponseDTO;
 import com.projeto.sistema.dto.response.CargoResponseDTO;
 import com.projeto.sistema.service.CargoService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +37,8 @@ public class CargoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CargoListarResponseDTO>> listar() {
-        List<CargoListarResponseDTO> response = cargoService.listar();
+    public ResponseEntity<Page<CargoListarResponseDTO>> listar(@PageableDefault(page = 0, size = 10) Pageable pageable, @RequestParam(defaultValue = "") String nome) {
+        Page<CargoListarResponseDTO> response = cargoService.listar(pageable, nome);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

@@ -8,6 +8,8 @@ import com.projeto.sistema.exceptions.RegraNegocioException;
 import com.projeto.sistema.mapper.EscolaMapper;
 import com.projeto.sistema.model.Escola;
 import com.projeto.sistema.repository.EscolaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -82,6 +84,16 @@ public class EscolaService {
                 .stream()
                 .map(escolaMapper::toListarResponseDTO)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<EscolaListarResponseDTO> listar(Pageable pageable, String nome) {
+        if (nome == null || nome.isBlank()) {
+            return escolaRepository.findAll(pageable)
+                    .map(escolaMapper::toListarResponseDTO);
+        }
+        return escolaRepository.findByNomeContainingIgnoreCase(nome, pageable)
+                .map(escolaMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)

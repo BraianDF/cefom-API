@@ -11,6 +11,8 @@ import com.projeto.sistema.mapper.EntrevistaMapper;
 import com.projeto.sistema.model.Empresa;
 import com.projeto.sistema.model.Entrevista;
 import com.projeto.sistema.repository.EntrevistaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -84,6 +86,16 @@ public class EntrevistaService {
                 .stream()
                 .map(entrevistaMapper::toListarResponseDTO)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<EntrevistaListarResponseDTO> listar(Pageable pageable, String nome) {
+        if (nome == null || nome.isBlank()) {
+            return entrevistaRepository.findAll(pageable)
+                    .map(entrevistaMapper::toListarResponseDTO);
+        }
+        return entrevistaRepository.buscarPorEmpresaApelido(nome, pageable)
+                .map(entrevistaMapper::toListarResponseDTO);
     }
 
     @Transactional(readOnly = true)

@@ -7,6 +7,9 @@ import com.projeto.sistema.dto.response.AdolescenteResponseDTO;
 import com.projeto.sistema.dto.response.EmpresaCriarResponseDTO;
 import com.projeto.sistema.service.AdolescenteService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +32,8 @@ public class AdolescenteController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AdolescenteListarResponseDTO>> listar() {
-        List<AdolescenteListarResponseDTO> response = adolescenteService.listar();
+    public ResponseEntity<Page<AdolescenteListarResponseDTO>> listar(@PageableDefault(page = 0, size = 10) Pageable pageable, @RequestParam(defaultValue = "") String nome) {
+        Page<AdolescenteListarResponseDTO> response = adolescenteService.listar(pageable, nome);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
