@@ -22,10 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class InscricaoService {
@@ -235,12 +232,17 @@ public class InscricaoService {
     }
 
     @Transactional
-    public InscricaoResponseDTO atualizar(Integer idAdolescente, Integer idInscricao, InscricaoAtualizarRequestDTO dto) {
+    public InscricaoResponseDTO atualizar(Integer idAdolescente, Integer idInscricao, InscricaoAtualizarRequestDTO dto, MultipartFile file) {
         Inscricao inscricao = buscarInscricaoAdolescente(idAdolescente, idInscricao);
 
-        if (inscricao.getDataInicio() == dto.dataInscricao() &&
-            inscricao.getObservacao() == dto.observacao()) {
-            throw new RegraNegocioException("Nenhuma alteração foi informada.");
+        if (file != null && !file.isEmpty()) {
+            fotoAdolescenteService.atualizarFotoAdolescenteInscricao(file, inscricao);
+            inscricao = salvar(inscricao);
+        }
+
+        if (Objects.equals(inscricao.getDataInicio(), dto.dataInscricao()) &&
+                Objects.equals(inscricao.getObservacao(), dto.observacao())) {
+            return inscricaoMapper.toResponseDTO(inscricao);
         }
 
         inscricao.setDataInicio(dto.dataInscricao());

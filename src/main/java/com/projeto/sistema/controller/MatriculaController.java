@@ -11,8 +11,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 @RestController
@@ -24,56 +27,48 @@ public class MatriculaController {
         this.matriculaService = matriculaService;
     }
 
-    // OK
     @PostMapping("/matriculas/status")
     public ResponseEntity<StatusCpfMatriculaResponseDTO> verificarCpf(@Valid @RequestBody DocumentoCpfRequestDTO dto) {
         StatusCpfMatriculaResponseDTO response = matriculaService.verificarCpf(dto.cpf());
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    // OK
-    @PostMapping("/matriculas")
-    public ResponseEntity<MatriculaCriarResponseDTO> criar(@Valid @RequestBody MatriculaCriarRequestDTO dto) {
-        MatriculaCriarResponseDTO response = matriculaService.criar(dto);
+    @PostMapping(value = "/matriculas", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<MatriculaCriarResponseDTO> criar(@Valid @RequestPart("dados") MatriculaCriarRequestDTO dto, @RequestPart(value = "file", required = false) MultipartFile file) {
+        MatriculaCriarResponseDTO response = matriculaService.criar(dto, file);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    // OK
-    @PatchMapping("/{idAdolescente}/matriculas/{idMatricula}")
-    public ResponseEntity<MatriculaResponseDTO> atualizar(@PathVariable Integer idAdolescente, @PathVariable Integer idMatricula, @Valid @RequestBody MatriculaAtualizarRequestDTO dto) {
-        MatriculaResponseDTO response = matriculaService.atualizar(idAdolescente, idMatricula, dto);
+    @PutMapping(value = "/{idAdolescente}/matriculas/{idMatricula}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<MatriculaResponseDTO> atualizar(@PathVariable Integer idAdolescente, @PathVariable Integer idMatricula, @Valid @RequestPart("dados") MatriculaAtualizarRequestDTO dto, @RequestPart(value = "file", required = false) MultipartFile file) {
+        MatriculaResponseDTO response = matriculaService.atualizar(idAdolescente, idMatricula, dto, file);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    // OK
     @PatchMapping("/{idAdolescente}/matriculas/{idMatricula}/encerrar")
     public ResponseEntity<MatriculaResponseDTO> encerrar(@PathVariable Integer idAdolescente, @PathVariable Integer idMatricula, @Valid @RequestBody MatriculaEncerrarRequestDTO dto) {
         MatriculaResponseDTO response = matriculaService.encerrarPorId(idAdolescente, idMatricula, dto);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    // OK
     @GetMapping("/{idAdolescente}/matriculas")
     public ResponseEntity<Page<MatriculaListarResponseDTO>> listarPorId(@PathVariable Integer idAdolescente, @PageableDefault(page = 0, size = 10) Pageable pageable) {
         Page<MatriculaListarResponseDTO> response = matriculaService.listarPorId(idAdolescente, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    // OK
     @GetMapping("/{idAdolescente}/matriculas/{idMatricula}")
     public ResponseEntity<MatriculaResponseDTO> buscarPorId(@PathVariable Integer idAdolescente, @PathVariable Integer idMatricula) {
         MatriculaResponseDTO response = matriculaService.buscarPorId(idAdolescente, idMatricula);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    // OK
     @GetMapping("/matriculas")
     public ResponseEntity<List<MatriculaCriarResponseDTO>> listar() {
         List<MatriculaCriarResponseDTO> response = matriculaService.listar();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    // OK
     @DeleteMapping("/{idAdolescente}/matriculas/{idMatricula}")
     public ResponseEntity<Void> excluir(@PathVariable Integer idAdolescente, @PathVariable Integer idMatricula) {
         matriculaService.excluirPorId(idAdolescente, idMatricula);

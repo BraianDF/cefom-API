@@ -36,24 +36,15 @@ public class InscricaoController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    // OK
-    /*
-    @PostMapping("/inscricoes")
-    public ResponseEntity<InscricaoCriarResponseDTO> criar(@Valid @RequestBody InscricaoCriarRequestDTO dto) {
-        InscricaoCriarResponseDTO response = inscricaoService.criar(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-    */
-
     @PostMapping(value = "/inscricoes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<InscricaoCriarResponseDTO> criar(@Valid @RequestPart("dados") InscricaoCriarRequestDTO dto, @RequestPart(value = "file", required = false) MultipartFile file) {
         InscricaoCriarResponseDTO response = inscricaoService.criar(dto, file);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PatchMapping("/{idAdolescente}/inscricoes/{idInscricao}")
-    public ResponseEntity<InscricaoResponseDTO> atualizar(@PathVariable Integer idAdolescente, @PathVariable Integer idInscricao, @Valid @RequestBody InscricaoAtualizarRequestDTO dto) {
-        InscricaoResponseDTO response = inscricaoService.atualizar(idAdolescente, idInscricao, dto);
+    @PutMapping(value = "/{idAdolescente}/inscricoes/{idInscricao}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<InscricaoResponseDTO> atualizar(@PathVariable Integer idAdolescente, @PathVariable Integer idInscricao, @Valid @RequestPart("dados") InscricaoAtualizarRequestDTO dto, @RequestPart(value = "file", required = false) MultipartFile file) {
+        InscricaoResponseDTO response = inscricaoService.atualizar(idAdolescente, idInscricao, dto, file);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

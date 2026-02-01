@@ -8,7 +8,6 @@ public record InscricaoCriarResponseDTO(
         AdolescenteInscricaoResponseDTO adolescente,
         EnderecoResponseDTO endereco,
         EscolaridadeResponseDTO escolaridade,
-        TelefonesResponseDTO telefones,
-        UploadFotoAdolescenteResponseDTO foto
+        TelefonesResponseDTO telefones
         ) {
 }

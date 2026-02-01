@@ -57,8 +57,7 @@ public class MatriculaMapper {
 
                 dadosSocialMapper.toResponseDTO(adolescente, data),
 
-                familiarMapper.toResponseDTO(adolescente, data),
-                null
+                familiarMapper.toResponseDTO(adolescente, data)
         );
     }
 
@@ -85,8 +84,7 @@ public class MatriculaMapper {
 
                 dadosSocialMapper.toResponseDTO(adolescente, data),
 
-                familiarMapper.toResponseDTO(adolescente, data),
-                fotoAdolescenteMapper.toResponseDTO(matricula)
+                familiarMapper.toResponseDTO(adolescente, data)
         );
     }
 
@@ -97,7 +95,8 @@ public class MatriculaMapper {
                 matricula != null ? matricula.getSituacaoMatricula() : null,
                 matricula != null ? matricula.getDataInicio() : null,
                 matricula != null ? matricula.getDataFim() : null,
-                matricula != null ? matricula.getDesligamento() : null
+                matricula != null ? matricula.getDesligamento() : null,
+                matricula != null ? fotoAdolescenteMapper.toResponseDTO(matricula.getFoto()) : null
         );
     }
 

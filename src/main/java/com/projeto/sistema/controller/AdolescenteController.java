@@ -25,7 +25,7 @@ public class AdolescenteController {
         this.adolescenteService = adolescenteService;
     }
 
-    @PatchMapping("/{idAdolescente}")
+    @PutMapping("/{idAdolescente}")
     public ResponseEntity<AdolescenteMatriculaResponseDTO> atualizar(@PathVariable Integer idAdolescente, @Valid @RequestBody AdolescenteAtualizarRequestDTO dto) {
         AdolescenteMatriculaResponseDTO response = adolescenteService.atualizar(idAdolescente, dto);
         return ResponseEntity.status(HttpStatus.OK).body(response);
