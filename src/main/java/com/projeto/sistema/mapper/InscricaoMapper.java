@@ -40,8 +40,7 @@ public class InscricaoMapper {
                 escolaridadeMapper.toResponseDTO(adolescente, data),
 
                 // Telefones
-                telefoneMapper.toResponseDTO(adolescente, data),
-                null
+                telefoneMapper.toResponseDTO(adolescente, data)
         );
     }
 
@@ -65,10 +64,7 @@ public class InscricaoMapper {
                 escolaridadeMapper.toResponseDTO(adolescente, data),
 
                 // Telefones
-                telefoneMapper.toResponseDTO(adolescente, data),
-
-                //Foto
-                fotoAdolescenteMapper.toResponseDTO(inscricao)
+                telefoneMapper.toResponseDTO(adolescente, data)
         );
     }
 
@@ -79,7 +75,8 @@ public class InscricaoMapper {
                 inscricao != null ? inscricao.getObservacao() : null,
                 inscricao != null ? inscricao.getDataInicio() : null,
                 inscricao != null ? inscricao.getDataFim() : null,
-                inscricao != null ? inscricao.getFinalizacao() : null
+                inscricao != null ? inscricao.getFinalizacao() : null,
+                inscricao != null ? fotoAdolescenteMapper.toResponseDTO(inscricao.getFoto()) : null
         );
     }
 

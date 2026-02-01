@@ -26,10 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class MatriculaService {
@@ -256,12 +253,17 @@ public class MatriculaService {
     }
 
     @Transactional
-    public MatriculaResponseDTO atualizar(Integer idAdolescente, Integer idMatricula, MatriculaAtualizarRequestDTO dto) {
+    public MatriculaResponseDTO atualizar(Integer idAdolescente, Integer idMatricula, MatriculaAtualizarRequestDTO dto, MultipartFile file) {
         Matricula matricula = buscarMatriculaAdolescente(idAdolescente, idMatricula);
 
-        if (matricula.getSituacaoMatricula() == dto.situacaoMatricula()
-                && matricula.getDataInicio().equals(dto.dataMatricula())) {
-            throw new RegraNegocioException("Nenhuma alteração foi informada.");
+        if (file != null && !file.isEmpty()) {
+            fotoAdolescenteService.atualizarFotoAdolescenteMatricula(file, matricula);
+            matricula = salvar(matricula);
+        }
+
+        if (Objects.equals(matricula.getDataInicio(), dto.dataMatricula()) &&
+                Objects.equals(matricula.getSituacaoMatricula(), dto.situacaoMatricula())) {
+            return matriculaMapper.toResponseDTO(matricula);
         }
 
         matricula.setSituacaoMatricula(dto.situacaoMatricula());

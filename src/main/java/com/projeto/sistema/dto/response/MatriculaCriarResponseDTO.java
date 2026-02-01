@@ -12,7 +12,6 @@ public record MatriculaCriarResponseDTO(
         CaracteristicaResponseDTO caracteristica,
         EscolaridadeResponseDTO escolaridade,
         DadosSocialResponseDTO dadosSocial,
-        FamiliaresResponseDTO familiares,
-        UploadFotoAdolescenteResponseDTO foto
+        FamiliaresResponseDTO familiares
 ) {
 }
