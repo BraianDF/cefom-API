@@ -3,10 +3,7 @@ package com.projeto.sistema.service;
 import com.projeto.sistema.dto.request.MatriculaAtualizarRequestDTO;
 import com.projeto.sistema.dto.request.MatriculaCriarRequestDTO;
 import com.projeto.sistema.dto.request.MatriculaEncerrarRequestDTO;
-import com.projeto.sistema.dto.response.MatriculaCriarResponseDTO;
-import com.projeto.sistema.dto.response.MatriculaListarResponseDTO;
-import com.projeto.sistema.dto.response.MatriculaResponseDTO;
-import com.projeto.sistema.dto.response.StatusCpfMatriculaResponseDTO;
+import com.projeto.sistema.dto.response.*;
 import com.projeto.sistema.enums.StatusCpf;
 import com.projeto.sistema.enums.TitularContato;
 import com.projeto.sistema.exceptions.RecursoNaoEncontradoException;
@@ -311,6 +308,15 @@ public class MatriculaService {
         return matriculaRepository.findAll()
                 .stream()
                 .map(m -> matriculaMapper.toResponseDTO(m, LocalDate.now()))
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<MatriculaSelectResponseDTO> listarSelect() {
+        return matriculaRepository.findAll()
+                .stream()
+                .filter(m -> m.estaValidoEm(LocalDate.now()))
+                .map(matriculaMapper::toSelectResponseDTO)
                 .toList();
     }
 

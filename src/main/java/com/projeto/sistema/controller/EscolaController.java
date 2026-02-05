@@ -3,6 +3,7 @@ package com.projeto.sistema.controller;
 import com.projeto.sistema.dto.request.EscolaRequestDTO;
 import com.projeto.sistema.dto.response.EscolaResponseDTO;
 import com.projeto.sistema.dto.response.EscolaListarResponseDTO;
+import com.projeto.sistema.dto.response.EscolaSelectResponseDTO;
 import com.projeto.sistema.service.EscolaService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -23,35 +24,36 @@ public class EscolaController {
         this.escolaService = escolaService;
     }
 
-    // OK
     @PostMapping
     public ResponseEntity<EscolaResponseDTO> criar(@Valid @RequestBody EscolaRequestDTO dto) {
         EscolaResponseDTO response = escolaService.criar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    // OK
     @PutMapping("/{idEscola}")
     public ResponseEntity<EscolaResponseDTO> atualizar(@PathVariable Integer idEscola, @Valid @RequestBody EscolaRequestDTO dto) {
         EscolaResponseDTO response = escolaService.atualizar(idEscola, dto);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    // OK
     @GetMapping
     public ResponseEntity<Page<EscolaListarResponseDTO>> listar(@PageableDefault(page = 0, size = 10) Pageable pageable, @RequestParam(defaultValue = "") String nome) {
         Page<EscolaListarResponseDTO> response = escolaService.listar(pageable, nome);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    // OK
+    @GetMapping("/select")
+    public ResponseEntity<List<EscolaSelectResponseDTO>> listarSelect() {
+        List<EscolaSelectResponseDTO> response = escolaService.listarSelect();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     @GetMapping("/{idEscola}")
     public ResponseEntity<EscolaResponseDTO> buscarPorId(@PathVariable Integer idEscola) {
         EscolaResponseDTO response = escolaService.buscarPorId(idEscola);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    // OK
     @DeleteMapping("/{idEscola}")
     public ResponseEntity<Void> excluirPorId(@PathVariable Integer idEscola) {
         escolaService.excluirPorId(idEscola);

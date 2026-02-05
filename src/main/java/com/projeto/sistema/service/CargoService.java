@@ -1,5 +1,6 @@
 package com.projeto.sistema.service;
 
+import com.projeto.sistema.dto.response.CargoSelectResponseDTO;
 import com.projeto.sistema.exceptions.RecursoNaoEncontradoException;
 import com.projeto.sistema.exceptions.RegraNegocioException;
 import com.projeto.sistema.dto.request.CargoRequestDTO;
@@ -56,10 +57,10 @@ public class CargoService {
     }
 
     @Transactional(readOnly = true)
-    public List<CargoListarResponseDTO> listar() {
+    public List<CargoSelectResponseDTO> listarSelect() {
         return cargoRepository.findAll()
                 .stream()
-                .map(cargoMapper::toListarResponseDTO)
+                .map(cargoMapper::toSelectResponseDTO)
                 .toList();
     }
 

@@ -2,6 +2,7 @@ package com.projeto.sistema.mapper;
 
 import com.projeto.sistema.dto.response.CargoListarResponseDTO;
 import com.projeto.sistema.dto.response.CargoResponseDTO;
+import com.projeto.sistema.dto.response.CargoSelectResponseDTO;
 import com.projeto.sistema.model.Cargo;
 import com.projeto.sistema.model.Contrato;
 import com.projeto.sistema.model.VinculoContratoCargo;
@@ -37,6 +38,15 @@ public class CargoMapper {
         if (cargo == null) return null;
 
         return new CargoListarResponseDTO(
+                cargo.getIdCargo(),
+                cargo.getFuncao()
+        );
+    }
+
+    public CargoSelectResponseDTO toSelectResponseDTO(Cargo cargo) {
+        if (cargo == null) return null;
+
+        return new CargoSelectResponseDTO(
                 cargo.getIdCargo(),
                 cargo.getFuncao()
         );

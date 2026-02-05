@@ -57,6 +57,12 @@ public class MatriculaController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @GetMapping("/matriculas/select")
+    public ResponseEntity<List<MatriculaSelectResponseDTO>> listarSelect() {
+        List<MatriculaSelectResponseDTO> response = matriculaService.listarSelect();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     @GetMapping("/{idAdolescente}/matriculas/{idMatricula}")
     public ResponseEntity<MatriculaResponseDTO> buscarPorId(@PathVariable Integer idAdolescente, @PathVariable Integer idMatricula) {
         MatriculaResponseDTO response = matriculaService.buscarPorId(idAdolescente, idMatricula);

@@ -109,6 +109,16 @@ public class MatriculaMapper {
         );
     }
 
+    public MatriculaSelectResponseDTO toSelectResponseDTO(Matricula matricula) {
+        if (matricula == null) return null;
+
+        return new MatriculaSelectResponseDTO(
+                matricula.getIdMatricula(),
+                matricula.getNumMatricula(),
+                matricula.getAdolescente().getNome()
+        );
+    }
+
     public AdolescenteEntrevistaResponseDTO toEntrevistaResponseDTO(Matricula matricula, Entrevista entrevista) {
         if (matricula == null) return null;
 

@@ -2,6 +2,7 @@ package com.projeto.sistema.mapper;
 
 import com.projeto.sistema.dto.response.EscolaListarResponseDTO;
 import com.projeto.sistema.dto.response.EscolaResponseDTO;
+import com.projeto.sistema.dto.response.EscolaSelectResponseDTO;
 import com.projeto.sistema.model.Escola;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
@@ -25,9 +26,20 @@ public class EscolaMapper {
     }
 
     public EscolaListarResponseDTO toListarResponseDTO(Escola escola) {
+        if (escola == null) return null;
+
         return new EscolaListarResponseDTO(
-                escola != null ? escola.getIdEscola() : null,
-                escola != null ? escola.getNome() : null
+                escola.getIdEscola(),
+                escola.getNome()
+        );
+    }
+
+    public EscolaSelectResponseDTO toSelectResponseDTO(Escola escola) {
+        if (escola == null) return null;
+
+        return new EscolaSelectResponseDTO(
+                escola.getIdEscola(),
+                escola.getNome()
         );
     }
 }

@@ -5,6 +5,7 @@ import com.projeto.sistema.dto.request.EmpresaRequestDTO;
 import com.projeto.sistema.dto.response.EmpresaCriarResponseDTO;
 import com.projeto.sistema.dto.response.EmpresaListarEntrevistaResponseDTO;
 import com.projeto.sistema.dto.response.EmpresaListarResponseDTO;
+import com.projeto.sistema.dto.response.EmpresaSelectResponseDTO;
 import com.projeto.sistema.service.EmpresaService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -44,6 +45,13 @@ public class EmpresaController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @GetMapping("/select")
+    public ResponseEntity<List<EmpresaSelectResponseDTO>> listarSelect() {
+        List<EmpresaSelectResponseDTO> response = empresaService.listarSelect();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    //Verificar a necessidade do endpoint
     @GetMapping("/entrevistas")
     public ResponseEntity<List<EmpresaListarEntrevistaResponseDTO>> listarEntrevistas() {
         List<EmpresaListarEntrevistaResponseDTO> response = empresaService.listarEntrevistas();

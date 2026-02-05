@@ -3,6 +3,7 @@ package com.projeto.sistema.controller;
 import com.projeto.sistema.dto.request.CargoRequestDTO;
 import com.projeto.sistema.dto.response.CargoListarResponseDTO;
 import com.projeto.sistema.dto.response.CargoResponseDTO;
+import com.projeto.sistema.dto.response.CargoSelectResponseDTO;
 import com.projeto.sistema.service.CargoService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -39,6 +40,12 @@ public class CargoController {
     @GetMapping
     public ResponseEntity<Page<CargoListarResponseDTO>> listar(@PageableDefault(page = 0, size = 10) Pageable pageable, @RequestParam(defaultValue = "") String nome) {
         Page<CargoListarResponseDTO> response = cargoService.listar(pageable, nome);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/select")
+    public ResponseEntity<List<CargoSelectResponseDTO>> listarSelect() {
+        List<CargoSelectResponseDTO> response = cargoService.listarSelect();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
