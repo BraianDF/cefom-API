@@ -1,6 +1,7 @@
 package com.projeto.sistema.service;
 
 import com.projeto.sistema.dto.response.EmpresaListarEntrevistaResponseDTO;
+import com.projeto.sistema.dto.response.EmpresaSelectResponseDTO;
 import com.projeto.sistema.enums.TitularContato;
 import com.projeto.sistema.exceptions.RecursoNaoEncontradoException;
 import com.projeto.sistema.exceptions.RegraNegocioException;
@@ -169,10 +170,10 @@ public class EmpresaService {
     }
 
     @Transactional(readOnly = true)
-    public List<EmpresaListarResponseDTO> listar() {
+    public List<EmpresaSelectResponseDTO> listarSelect() {
         return empresaRepository.findAll()
                 .stream()
-                .map(empresaMapper::toListarResponseDTO)
+                .map(empresaMapper::toSelectResponseDTO)
                 .toList();
     }
 
@@ -186,6 +187,7 @@ public class EmpresaService {
                 .map(empresaMapper::toListarResponseDTO);
     }
 
+    //Verificar a necessidade do método
     @Transactional(readOnly = true)
     public List<EmpresaListarEntrevistaResponseDTO> listarEntrevistas() {
         return empresaRepository.findAll()

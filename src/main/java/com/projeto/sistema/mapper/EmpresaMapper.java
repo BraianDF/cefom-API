@@ -1,11 +1,14 @@
 package com.projeto.sistema.mapper;
 
 import com.projeto.sistema.dto.response.*;
+import com.projeto.sistema.enums.TipoResponsabilidade;
 import com.projeto.sistema.model.Empresa;
 import com.projeto.sistema.model.Entrevista;
+import com.projeto.sistema.model.ResponsavelEmpresa;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 
 @Component
 public class EmpresaMapper {
@@ -64,7 +67,25 @@ public class EmpresaMapper {
         );
     }
 
-        public EmpresaListarEntrevistaResponseDTO toListarEntrevistaResponseDTO(Empresa empresa) {
+    public EmpresaSelectResponseDTO toSelectResponseDTO(Empresa empresa) {
+        if (empresa == null) return null;
+
+        ResponsavelEmpresa responsavelEntrevistas = empresa.getResponsaveis()
+                .stream()
+                .filter(f -> f.getResponsabilidade() == TipoResponsabilidade.ENTREVISTAS)
+                .filter(f -> f.estaValidoEm(LocalDate.now()))
+                .max(Comparator.comparing(ResponsavelEmpresa::getDataInicio))
+                .orElse(null);
+
+        return new EmpresaSelectResponseDTO(
+                empresa.getIdEmpresa(),
+                empresa.getApelido(),
+                responsavelEntrevistas.getNome(),
+                empresa.getContratacaoPadrao()
+        );
+    }
+
+    public EmpresaListarEntrevistaResponseDTO toListarEntrevistaResponseDTO(Empresa empresa) {
         return new EmpresaListarEntrevistaResponseDTO(
                 empresa != null ? empresa.getIdEmpresa() : null,
                 empresa != null ? empresa.getApelido() : null,

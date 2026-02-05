@@ -3,6 +3,7 @@ package com.projeto.sistema.service;
 import com.projeto.sistema.dto.request.EscolaRequestDTO;
 import com.projeto.sistema.dto.response.EscolaResponseDTO;
 import com.projeto.sistema.dto.response.EscolaListarResponseDTO;
+import com.projeto.sistema.dto.response.EscolaSelectResponseDTO;
 import com.projeto.sistema.exceptions.RecursoNaoEncontradoException;
 import com.projeto.sistema.exceptions.RegraNegocioException;
 import com.projeto.sistema.mapper.EscolaMapper;
@@ -79,10 +80,10 @@ public class EscolaService {
     }
 
     @Transactional(readOnly = true)
-    public List<EscolaListarResponseDTO> listar() {
+    public List<EscolaSelectResponseDTO> listarSelect() {
         return escolaRepository.findAll()
                 .stream()
-                .map(escolaMapper::toListarResponseDTO)
+                .map(escolaMapper::toSelectResponseDTO)
                 .toList();
     }
 
