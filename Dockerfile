@@ -14,7 +14,7 @@ WORKDIR /app
 COPY --from=build /app/target/*-SNAPSHOT.jar app.jar
 
 RUN mkdir /app/banco
-COPY banco/bdsistema.mv.db /app/banco
+COPY banco/bdcefom.mv.db /app/banco
 
 RUN mkdir /app/uploads
 COPY uploads /app/uploads
