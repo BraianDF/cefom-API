@@ -7,6 +7,7 @@ import com.projeto.cefom.dto.response.AdolescenteEntrevistaResponseDTO;
 import com.projeto.cefom.dto.response.AdolescenteMatriculaEntrevistaResponseDTO;
 import com.projeto.cefom.model.Entrevista;
 import com.projeto.cefom.model.VinculoEntrevistaMatricula;
+import com.projeto.cefom.novos.dto.response.AlunoMatriculaResponseDTO;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
@@ -161,6 +162,18 @@ public class MatriculaMapper {
                 adolescente.getPai(),
                 adolescente.getIdadeEm(data),
                 adolescente.getSituacaoEm(data)
+        );
+    }
+
+    public AlunoMatriculaResponseDTO toAlunoResponse(Matricula matricula, LocalDate data) {
+        if (matricula == null) return null;
+        return new AlunoMatriculaResponseDTO(
+                matricula.getAdolescente().getIdAdolescente(),
+                matricula.getIdMatricula(),
+                matricula.getNumMatricula(),
+                matricula.getAdolescente().getNome(),
+                matricula.getAdolescente().getIdadeEm(data),
+                matricula.getAdolescente().getSituacaoEm(data)
         );
     }
 

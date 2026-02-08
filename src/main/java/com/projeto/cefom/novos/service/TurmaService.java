@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -33,7 +34,7 @@ public class TurmaService {
             throw new RegraNegocioException("Turma já cadastrada.");
         }
         Turma turma = salvar(criarTurma(dto));
-        return turmaMapper.toResponseDTO(turma);
+        return turmaMapper.toResponseDTO(turma, LocalDate.now());
     }
 
     @Transactional
@@ -43,13 +44,13 @@ public class TurmaService {
         }
         Turma turma = buscarTurma(idTurma);
         turma = salvar(atualizarTurma(dto, turma));
-        return turmaMapper.toResponseDTO(turma);
+        return turmaMapper.toResponseDTO(turma, LocalDate.now());
     }
 
     @Transactional(readOnly = true)
     public TurmaResponseDTO buscarPorId(Integer idTurma) {
         Turma turma = buscarTurma(idTurma);
-        return turmaMapper.toResponseDTO(turma);
+        return turmaMapper.toResponseDTO(turma, LocalDate.now());
     }
 
     @Transactional(readOnly = true)

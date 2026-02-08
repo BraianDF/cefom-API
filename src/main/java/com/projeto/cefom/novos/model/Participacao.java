@@ -55,4 +55,9 @@ public class Participacao extends Vigencia implements Serializable {
     public void setTurma(Turma turma) {
         this.turma = turma;
     }
+
+    public boolean participaEm(LocalDate data) {
+        return estaValidoEm(data) &&
+                getAluno().getAdolescente().getSituacaoEm(data)==getTurma().getTipo();
+    }
 }
