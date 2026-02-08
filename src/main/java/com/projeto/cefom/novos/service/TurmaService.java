@@ -3,12 +3,18 @@ package com.projeto.cefom.novos.service;
 import com.projeto.cefom.exceptions.RecursoNaoEncontradoException;
 import com.projeto.cefom.exceptions.RegraNegocioException;
 import com.projeto.cefom.novos.dto.request.TurmaRequestDTO;
+import com.projeto.cefom.novos.dto.response.TurmaListarResponseDTO;
 import com.projeto.cefom.novos.dto.response.TurmaResponseDTO;
+import com.projeto.cefom.novos.dto.response.TurmaSelectResponseDTO;
 import com.projeto.cefom.novos.mapper.TurmaMapper;
 import com.projeto.cefom.novos.model.Turma;
 import com.projeto.cefom.novos.repository.TurmaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class TurmaService {
@@ -31,13 +37,43 @@ public class TurmaService {
     }
 
     @Transactional
-    public TurmaResponseDTO salvar(Integer idTurma, TurmaRequestDTO dto) {
+    public TurmaResponseDTO atualizar(Integer idTurma, TurmaRequestDTO dto) {
         if (turmaRepository.existsByNomeAndIdTurmaNot(dto.nome(), idTurma)) {
             throw new RegraNegocioException("Turma já cadastrada.");
         }
         Turma turma = buscarTurma(idTurma);
         turma = salvar(atualizarTurma(dto, turma));
         return turmaMapper.toResponseDTO(turma);
+    }
+
+    @Transactional(readOnly = true)
+    public TurmaResponseDTO buscarPorId(Integer idTurma) {
+        Turma turma = buscarTurma(idTurma);
+        return turmaMapper.toResponseDTO(turma);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<TurmaListarResponseDTO> listar(Pageable pageable, String nome) {
+        if (nome == null || nome.isBlank()) {
+            return turmaRepository.findAll(pageable)
+                    .map(turmaMapper::toListarResponseDTO);
+        }
+        return turmaRepository.findByNomeContainingIgnoreCase(nome, pageable)
+                .map(turmaMapper::toListarResponseDTO);
+    }
+
+    @Transactional(readOnly = true)
+    public List<TurmaSelectResponseDTO> listarSelect() {
+        return turmaRepository.findAll()
+                .stream()
+                .map(turmaMapper::toSelectResponseDTO)
+                .toList();
+    }
+
+    @Transactional
+    public void excluirPorId(Integer idTurma) {
+        Turma turma = buscarTurma(idTurma);
+        turmaRepository.deleteById(idTurma);
     }
 
     public Turma salvar(Turma turma) {
