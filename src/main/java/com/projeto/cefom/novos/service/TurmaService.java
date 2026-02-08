@@ -2,6 +2,7 @@ package com.projeto.cefom.novos.service;
 
 import com.projeto.cefom.exceptions.RecursoNaoEncontradoException;
 import com.projeto.cefom.exceptions.RegraNegocioException;
+import com.projeto.cefom.novos.dto.request.AlunoParticipacaoRequestDTO;
 import com.projeto.cefom.novos.dto.request.TurmaRequestDTO;
 import com.projeto.cefom.novos.dto.response.TurmaListarResponseDTO;
 import com.projeto.cefom.novos.dto.response.TurmaResponseDTO;
@@ -22,10 +23,12 @@ public class TurmaService {
 
     private final TurmaRepository turmaRepository;
     private final TurmaMapper turmaMapper;
+    private final ParticipacaoService participacaoService;
 
-    public TurmaService(TurmaRepository turmaRepository, TurmaMapper turmaMapper) {
+    public TurmaService(TurmaRepository turmaRepository, TurmaMapper turmaMapper, ParticipacaoService participacaoService) {
         this.turmaRepository = turmaRepository;
         this.turmaMapper = turmaMapper;
+        this.participacaoService = participacaoService;
     }
 
     @Transactional
@@ -75,6 +78,38 @@ public class TurmaService {
     public void excluirPorId(Integer idTurma) {
         Turma turma = buscarTurma(idTurma);
         turmaRepository.deleteById(idTurma);
+    }
+
+    @Transactional
+    public TurmaResponseDTO adicionarAdolescente(Integer idTurma, AlunoParticipacaoRequestDTO dto) {
+        LocalDate dataAdicionar = dto.dataModificacao();
+        if(dataAdicionar == null) {
+            dataAdicionar = LocalDate.now();
+        }
+
+        Turma turma = buscarTurma(idTurma);
+
+        participacaoService.adicionarTurmaAluno(turma, dto.idMatricula(), dataAdicionar);
+
+        turma = salvar(turma);
+
+        return turmaMapper.toResponseDTO(turma, LocalDate.now());
+    }
+
+    @Transactional
+    public TurmaResponseDTO removerAdolescente(Integer idTurma, AlunoParticipacaoRequestDTO dto) {
+        LocalDate dataRemover = dto.dataModificacao();
+        if(dataRemover == null) {
+            dataRemover = LocalDate.now();
+        }
+
+        Turma turma = buscarTurma(idTurma);
+
+        participacaoService.removerTurmaAluno(turma, dto.idMatricula(), dataRemover);
+
+        turma = salvar(turma);
+
+        return turmaMapper.toResponseDTO(turma, LocalDate.now());
     }
 
     public Turma salvar(Turma turma) {
