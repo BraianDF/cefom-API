@@ -49,4 +49,14 @@ public class SalaAula implements Serializable {
     public void setAulas(List<Aula> aulas) {
         this.aulas = aulas;
     }
+
+    public void adicionarAula(Aula aula) {
+        aulas.add(aula);
+        aula.setSala(this);
+    }
+
+    public void removerAula(Aula aula) {
+        aulas.remove(aula);
+        aula.setSala(null);
+    }
 }

@@ -49,4 +49,14 @@ public class Professor implements Serializable {
     public void setDisciplinas(List<Lecionamento> disciplinas) {
         this.disciplinas = disciplinas;
     }
+
+    public void adicionarDisciplina(Lecionamento lecionamento) {
+        disciplinas.add(lecionamento);
+        lecionamento.setProfessor(this);
+    }
+
+    public void removerDisciplina(Lecionamento lecionamento) {
+        disciplinas.remove(lecionamento);
+        lecionamento.setProfessor(null);
+    }
 }

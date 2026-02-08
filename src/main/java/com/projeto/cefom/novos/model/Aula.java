@@ -100,4 +100,14 @@ public class Aula extends Vigencia implements Serializable {
     public void setPresencas(List<Presenca> presencas) {
         this.presencas = presencas;
     }
+
+    public void adicionarPresenca(Presenca presenca) {
+        presencas.add(presenca);
+        presenca.setAula(this);
+    }
+
+    public void removerPresenca(Presenca presenca) {
+        presencas.remove(presenca);
+        presenca.setAula(null);
+    }
 }

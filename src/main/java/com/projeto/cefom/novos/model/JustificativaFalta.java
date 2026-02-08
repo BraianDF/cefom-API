@@ -87,4 +87,24 @@ public class JustificativaFalta extends Vigencia implements Serializable {
     public void setFaltasTrabalhos(List<FaltaTrabalho> faltasTrabalhos) {
         this.faltasTrabalhos = faltasTrabalhos;
     }
+
+    public void adicionarPresenca(Presenca presenca) {
+        presencas.add(presenca);
+        presenca.setJustificativa(this);
+    }
+
+    public void removerPresenca(Presenca presenca) {
+        presencas.remove(presenca);
+        presenca.setJustificativa(null);
+    }
+
+    public void adicionarFaltaTrabalho(FaltaTrabalho faltaTrabalho) {
+        faltasTrabalhos.add(faltaTrabalho);
+        faltaTrabalho.setJustificativa(this);
+    }
+
+    public void removerFaltaTrabalho(FaltaTrabalho faltaTrabalho) {
+        faltasTrabalhos.remove(faltaTrabalho);
+        faltaTrabalho.setJustificativa(null);
+    }
 }

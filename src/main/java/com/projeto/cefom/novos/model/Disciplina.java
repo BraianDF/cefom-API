@@ -49,4 +49,14 @@ public class Disciplina implements Serializable {
     public void setProfessores(List<Lecionamento> professores) {
         this.professores = professores;
     }
+
+    public void adicionarProfessor(Lecionamento lecionamento) {
+        professores.add(lecionamento);
+        lecionamento.setDisciplina(this);
+    }
+
+    public void removerProfessor(Lecionamento lecionamento) {
+        professores.remove(lecionamento);
+        lecionamento.setDisciplina(null);
+    }
 }

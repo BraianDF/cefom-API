@@ -66,4 +66,14 @@ public class Lecionamento extends Vigencia implements Serializable {
     public void setAulas(List<Aula> aulas) {
         this.aulas = aulas;
     }
+
+    public void adicionarAula(Aula aula) {
+        aulas.add(aula);
+        aula.setLecionamento(this);
+    }
+
+    public void removerAula(Aula aula) {
+        aulas.remove(aula);
+        aula.setLecionamento(null);
+    }
 }
