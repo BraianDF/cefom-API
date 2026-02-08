@@ -1,10 +1,5 @@
 package com.projeto.cefom.novos.controller;
 
-import com.projeto.cefom.dto.request.EntrevistaRequestDTO;
-import com.projeto.cefom.dto.request.VinculoEntrevistaMatriculaRequestDTO;
-import com.projeto.cefom.dto.response.EntrevistaListarResponseDTO;
-import com.projeto.cefom.dto.response.EntrevistaResponseDTO;
-import com.projeto.cefom.dto.response.EscolaSelectResponseDTO;
 import com.projeto.cefom.novos.dto.request.AlunoParticipacaoRequestDTO;
 import com.projeto.cefom.novos.dto.request.TurmaRequestDTO;
 import com.projeto.cefom.novos.dto.response.TurmaListarResponseDTO;
