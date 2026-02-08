@@ -1,11 +1,8 @@
 package com.projeto.cefom.novos.controller;
 
 import com.projeto.cefom.novos.dto.request.DisciplinaRequestDTO;
-import com.projeto.cefom.novos.dto.request.SalaAulaRequestDTO;
 import com.projeto.cefom.novos.dto.response.DisciplinaResponseDTO;
-import com.projeto.cefom.novos.dto.response.SalaAulaResponseDTO;
 import com.projeto.cefom.novos.service.DisciplinaService;
-import com.projeto.cefom.novos.service.SalaAulaService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
