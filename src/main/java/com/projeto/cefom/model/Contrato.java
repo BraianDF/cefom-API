@@ -3,6 +3,7 @@ package com.projeto.cefom.model;
 import com.projeto.cefom.enums.DesligamentoMatricula;
 import com.projeto.cefom.enums.SituacaoContrato;
 import com.projeto.cefom.enums.TipoContratacao;
+import com.projeto.cefom.novos.model.FaltaTrabalho;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -45,6 +46,8 @@ public class Contrato extends Vigencia implements Serializable {
     private List<Salario> salarios = new ArrayList<>();
     @OneToMany(mappedBy = "contrato", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<JornadaTrabalho> jornadasTrabalho = new ArrayList<>();
+    @OneToMany(mappedBy = "contrato", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FaltaTrabalho> faltasTrabalhos = new ArrayList<>();
 
     public Contrato() {
     }
@@ -224,6 +227,14 @@ public class Contrato extends Vigencia implements Serializable {
         this.efetivado = efetivado;
     }
 
+    public List<FaltaTrabalho> getFaltasTrabalhos() {
+        return faltasTrabalhos;
+    }
+
+    public void setFaltasTrabalhos(List<FaltaTrabalho> faltasTrabalhos) {
+        this.faltasTrabalhos = faltasTrabalhos;
+    }
+
     public void adicionarCargo(VinculoContratoCargo cargo) {
         cargos.add(cargo);
         cargo.setContrato(this);
@@ -262,5 +273,15 @@ public class Contrato extends Vigencia implements Serializable {
     public void removerJornadaTrabalho(JornadaTrabalho jornadaTrabalho) {
         jornadasTrabalho.remove(jornadaTrabalho);
         jornadaTrabalho.setContrato(null);
+    }
+
+    public void adicionarFaltaTrabalho(FaltaTrabalho faltaTrabalho) {
+        faltasTrabalhos.add(faltaTrabalho);
+        faltaTrabalho.setContrato(this);
+    }
+
+    public void removerFaltaTrabalho(FaltaTrabalho faltaTrabalho) {
+        faltasTrabalhos.remove(faltaTrabalho);
+        faltaTrabalho.setContrato(null);
     }
 }

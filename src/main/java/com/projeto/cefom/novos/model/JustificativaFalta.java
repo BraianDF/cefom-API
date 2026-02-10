@@ -1,5 +1,6 @@
 package com.projeto.cefom.novos.model;
 
+import com.projeto.cefom.model.Matricula;
 import com.projeto.cefom.model.Usuario;
 import com.projeto.cefom.model.Vigencia;
 import com.projeto.cefom.novos.enums.MotivoJustificativa;
@@ -24,6 +25,9 @@ public class JustificativaFalta extends Vigencia implements Serializable {
     private Integer qtdeDias;
     @Column(name = "observacao", length = 100)
     private String observacao;
+    @ManyToOne
+    @JoinColumn(name = "idAluno")
+    private Matricula aluno;
     @OneToMany(mappedBy = "justificativa", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Presenca> presencas = new ArrayList<>();
     @OneToMany(mappedBy = "justificativa", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -32,12 +36,13 @@ public class JustificativaFalta extends Vigencia implements Serializable {
     public JustificativaFalta() {
     }
 
-    public JustificativaFalta(LocalDate dataInicio, LocalDate dataFim, Usuario responsavelInicio, Usuario responsavelFim, Integer idJustificativaFalta, MotivoJustificativa motivo, Integer qtdeDias, String observacao) {
+    public JustificativaFalta(LocalDate dataInicio, LocalDate dataFim, Usuario responsavelInicio, Usuario responsavelFim, Integer idJustificativaFalta, MotivoJustificativa motivo, Integer qtdeDias, String observacao, Matricula aluno) {
         super(dataInicio, dataFim, responsavelInicio, responsavelFim);
         this.idJustificativaFalta = idJustificativaFalta;
         this.motivo = motivo;
         this.qtdeDias = qtdeDias;
         this.observacao = observacao;
+        this.aluno = aluno;
     }
 
     public Integer getIdJustificativaFalta() {
@@ -86,6 +91,14 @@ public class JustificativaFalta extends Vigencia implements Serializable {
 
     public void setFaltasTrabalhos(List<FaltaTrabalho> faltasTrabalhos) {
         this.faltasTrabalhos = faltasTrabalhos;
+    }
+
+    public Matricula getAluno() {
+        return aluno;
+    }
+
+    public void setAluno(Matricula aluno) {
+        this.aluno = aluno;
     }
 
     public void adicionarPresenca(Presenca presenca) {
