@@ -1,7 +1,7 @@
 package com.projeto.cefom.dto.response;
 
 import com.projeto.cefom.enums.FinalizacaoInscricao;
-import com.projeto.cefom.image.UploadFotoAdolescenteResponseDTO;
+import com.projeto.cefom.image.dto.UploadFotoAdolescenteResponseDTO;
 
 import java.time.LocalDate;
 

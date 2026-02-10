@@ -2,7 +2,7 @@ package com.projeto.cefom.model;
 
 import com.projeto.cefom.enums.DesligamentoMatricula;
 import com.projeto.cefom.enums.SituacaoMatricula;
-import com.projeto.cefom.image.FotoAdolescente;
+import com.projeto.cefom.image.model.FotoAdolescente;
 import com.projeto.cefom.novos.model.Participacao;
 import com.projeto.cefom.novos.model.Presenca;
 import jakarta.persistence.*;

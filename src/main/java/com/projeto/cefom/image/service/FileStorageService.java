@@ -1,4 +1,4 @@
-package com.projeto.cefom.image;
+package com.projeto.cefom.image.service;
 
 import com.projeto.cefom.configuration.FileStoregeConfig;
 import com.projeto.cefom.exceptions.FileNaoEncontradoException;

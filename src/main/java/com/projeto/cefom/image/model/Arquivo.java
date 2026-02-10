@@ -1,4 +1,4 @@
-package com.projeto.cefom.image;
+package com.projeto.cefom.image.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;

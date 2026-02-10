@@ -1,5 +1,7 @@
-package com.projeto.cefom.image;
+package com.projeto.cefom.image.controller;
 
+import com.projeto.cefom.image.dto.UploadFileResponseDTO;
+import com.projeto.cefom.image.service.FileStorageService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

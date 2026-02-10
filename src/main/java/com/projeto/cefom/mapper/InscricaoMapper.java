@@ -1,7 +1,7 @@
 package com.projeto.cefom.mapper;
 
 import com.projeto.cefom.dto.response.*;
-import com.projeto.cefom.image.FotoAdolescenteMapper;
+import com.projeto.cefom.image.mapper.FotoAdolescenteMapper;
 import com.projeto.cefom.model.*;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;

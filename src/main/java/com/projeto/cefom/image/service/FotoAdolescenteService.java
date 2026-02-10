@@ -1,5 +1,7 @@
-package com.projeto.cefom.image;
+package com.projeto.cefom.image.service;
 
+import com.projeto.cefom.image.repository.FotoAdolescenteRepository;
+import com.projeto.cefom.image.model.FotoAdolescente;
 import com.projeto.cefom.model.Inscricao;
 import com.projeto.cefom.model.Matricula;
 import org.springframework.stereotype.Service;

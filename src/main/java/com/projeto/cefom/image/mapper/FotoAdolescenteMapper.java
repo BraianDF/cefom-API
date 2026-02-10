@@ -1,6 +1,8 @@
-package com.projeto.cefom.image;
+package com.projeto.cefom.image.mapper;
 
 import com.projeto.cefom.enums.Situacao;
+import com.projeto.cefom.image.dto.UploadFotoAdolescenteResponseDTO;
+import com.projeto.cefom.image.model.FotoAdolescente;
 import com.projeto.cefom.model.Adolescente;
 import com.projeto.cefom.model.Inscricao;
 import com.projeto.cefom.model.Matricula;

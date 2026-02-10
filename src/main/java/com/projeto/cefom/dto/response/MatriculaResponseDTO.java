@@ -2,7 +2,7 @@ package com.projeto.cefom.dto.response;
 
 import com.projeto.cefom.enums.DesligamentoMatricula;
 import com.projeto.cefom.enums.SituacaoMatricula;
-import com.projeto.cefom.image.UploadFotoAdolescenteResponseDTO;
+import com.projeto.cefom.image.dto.UploadFotoAdolescenteResponseDTO;
 
 import java.time.LocalDate;
 

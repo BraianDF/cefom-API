@@ -1,5 +1,6 @@
-package com.projeto.cefom.image;
+package com.projeto.cefom.image.model;
 
+import com.projeto.cefom.image.model.Arquivo;
 import com.projeto.cefom.model.Inscricao;
 import com.projeto.cefom.model.Matricula;
 import jakarta.persistence.*;
