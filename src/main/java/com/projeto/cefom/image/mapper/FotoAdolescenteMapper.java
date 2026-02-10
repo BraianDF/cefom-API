@@ -16,7 +16,7 @@ import java.util.function.Predicate;
 @Component
 public class FotoAdolescenteMapper {
 
-    private static final UploadFotoAdolescenteResponseDTO semFoto = new UploadFotoAdolescenteResponseDTO(null,"SemFoto.jpg","image/jpeg",11461,"http://localhost:8081/sistema/files/download/SemFoto.jpg");
+    private static final UploadFotoAdolescenteResponseDTO semFoto = new UploadFotoAdolescenteResponseDTO(null,"SemFoto.jpg","image/jpeg",11461,"http://localhost:8081/api/files/download/SemFoto.jpg");
 
     public UploadFotoAdolescenteResponseDTO toResponseDTO(Adolescente adolescente, LocalDate data) {
         if (adolescente == null) return null;

@@ -55,16 +55,11 @@ public class FotoAdolescenteService {
         String fileName = fileStorageService.storeFile(file);
         String fileType = file.getContentType();
         long fileSize = file.getSize();
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/files/download/")
-                .path(fileName)
-                .toUriString();
 
         FotoAdolescente fotoNova = new FotoAdolescente();
         fotoNova.setNomeArquivo(fileName);
         fotoNova.setTipoArquivo(fileType);
         fotoNova.setTamanhoArquivo(fileSize);
-        fotoNova.setCaminhoArquivo(fileDownloadUri);
 
         matricula.adicionarFoto(fotoNova);
     }

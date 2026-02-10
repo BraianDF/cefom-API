@@ -4,6 +4,7 @@ import com.projeto.cefom.image.model.Arquivo;
 import com.projeto.cefom.model.Inscricao;
 import com.projeto.cefom.model.Matricula;
 import jakarta.persistence.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.Serializable;
 
@@ -53,5 +54,14 @@ public class FotoAdolescente extends Arquivo implements Serializable {
 
     public void setInscricao(Inscricao inscricao) {
         this.inscricao = inscricao;
+    }
+
+    @Override
+    public String getCaminhoArquivo() {
+        return ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path("/files/download/")
+                .path(getNomeArquivo())
+                .toUriString();
     }
 }
