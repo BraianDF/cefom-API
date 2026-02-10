@@ -1,5 +1,6 @@
 package com.projeto.cefom.novos.model;
 
+import com.projeto.cefom.exceptions.RegraNegocioException;
 import com.projeto.cefom.model.Matricula;
 import com.projeto.cefom.model.Usuario;
 import com.projeto.cefom.model.Vigencia;
@@ -119,5 +120,12 @@ public class JustificativaFalta extends Vigencia implements Serializable {
     public void removerFaltaTrabalho(FaltaTrabalho faltaTrabalho) {
         faltasTrabalhos.remove(faltaTrabalho);
         faltaTrabalho.setJustificativa(null);
+    }
+
+    public void setDataFim(LocalDate dataInicio, Integer qtdeDias) {
+        if (qtdeDias == null || qtdeDias <= 0) {
+            throw new IllegalArgumentException("Quantidade de dias deve ser maior que zero");
+        }
+        super.setDataFim(dataInicio.plusDays(qtdeDias-1));
     }
 }
