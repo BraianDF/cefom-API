@@ -1,6 +1,6 @@
 package com.projeto.cefom.dto.response;
 
-import com.projeto.cefom.image.UploadFotoAdolescenteResponseDTO;
+import com.projeto.cefom.image.dto.UploadFotoAdolescenteResponseDTO;
 
 public record AdolescenteResponseDTO (
         AdolescenteMatriculaResponseDTO adolescente,

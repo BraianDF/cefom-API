@@ -1,4 +1,4 @@
-package com.projeto.cefom.image;
+package com.projeto.cefom.image.model;
 
 import com.projeto.cefom.model.Inscricao;
 import com.projeto.cefom.model.Matricula;
@@ -53,4 +53,5 @@ public class FotoAdolescente extends Arquivo implements Serializable {
     public void setInscricao(Inscricao inscricao) {
         this.inscricao = inscricao;
     }
+
 }

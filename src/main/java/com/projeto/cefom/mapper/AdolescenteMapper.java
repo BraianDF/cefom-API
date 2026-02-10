@@ -4,7 +4,7 @@ import com.projeto.cefom.dto.response.AdolescenteInscricaoResponseDTO;
 import com.projeto.cefom.dto.response.AdolescenteListarResponseDTO;
 import com.projeto.cefom.dto.response.AdolescenteMatriculaResponseDTO;
 import com.projeto.cefom.dto.response.AdolescenteResponseDTO;
-import com.projeto.cefom.image.FotoAdolescenteMapper;
+import com.projeto.cefom.image.mapper.FotoAdolescenteMapper;
 import com.projeto.cefom.model.Adolescente;
 import com.projeto.cefom.model.Inscricao;
 import com.projeto.cefom.model.Matricula;

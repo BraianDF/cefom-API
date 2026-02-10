@@ -1,5 +1,7 @@
-package com.projeto.cefom.image;
+package com.projeto.cefom.image.service;
 
+import com.projeto.cefom.image.repository.FotoAdolescenteRepository;
+import com.projeto.cefom.image.model.FotoAdolescente;
 import com.projeto.cefom.model.Inscricao;
 import com.projeto.cefom.model.Matricula;
 import org.springframework.stereotype.Service;
@@ -53,16 +55,11 @@ public class FotoAdolescenteService {
         String fileName = fileStorageService.storeFile(file);
         String fileType = file.getContentType();
         long fileSize = file.getSize();
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/files/download/")
-                .path(fileName)
-                .toUriString();
 
         FotoAdolescente fotoNova = new FotoAdolescente();
         fotoNova.setNomeArquivo(fileName);
         fotoNova.setTipoArquivo(fileType);
         fotoNova.setTamanhoArquivo(fileSize);
-        fotoNova.setCaminhoArquivo(fileDownloadUri);
 
         matricula.adicionarFoto(fotoNova);
     }
