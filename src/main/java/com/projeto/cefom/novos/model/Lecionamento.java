@@ -1,17 +1,13 @@
 package com.projeto.cefom.novos.model;
 
-import com.projeto.cefom.model.Usuario;
-import com.projeto.cefom.model.Vigencia;
 import jakarta.persistence.*;
-
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "lecionamentos")
-public class Lecionamento extends Vigencia implements Serializable {
+public class Lecionamento implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -28,8 +24,7 @@ public class Lecionamento extends Vigencia implements Serializable {
     public Lecionamento() {
     }
 
-    public Lecionamento(LocalDate dataInicio, LocalDate dataFim, Usuario responsavelInicio, Usuario responsavelFim, Integer idLecionamento, Professor professor, Disciplina disciplina) {
-        super(dataInicio, dataFim, responsavelInicio, responsavelFim);
+    public Lecionamento(Integer idLecionamento, Professor professor, Disciplina disciplina) {
         this.idLecionamento = idLecionamento;
         this.professor = professor;
         this.disciplina = disciplina;

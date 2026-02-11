@@ -31,11 +31,13 @@ public class Aula extends Vigencia implements Serializable {
     private Turma turma;
     @OneToMany(mappedBy = "aula", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Presenca> presencas = new ArrayList<>();
+    @Transient
+    private Boolean chamadaRealizada;
 
     public Aula() {
     }
 
-    public Aula(LocalDate dataInicio, LocalDate dataFim, Usuario responsavelInicio, Usuario responsavelFim, Integer idAula, LocalTime horarioInicio, LocalTime horarioFim, Lecionamento lecionamento, SalaAula sala, Turma turma) {
+    public Aula(LocalDate dataInicio, LocalDate dataFim, Usuario responsavelInicio, Usuario responsavelFim, Integer idAula, LocalTime horarioInicio, LocalTime horarioFim, Lecionamento lecionamento, SalaAula sala, Turma turma, Boolean chamadaRealizada) {
         super(dataInicio, dataFim, responsavelInicio, responsavelFim);
         this.idAula = idAula;
         this.horarioInicio = horarioInicio;
@@ -43,6 +45,7 @@ public class Aula extends Vigencia implements Serializable {
         this.lecionamento = lecionamento;
         this.sala = sala;
         this.turma = turma;
+        this.chamadaRealizada = chamadaRealizada;
     }
 
     public Integer getIdAula() {
@@ -99,6 +102,14 @@ public class Aula extends Vigencia implements Serializable {
 
     public void setPresencas(List<Presenca> presencas) {
         this.presencas = presencas;
+    }
+
+    public Boolean getChamadaRealizada() {
+        return presencas != null && !presencas.isEmpty();
+    }
+
+    public void setChamadaRealizada(Boolean chamadaRealizada) {
+        this.chamadaRealizada = chamadaRealizada;
     }
 
     public void adicionarPresenca(Presenca presenca) {
