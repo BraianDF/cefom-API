@@ -12,6 +12,8 @@ public class Presenca implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer idPresenca;
+    @Column(name = "presente")
+    private Boolean presente;
     @Column(name = "avaliacao", nullable = false)
     private Integer avaliacao; //(0 a 3)
     @Column(name = "observacao", length = 100)
@@ -31,8 +33,9 @@ public class Presenca implements Serializable {
     public Presenca() {
     }
 
-    public Presenca(Integer idPresenca, Integer avaliacao, String observacao, Aula aula, Matricula aluno, JustificativaFalta justificativa, Boolean justificada) {
+    public Presenca(Integer idPresenca, Boolean presente, Integer avaliacao, String observacao, Aula aula, Matricula aluno, JustificativaFalta justificativa, Boolean justificada) {
         this.idPresenca = idPresenca;
+        this.presente = presente;
         this.avaliacao = avaliacao;
         this.observacao = observacao;
         this.aula = aula;
@@ -95,5 +98,13 @@ public class Presenca implements Serializable {
 
     public void setJustificada(Boolean justificada) {
         this.justificada = justificada;
+    }
+
+    public Boolean getPresente() {
+        return presente;
+    }
+
+    public void setPresente(Boolean presente) {
+        this.presente = presente;
     }
 }
