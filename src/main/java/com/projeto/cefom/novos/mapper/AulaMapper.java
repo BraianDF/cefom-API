@@ -2,8 +2,12 @@ package com.projeto.cefom.novos.mapper;
 
 import com.projeto.cefom.novos.dto.response.AulaListarResponseDTO;
 import com.projeto.cefom.novos.dto.response.AulaResponseDTO;
+import com.projeto.cefom.novos.dto.response.ChamadaResponseDTO;
+import com.projeto.cefom.novos.dto.response.PresencaResponseDTO;
 import com.projeto.cefom.novos.model.Aula;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class AulaMapper {
@@ -46,5 +50,29 @@ public class AulaMapper {
                 aula.getLecionamento().getProfessor().getNome(),
                 aula.getLecionamento().getDisciplina().getNome()
         );
+    }
+
+    public ChamadaResponseDTO toChamadaResponseDTO(Aula aula) {
+        if (aula == null) return null;
+
+        List<PresencaResponseDTO> alunos = aula.getPresencas()
+                .stream()
+                .map(a -> new PresencaResponseDTO(a.getAluno().getIdMatricula(), a.getPresente()))
+                .toList();
+
+        return new ChamadaResponseDTO(alunos);
+    }
+
+    public ChamadaResponseDTO toChamadaListarResponseDTO(Aula aula) {
+        if (aula == null) return null;
+
+        if (aula.getChamadaRealizada()) return toChamadaResponseDTO(aula);
+
+        List<PresencaResponseDTO> alunos = aula.getAlunos()
+                .stream()
+                .map(a -> new PresencaResponseDTO(a.getIdMatricula(), null))
+                .toList();
+
+        return new ChamadaResponseDTO(alunos);
     }
 }

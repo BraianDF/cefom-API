@@ -12,9 +12,9 @@ public class Presenca implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer idPresenca;
-    @Column(name = "presente")
+    @Column(name = "presente", nullable = false)
     private Boolean presente;
-    @Column(name = "avaliacao", nullable = false)
+    @Column(name = "avaliacao")
     private Integer avaliacao; //(0 a 3)
     @Column(name = "observacao", length = 100)
     private String observacao;

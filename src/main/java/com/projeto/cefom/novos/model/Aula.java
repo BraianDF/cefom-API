@@ -1,5 +1,6 @@
 package com.projeto.cefom.novos.model;
 
+import com.projeto.cefom.model.Matricula;
 import com.projeto.cefom.model.Usuario;
 import com.projeto.cefom.model.Vigencia;
 import jakarta.persistence.*;
@@ -110,6 +111,15 @@ public class Aula extends Vigencia implements Serializable {
 
     public void setChamadaRealizada(Boolean chamadaRealizada) {
         this.chamadaRealizada = chamadaRealizada;
+    }
+
+    public List<Matricula> getAlunos() {
+        return this.getTurma()
+                .getAlunos()
+                .stream()
+                .filter(p -> p.participaEm(this.getDataInicio()))
+                .map(Participacao::getAluno)
+                .toList();
     }
 
     public void adicionarPresenca(Presenca presenca) {
