@@ -14,6 +14,7 @@ import com.projeto.cefom.novos.repository.AulaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -36,13 +37,31 @@ public class ChamadaService {
             throw new RegraNegocioException("A Chamada para essa aula ja foi realizada.");
         }
 
-        Set<Integer> idsAlunos = aula.getAlunos().stream().map(Matricula::getIdMatricula).collect(Collectors.toSet());
+        Map<Integer, Boolean> mapaPresencas = dto.alunos().stream()
+                .collect(Collectors.toMap(
+                        aluno -> aluno.idMatricula(),
+                        aluno -> aluno.presente()
+                ));
 
-        dto.alunos().forEach(aluno -> {
-            if (!idsAlunos.contains(aluno.idMatricula())) {
-                throw new RegraNegocioException("Aluno com ID " + aluno.idMatricula() + " não pertence à aula com ID "+aula.getIdAula()+".");
+        Set<Integer> idsAlunosAula = aula.getAlunos().stream()
+                .map(Matricula::getIdMatricula)
+                .collect(Collectors.toSet());
+
+        mapaPresencas.keySet().forEach(id -> {
+            if (!idsAlunosAula.contains(id)) {
+                throw new RegraNegocioException("Aluno com ID " + id + " não pertence à aula com ID " + aula.getIdAula()+".");
             }
-            presencaService.criarPresenca(aluno,aula);
+        });
+
+        idsAlunosAula.forEach(matricula -> {
+
+            Boolean presente = mapaPresencas.get(matricula);
+
+            if (presente == null) {
+                presente = false;
+            }
+
+            presencaService.criarPresenca(matricula, presente, aula);
         });
 
         return aulaMapper.toChamadaResponseDTO(aula);
@@ -55,13 +74,31 @@ public class ChamadaService {
             throw new RegraNegocioException("A Chamada para essa aula ainda não foi realizada.");
         }
 
-        Set<Integer> idsAlunos = aula.getAlunos().stream().map(Matricula::getIdMatricula).collect(Collectors.toSet());
+        Map<Integer, Boolean> mapaPresencas = dto.alunos().stream()
+                .collect(Collectors.toMap(
+                        aluno -> aluno.idMatricula(),
+                        aluno -> aluno.presente()
+                ));
 
-        dto.alunos().forEach(aluno -> {
-            if (!idsAlunos.contains(aluno.idMatricula())) {
-                throw new RegraNegocioException("Aluno com ID " + aluno.idMatricula() + " não pertence à aula com ID "+aula.getIdAula()+".");
+        Set<Integer> idsAlunosAula = aula.getPresencas().stream()
+                .map(p -> p.getAluno().getIdMatricula())
+                .collect(Collectors.toSet());
+
+        mapaPresencas.keySet().forEach(id -> {
+            if (!idsAlunosAula.contains(id)) {
+                throw new RegraNegocioException("Aluno com ID " + id + " não pertence à aula com ID " + aula.getIdAula()+".");
             }
-            presencaService.atualizarPresenca(aluno,aula);
+        });
+
+        idsAlunosAula.forEach(matricula -> {
+
+            Boolean presente = mapaPresencas.get(matricula);
+
+            if (presente == null) {
+                presente = false;
+            }
+
+            presencaService.atualizarPresenca(matricula, presente, aula);
         });
 
         return aulaMapper.toChamadaResponseDTO(aula);

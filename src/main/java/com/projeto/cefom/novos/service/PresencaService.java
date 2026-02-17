@@ -35,15 +35,15 @@ public class PresencaService {
         return presenca;
     }
 
-    public Presenca criarPresenca(PresencaRequestDTO dto, Aula aula) {
-        Matricula aluno = matriculaService.buscarMatricula(dto.idMatricula());
+    public Presenca criarPresenca(Integer idMatricula, boolean presente, Aula aula) {
+        Matricula aluno = matriculaService.buscarMatricula(idMatricula);
 
-        if (presencaRepository.existsByAulaIdAulaAndAlunoIdMatricula(aula.getIdAula(),dto.idMatricula())) {
-            throw new RegraNegocioException("Presença do aluno com ID: "+dto.idMatricula()+" na aula com ID: "+aula.getIdAula()+" ja existe.");
+        if (presencaRepository.existsByAulaIdAulaAndAlunoIdMatricula(aula.getIdAula(),idMatricula)) {
+            throw new RegraNegocioException("Presença do aluno com ID: "+idMatricula+" na aula com ID: "+aula.getIdAula()+" ja existe.");
         }
 
         Presenca presenca = new Presenca();
-        presenca.setPresente(dto.presente());
+        presenca.setPresente(presente);
 
         if (presenca.getIdPresenca() == null) {
             presenca = salvar(presenca);
@@ -55,10 +55,10 @@ public class PresencaService {
         return salvar(presenca);
     }
 
-    public Presenca atualizarPresenca(PresencaRequestDTO dto, Aula aula) {
-        Presenca presenca = buscarPresenca(aula, dto.idMatricula());
-        presenca.setPresente(dto.presente());
-        if (!dto.presente()) presenca.setAvaliacao(0); //Caso falte, avaliação 0
+    public Presenca atualizarPresenca(Integer idMatricula, boolean presente, Aula aula) {
+        Presenca presenca = buscarPresenca(aula, idMatricula);
+        presenca.setPresente(presente);
+        if (!presente) presenca.setAvaliacao(0); //Caso falte, avaliação 0
         return salvar(presenca);
     }
 
