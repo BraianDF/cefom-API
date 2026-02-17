@@ -58,12 +58,19 @@ public class PresencaService {
     public Presenca atualizarPresenca(PresencaRequestDTO dto, Aula aula) {
         Presenca presenca = buscarPresenca(aula, dto.idMatricula());
         presenca.setPresente(dto.presente());
+        if (!dto.presente()) presenca.setAvaliacao(0); //Caso falte, avaliação 0
         return salvar(presenca);
     }
 
     public Presenca atualizarAvaliacao(PresencaAvaliacaoRequestDTO dto, Aula aula) {
         Presenca presenca = buscarPresenca(aula, dto.idMatricula());
-        presenca.setAvaliacao(dto.avaliacao());
+
+        if (dto.avaliacao().getCodigo() != 0 && !presenca.getPresente()) {
+            throw new RegraNegocioException("Não é possível avaliar aluno ausente.");
+        }
+
+        presenca.setAvaliacao(dto.avaliacao().getCodigo());
+
         presenca.setObservacao(dto.observacao());
         return salvar(presenca);
     }

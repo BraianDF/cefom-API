@@ -1,9 +1,7 @@
 package com.projeto.cefom.novos.mapper;
 
-import com.projeto.cefom.novos.dto.response.AulaListarResponseDTO;
-import com.projeto.cefom.novos.dto.response.AulaResponseDTO;
-import com.projeto.cefom.novos.dto.response.ChamadaResponseDTO;
-import com.projeto.cefom.novos.dto.response.PresencaResponseDTO;
+import com.projeto.cefom.novos.dto.response.*;
+import com.projeto.cefom.novos.enums.AvaliacaoAluno;
 import com.projeto.cefom.novos.model.Aula;
 import org.springframework.stereotype.Component;
 
@@ -74,5 +72,29 @@ public class AulaMapper {
                 .toList();
 
         return new ChamadaResponseDTO(alunos);
+    }
+
+    public ChamadaAvaliacaoResponseDTO toAvaliacaoResponseDTO(Aula aula) {
+        if (aula == null) return null;
+
+        List<PresencaAvaliacaoResponseDTO> alunos = aula.getPresencas()
+                .stream()
+                .map(a -> new PresencaAvaliacaoResponseDTO(a.getAluno().getIdMatricula(), AvaliacaoAluno.fromCodigo(a.getAvaliacao(), a.getPresente()), a.getObservacao()))
+                .toList();
+
+        return new ChamadaAvaliacaoResponseDTO(alunos);
+    }
+
+    public ChamadaAvaliacaoResponseDTO toAvaliacaoListarResponseDTO(Aula aula) {
+        if (aula == null) return null;
+
+        if (aula.getChamadaRealizada()) return toAvaliacaoResponseDTO(aula);
+
+        List<PresencaAvaliacaoResponseDTO> alunos = aula.getAlunos()
+                .stream()
+                .map(a -> new PresencaAvaliacaoResponseDTO(a.getIdMatricula(), AvaliacaoAluno.fromCodigo(0,true), null))
+                .toList();
+
+        return new ChamadaAvaliacaoResponseDTO(alunos);
     }
 }

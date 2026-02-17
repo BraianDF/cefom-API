@@ -3,7 +3,9 @@ package com.projeto.cefom.novos.service;
 import com.projeto.cefom.exceptions.RecursoNaoEncontradoException;
 import com.projeto.cefom.exceptions.RegraNegocioException;
 import com.projeto.cefom.model.Matricula;
+import com.projeto.cefom.novos.dto.request.ChamadaAvaliacaoRequestDTO;
 import com.projeto.cefom.novos.dto.request.ChamadaRequestDTO;
+import com.projeto.cefom.novos.dto.response.ChamadaAvaliacaoResponseDTO;
 import com.projeto.cefom.novos.dto.response.ChamadaResponseDTO;
 import com.projeto.cefom.novos.mapper.AulaMapper;
 import com.projeto.cefom.novos.model.Aula;
@@ -81,6 +83,31 @@ public class ChamadaService {
         Set<Matricula> idsAlunos = aula.getPresencas().stream().map(Presenca::getAluno).collect(Collectors.toSet());
 
         idsAlunos.forEach(aluno -> presencaService.excluirPresenca(aula,aluno.getIdMatricula()));
+    }
+
+    @Transactional
+    public ChamadaAvaliacaoResponseDTO atualizarAvaliacao(Integer idAula, ChamadaAvaliacaoRequestDTO dto) {
+        Aula aula = buscarAula(idAula);
+        if (!aula.getChamadaRealizada()) {
+            throw new RegraNegocioException("A Chamada para essa aula ainda não foi realizada.");
+        }
+
+        Set<Integer> idsAlunos = aula.getPresencas().stream().map(p -> p.getAluno().getIdMatricula()).collect(Collectors.toSet());
+
+        dto.alunos().forEach(aluno -> {
+            if (!idsAlunos.contains(aluno.idMatricula())) {
+                throw new RegraNegocioException("Aluno com ID " + aluno.idMatricula() + " não pertence à aula com ID "+aula.getIdAula()+".");
+            }
+            presencaService.atualizarAvaliacao(aluno,aula);
+        });
+
+        return aulaMapper.toAvaliacaoListarResponseDTO(aula);
+    }
+
+    @Transactional(readOnly = true)
+    public ChamadaAvaliacaoResponseDTO listarAvaliacao(Integer idAula) {
+        Aula aula = buscarAula(idAula);
+        return aulaMapper.toAvaliacaoListarResponseDTO(aula);
     }
 
     public Aula salvar(Aula aula) {

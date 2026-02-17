@@ -15,7 +15,7 @@ public class Presenca implements Serializable {
     @Column(name = "presente", nullable = false)
     private Boolean presente;
     @Column(name = "avaliacao")
-    private Integer avaliacao; //(0 a 3)
+    private Integer avaliacao = 0; //(0 a 3)
     @Column(name = "observacao", length = 100)
     private String observacao;
     @ManyToOne
