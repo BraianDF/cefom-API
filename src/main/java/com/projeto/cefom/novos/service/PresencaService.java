@@ -4,7 +4,6 @@ import com.projeto.cefom.exceptions.RecursoNaoEncontradoException;
 import com.projeto.cefom.exceptions.RegraNegocioException;
 import com.projeto.cefom.model.Matricula;
 import com.projeto.cefom.novos.dto.request.PresencaAvaliacaoRequestDTO;
-import com.projeto.cefom.novos.dto.request.PresencaRequestDTO;
 import com.projeto.cefom.novos.model.Aula;
 import com.projeto.cefom.novos.model.Presenca;
 import com.projeto.cefom.novos.repository.PresencaRepository;
@@ -16,10 +15,12 @@ public class PresencaService {
 
     private final PresencaRepository presencaRepository;
     private final MatriculaService matriculaService;
+    private final JustificativaAplicacaoService justificativaAplicacaoService;
 
-    public PresencaService(PresencaRepository presencaRepository, MatriculaService matriculaService) {
+    public PresencaService(PresencaRepository presencaRepository, MatriculaService matriculaService, JustificativaAplicacaoService justificativaAplicacaoService) {
         this.presencaRepository = presencaRepository;
         this.matriculaService = matriculaService;
+        this.justificativaAplicacaoService = justificativaAplicacaoService;
     }
 
     public Presenca salvar(Presenca presenca) {
@@ -51,6 +52,8 @@ public class PresencaService {
 
         aluno.adicionarPresenca(presenca);
         aula.adicionarPresenca(presenca);
+
+        justificativaAplicacaoService.aplicarJustificativa(presenca);
 
         return salvar(presenca);
     }

@@ -6,6 +6,7 @@ import com.projeto.cefom.model.Matricula;
 import com.projeto.cefom.novos.dto.request.JustificativaFaltaRequestDTO;
 import com.projeto.cefom.novos.dto.response.JustificativaFaltaListarResponseDTO;
 import com.projeto.cefom.novos.dto.response.JustificativaFaltaResponseDTO;
+import com.projeto.cefom.novos.enums.MotivoJustificativa;
 import com.projeto.cefom.novos.mapper.JustificativaFaltaMapper;
 import com.projeto.cefom.novos.model.JustificativaFalta;
 import com.projeto.cefom.novos.repository.JustificativaFaltaRepository;
@@ -15,17 +16,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.Objects;
+
 @Service
 public class JustificativaFaltaService {
 
     private final JustificativaFaltaRepository justificativaFaltaRepository;
     private final JustificativaFaltaMapper justificativaFaltaMapper;
     private final MatriculaService matriculaService;
+    private final JustificativaAplicacaoService justificativaAplicacaoService;
 
-    public JustificativaFaltaService(JustificativaFaltaRepository justificativaFaltaRepository, JustificativaFaltaMapper justificativaFaltaMapper, MatriculaService matriculaService) {
+    public JustificativaFaltaService(JustificativaFaltaRepository justificativaFaltaRepository, JustificativaFaltaMapper justificativaFaltaMapper, MatriculaService matriculaService, JustificativaAplicacaoService justificativaAplicacaoService) {
         this.justificativaFaltaRepository = justificativaFaltaRepository;
         this.justificativaFaltaMapper = justificativaFaltaMapper;
         this.matriculaService = matriculaService;
+        this.justificativaAplicacaoService = justificativaAplicacaoService;
     }
 
     @Transactional
@@ -110,15 +116,37 @@ public class JustificativaFaltaService {
         }
 
         matricula.adicionarJustificativaFalta(justificativa);
+
+        justificativaAplicacaoService.aplicarJustificativa(justificativa);
+
         return justificativa;
     }
 
     public JustificativaFalta atualizarJustificativa(JustificativaFaltaRequestDTO dto, JustificativaFalta justificativa) {
-        justificativa.setMotivo(dto.motivo());
-        justificativa.setDataInicio(dto.dataInicio());
-        justificativa.setQtdeDias(dto.qtdeDias());
-        justificativa.setDataFim(dto.dataInicio(), dto.qtdeDias());
+        LocalDate DataInicioAtual = justificativa.getDataInicio();
+        Integer qtdeDiasAtual = justificativa.getQtdeDias();
+        MotivoJustificativa motivoAtual = justificativa.getMotivo();
+        boolean mudouPeriodo = false;
+        boolean mudouMotivo = false;
+
+        if (!Objects.equals(DataInicioAtual, dto.dataInicio()) || !Objects.equals(qtdeDiasAtual, dto.qtdeDias())) {
+            justificativa.setDataInicio(dto.dataInicio());
+            justificativa.setQtdeDias(dto.qtdeDias());
+            justificativa.setDataFim(dto.dataInicio(), dto.qtdeDias());
+            mudouPeriodo = true;
+        }
+
+        if (!Objects.equals(motivoAtual, dto.motivo())) {
+            justificativa.setMotivo(dto.motivo());
+            mudouMotivo = true;
+        }
+
         justificativa.setObservacao(dto.observacao());
+
+        if (mudouPeriodo || mudouMotivo) {
+            justificativaAplicacaoService.reAplicarJustificativa(justificativa);
+        }
+
         return justificativa;
     }
 }

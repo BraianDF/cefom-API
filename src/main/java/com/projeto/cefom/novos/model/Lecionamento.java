@@ -18,7 +18,7 @@ public class Lecionamento implements Serializable {
     @ManyToOne
     @JoinColumn(name = "idDisciplina")
     private Disciplina disciplina;
-    @OneToMany(mappedBy = "lecionamento", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "lecionamento", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Aula> aulas = new ArrayList<>();
 
     public Lecionamento() {

@@ -29,9 +29,9 @@ public class JustificativaFalta extends Vigencia implements Serializable {
     @ManyToOne
     @JoinColumn(name = "idAluno")
     private Matricula aluno;
-    @OneToMany(mappedBy = "justificativa", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "justificativa", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Presenca> presencas = new ArrayList<>();
-    @OneToMany(mappedBy = "justificativa", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "justificativa", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<FaltaTrabalho> faltasTrabalhos = new ArrayList<>();
 
     public JustificativaFalta() {

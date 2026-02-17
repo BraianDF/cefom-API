@@ -15,17 +15,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.Objects;
+
 @Service
 public class FaltaTrabalhoService {
 
     private final FaltaTrabalhoRepository faltaTrabalhoRepository;
     private final FaltaTrabalhoMapper faltaTrabalhoMapper;
     private final ContratoService contratoService;
+    private final JustificativaAplicacaoService justificativaAplicacaoService;
 
-    public FaltaTrabalhoService(FaltaTrabalhoRepository faltaTrabalhoRepository, FaltaTrabalhoMapper faltaTrabalhoMapper, ContratoService contratoService) {
+    public FaltaTrabalhoService(FaltaTrabalhoRepository faltaTrabalhoRepository, FaltaTrabalhoMapper faltaTrabalhoMapper, ContratoService contratoService, JustificativaAplicacaoService justificativaAplicacaoService) {
         this.faltaTrabalhoRepository = faltaTrabalhoRepository;
         this.faltaTrabalhoMapper = faltaTrabalhoMapper;
         this.contratoService = contratoService;
+        this.justificativaAplicacaoService = justificativaAplicacaoService;
     }
 
     @Transactional
@@ -68,7 +73,7 @@ public class FaltaTrabalhoService {
 
     @Transactional
     public void excluirPorId(Integer idAdolescente, Integer idMatricula, Integer idContrato, Integer idFaltaTrabalho) {
-        buscarFaltaTrabalhoContrato(idAdolescente,idMatricula,idContrato,idFaltaTrabalho);
+        FaltaTrabalho falta = buscarFaltaTrabalhoContrato(idAdolescente,idMatricula,idContrato,idFaltaTrabalho);
         faltaTrabalhoRepository.deleteById(idFaltaTrabalho);
     }
 
@@ -107,12 +112,22 @@ public class FaltaTrabalhoService {
         }
 
         contrato.adicionarFaltaTrabalho(falta);
+
+        justificativaAplicacaoService.aplicarJustificativa(falta);
+
         return falta;
     }
 
     public FaltaTrabalho atualizarFaltaTrabalho(FaltaTrabalhoRequestDTO dto, FaltaTrabalho falta) {
-        falta.setDataInicio(dto.dataFalta());
-        falta.setDataFim(dto.dataFalta());
+        LocalDate dataAtual = falta.getDataInicio();
+
+        if (!Objects.equals(dataAtual, dto.dataFalta())) {
+            falta.setDataInicio(dto.dataFalta());
+            falta.setDataFim(dto.dataFalta());
+
+            justificativaAplicacaoService.reAplicarJustificativa(falta);
+        }
+
         return falta;
     }
 }

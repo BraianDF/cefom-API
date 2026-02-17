@@ -6,16 +6,16 @@ import com.projeto.cefom.novos.dto.request.AulaRequestDTO;
 import com.projeto.cefom.novos.dto.response.AulaListarResponseDTO;
 import com.projeto.cefom.novos.dto.response.AulaResponseDTO;
 import com.projeto.cefom.novos.mapper.AulaMapper;
-import com.projeto.cefom.novos.model.Aula;
-import com.projeto.cefom.novos.model.Lecionamento;
-import com.projeto.cefom.novos.model.SalaAula;
-import com.projeto.cefom.novos.model.Turma;
+import com.projeto.cefom.novos.model.*;
 import com.projeto.cefom.novos.repository.AulaRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -25,13 +25,15 @@ public class AulaService {
     private final SalaAulaService salaAulaService;
     private final TurmaService turmaService;
     private final LecionamentoService lecionamentoService;
+    private final JustificativaAplicacaoService justificativaAplicacaoService;
 
-    public AulaService(AulaRepository aulaRepository, AulaMapper aulaMapper, SalaAulaService salaAulaService, TurmaService turmaService, LecionamentoService lecionamentoService) {
+    public AulaService(AulaRepository aulaRepository, AulaMapper aulaMapper, SalaAulaService salaAulaService, TurmaService turmaService, LecionamentoService lecionamentoService, JustificativaAplicacaoService justificativaAplicacaoService) {
         this.aulaRepository = aulaRepository;
         this.aulaMapper = aulaMapper;
         this.salaAulaService = salaAulaService;
         this.turmaService = turmaService;
         this.lecionamentoService = lecionamentoService;
+        this.justificativaAplicacaoService = justificativaAplicacaoService;
     }
 
     @Transactional
@@ -136,6 +138,7 @@ public class AulaService {
     }
 
     public Aula atualizarAula(AulaRequestDTO dto, Aula aula) {
+        LocalDate dataAtual = aula.getDataInicio();
 
         aula.setDataInicio(dto.dataAula());
         aula.setDataFim(dto.dataAula());
@@ -179,6 +182,11 @@ public class AulaService {
             }
 
             lecionamentoNovo.adicionarAula(aula);
+        }
+
+        if (!Objects.equals(dataAtual, dto.dataAula()) && aula.getChamadaRealizada()) {
+            List<Presenca> alunos = new ArrayList<>(aula.getPresencas());
+            alunos.forEach(aluno -> justificativaAplicacaoService.reAplicarJustificativa(aluno));
         }
 
         return aula;

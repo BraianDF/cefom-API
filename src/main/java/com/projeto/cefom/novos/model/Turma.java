@@ -21,7 +21,7 @@ public class Turma implements Serializable {
     private Situacao tipo;
     @OneToMany(mappedBy = "turma", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Participacao> alunos = new ArrayList<>();
-    @OneToMany(mappedBy = "turma", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "turma", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Aula> aulas = new ArrayList<>();
 
     public Turma() {

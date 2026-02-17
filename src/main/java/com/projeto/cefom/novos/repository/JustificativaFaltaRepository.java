@@ -2,7 +2,6 @@ package com.projeto.cefom.novos.repository;
 
 import com.projeto.cefom.novos.enums.MotivoJustificativa;
 import com.projeto.cefom.novos.model.JustificativaFalta;
-import com.projeto.cefom.novos.model.Professor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,4 +15,5 @@ public interface JustificativaFaltaRepository extends JpaRepository<Justificativ
     boolean existsByAlunoIdMatriculaAndMotivoAndDataInicioAndQtdeDias(Integer idMatricula, MotivoJustificativa motivo, LocalDate dataInicio, Integer qtdeDias);
     boolean existsByAlunoIdMatriculaAndMotivoAndDataInicioAndQtdeDiasAndIdJustificativaFaltaNot(Integer idMatricula, MotivoJustificativa motivo, LocalDate dataInicio, Integer qtdeDias, Integer idJustificativaFalta);
     Page<JustificativaFalta> findByAlunoAdolescenteIdAdolescente(Integer idAdolescente, Pageable pageable);
+    List<JustificativaFalta> findByAlunoIdMatriculaAndDataInicioLessThanEqualAndDataFimGreaterThanEqual(Integer idMatricula, LocalDate dataInicio, LocalDate dataFim);
 }

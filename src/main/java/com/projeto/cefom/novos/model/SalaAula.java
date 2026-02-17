@@ -15,7 +15,7 @@ public class SalaAula implements Serializable {
     private Integer idSalaAula;
     @Column(name = "nome", length = 50, nullable = false)
     private String nome;
-    @OneToMany(mappedBy = "sala", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "sala", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Aula> aulas = new ArrayList<>();
 
     public SalaAula() {
