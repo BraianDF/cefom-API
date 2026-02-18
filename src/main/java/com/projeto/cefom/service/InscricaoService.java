@@ -10,7 +10,7 @@ import com.projeto.cefom.dto.response.StatusCpfInscricaoResponseDTO;
 import com.projeto.cefom.enums.StatusCpf;
 import com.projeto.cefom.exceptions.RecursoNaoEncontradoException;
 import com.projeto.cefom.exceptions.RegraNegocioException;
-import com.projeto.cefom.image.FotoAdolescenteService;
+import com.projeto.cefom.image.service.FotoAdolescenteService;
 import com.projeto.cefom.mapper.InscricaoMapper;
 import com.projeto.cefom.model.*;
 import com.projeto.cefom.repository.*;

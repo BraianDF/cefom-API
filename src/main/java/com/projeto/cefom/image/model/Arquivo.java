@@ -1,7 +1,9 @@
-package com.projeto.cefom.image;
+package com.projeto.cefom.image.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @MappedSuperclass
 public abstract class Arquivo {
@@ -11,7 +13,7 @@ public abstract class Arquivo {
     private String tipoArquivo;
     @Column(name="tamanhoArquivo", nullable = false)
     private long tamanhoArquivo;
-    @Column(name="caminhoArquivo", length = 255, nullable = false)
+    @Transient
     private String caminhoArquivo;
 
     public Arquivo() {
@@ -49,7 +51,11 @@ public abstract class Arquivo {
     }
 
     public String getCaminhoArquivo() {
-        return caminhoArquivo;
+        return ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path("/files/download/")
+                .path(getNomeArquivo())
+                .toUriString();
     }
 
     public void setCaminhoArquivo(String caminhoArquivo) {

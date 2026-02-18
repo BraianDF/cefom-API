@@ -8,7 +8,7 @@ import com.projeto.cefom.enums.StatusCpf;
 import com.projeto.cefom.enums.TitularContato;
 import com.projeto.cefom.exceptions.RecursoNaoEncontradoException;
 import com.projeto.cefom.exceptions.RegraNegocioException;
-import com.projeto.cefom.image.FotoAdolescenteService;
+import com.projeto.cefom.image.service.FotoAdolescenteService;
 import com.projeto.cefom.mapper.MatriculaMapper;
 import com.projeto.cefom.model.Adolescente;
 import com.projeto.cefom.model.Documento;

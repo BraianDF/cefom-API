@@ -2,7 +2,7 @@ package com.projeto.cefom.model;
 
 import com.projeto.cefom.enums.DesligamentoMatricula;
 import com.projeto.cefom.enums.SituacaoMatricula;
-import com.projeto.cefom.image.FotoAdolescente;
+import com.projeto.cefom.image.model.FotoAdolescente;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;

@@ -1,5 +1,6 @@
-package com.projeto.cefom.image;
+package com.projeto.cefom.image.repository;
 
+import com.projeto.cefom.image.model.FotoAdolescente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

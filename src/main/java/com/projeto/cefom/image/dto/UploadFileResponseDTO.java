@@ -1,7 +1,6 @@
-package com.projeto.cefom.image;
+package com.projeto.cefom.image.dto;
 
-public record UploadFotoAdolescenteResponseDTO(
-        Integer IdFotoAdolescente,
+public record UploadFileResponseDTO(
         String nomeArquivo,
         String tipoArquivo,
         long tamanho,
