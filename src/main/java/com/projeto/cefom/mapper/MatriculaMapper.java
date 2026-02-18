@@ -7,7 +7,7 @@ import com.projeto.cefom.dto.response.AdolescenteEntrevistaResponseDTO;
 import com.projeto.cefom.dto.response.AdolescenteMatriculaEntrevistaResponseDTO;
 import com.projeto.cefom.model.Entrevista;
 import com.projeto.cefom.model.VinculoEntrevistaMatricula;
-import com.projeto.cefom.novos.dto.response.AlunoMatriculaResponseDTO;
+import com.projeto.cefom.dto.response.AlunoMatriculaResponseDTO;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 

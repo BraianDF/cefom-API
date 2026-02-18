@@ -3,7 +3,6 @@ package com.projeto.cefom.model;
 import com.projeto.cefom.enums.DesligamentoMatricula;
 import com.projeto.cefom.enums.SituacaoContrato;
 import com.projeto.cefom.enums.TipoContratacao;
-import com.projeto.cefom.novos.model.FaltaTrabalho;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
