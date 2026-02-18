@@ -3,8 +3,6 @@ package com.projeto.cefom.model;
 import com.projeto.cefom.enums.DesligamentoMatricula;
 import com.projeto.cefom.enums.SituacaoMatricula;
 import com.projeto.cefom.image.model.FotoAdolescente;
-import com.projeto.cefom.novos.model.Participacao;
-import com.projeto.cefom.novos.model.Presenca;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -41,7 +39,8 @@ public class Matricula extends Vigencia implements Serializable {
     private List<Presenca> presencas = new ArrayList<>();
     @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Participacao> turmas = new ArrayList<>();
-
+    @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<JustificativaFalta> justificativasFaltas = new ArrayList<>();
     @OneToOne(mappedBy = "matricula", cascade = CascadeType.ALL, orphanRemoval = true)
     private FotoAdolescente foto;
 
@@ -130,6 +129,14 @@ public class Matricula extends Vigencia implements Serializable {
         this.turmas = turmas;
     }
 
+    public List<JustificativaFalta> getJustificativasFaltas() {
+        return justificativasFaltas;
+    }
+
+    public void setJustificativasFaltas(List<JustificativaFalta> justificativasFaltas) {
+        this.justificativasFaltas = justificativasFaltas;
+    }
+
     public void adicionarContrato(Contrato contrato) {
         contratos.add(contrato);
         contrato.setMatricula(this);
@@ -140,16 +147,6 @@ public class Matricula extends Vigencia implements Serializable {
         contrato.setMatricula(null);
     }
 
-    public void adicionarContrato(VinculoEntrevistaMatricula entrevista) {
-        entrevistas.add(entrevista);
-        entrevista.setMatricula(this);
-    }
-
-    public void removerContrato(VinculoEntrevistaMatricula entrevista) {
-        entrevistas.remove(entrevista);
-        entrevista.setMatricula(null);
-    }
-
     public void adicionarEntrevista(VinculoEntrevistaMatricula entrevista) {
         entrevistas.add(entrevista);
         entrevista.setMatricula(this);
@@ -158,6 +155,36 @@ public class Matricula extends Vigencia implements Serializable {
     public void removerEntrevista(VinculoEntrevistaMatricula entrevista) {
         entrevistas.remove(entrevista);
         entrevista.setMatricula(null);
+    }
+
+    public void adicionarPresenca(Presenca presenca) {
+        presencas.add(presenca);
+        presenca.setAluno(this);
+    }
+
+    public void removerPresenca(Presenca presenca) {
+        presencas.remove(presenca);
+        presenca.setAluno(null);
+    }
+
+    public void adicionarTurma(Participacao participacao) {
+        turmas.add(participacao);
+        participacao.setAluno(this);
+    }
+
+    public void removerTurma(Participacao participacao) {
+        turmas.remove(participacao);
+        participacao.setAluno(null);
+    }
+
+    public void adicionarJustificativaFalta(JustificativaFalta justificativaFalta) {
+        justificativasFaltas.add(justificativaFalta);
+        justificativaFalta.setAluno(this);
+    }
+
+    public void removerJustificativaFalta(JustificativaFalta justificativaFalta) {
+        justificativasFaltas.remove(justificativaFalta);
+        justificativaFalta.setAluno(null);
     }
 
     public FotoAdolescente getFoto() {
