@@ -103,6 +103,8 @@ public class EmailService {
     }
 
     public void criarEmail(String emailNovo, TitularContato titular, Adolescente adolescente, LocalDate data) {
+        if(emailNovo == null || emailNovo.isBlank()) return;
+
         Email email = new Email();
         email.setEmail(emailNovo);
         email.setTitular(titular);
