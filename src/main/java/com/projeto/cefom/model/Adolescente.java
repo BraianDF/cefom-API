@@ -24,7 +24,7 @@ public class Adolescente implements Serializable {
     private LocalDate dataNascimento;
     @Column(name = "cidadeNascimento", length = 50)
     private String cidadeNascimento;
-    //@Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     @Column(name = "estadoNascimento", length = 50)
     private Estado estadoNascimento;
     @Column(name = "paisNascimento", length = 50)
