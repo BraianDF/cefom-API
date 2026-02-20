@@ -22,10 +22,12 @@ public class TerritorioService {
 
     private final TerritorioRepository territorioRepository;
     private final TerritorioMapper territorioMapper;
+    private final TerritorioAplicacaoService territorioAplicacaoService;
 
-    public TerritorioService(TerritorioRepository territorioRepository, TerritorioMapper territorioMapper) {
+    public TerritorioService(TerritorioRepository territorioRepository, TerritorioMapper territorioMapper, TerritorioAplicacaoService territorioAplicacaoService) {
         this.territorioRepository = territorioRepository;
         this.territorioMapper = territorioMapper;
+        this.territorioAplicacaoService = territorioAplicacaoService;
     }
 
     @Transactional
@@ -71,7 +73,10 @@ public class TerritorioService {
         //Remove os bairros
         atuais.stream()
                 .filter(b -> !desejados.contains(b))
-                .forEach(territorio::removerBairro);
+                .forEach(b -> {
+                    territorio.removerBairro(b);
+                    territorioAplicacaoService.removerTerritorioEnderecos(b);
+                });
 
         //Valida os bairros
         desejados.stream()
@@ -86,7 +91,10 @@ public class TerritorioService {
         //Adiciona os bairros
         desejados.stream()
                 .filter(b -> !atuais.contains(b))
-                .forEach(territorio::adicionarBairro);
+                .forEach(b -> {
+                    territorio.adicionarBairro(b);
+                    territorioAplicacaoService.adicionarTerritorioEnderecos(b,territorio);
+                });
 
         Territorio territorioSalvo = territorioRepository.save(territorio);
         return territorioMapper.toResponseDTO(territorioSalvo);
