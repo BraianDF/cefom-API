@@ -51,6 +51,11 @@ public class TerritorioService {
         }
 
         Territorio territorio = buscarTerritorio(idTerritorio);
+
+        if (territorio.getResultado().equals("Fora de Lins")) {
+            throw new RegraNegocioException("Não é possível renomear o território 'Fora de Lins'.");
+        }
+
         territorio.setResultado(dto.territorio());
 
         Territorio territorioSalvo = salvar(territorio);
@@ -61,6 +66,10 @@ public class TerritorioService {
     @Transactional
     public TerritorioResponseDTO atualizarBairros(Integer idTerritorio, TerritorioBairroRequestDTO dto) {
         Territorio territorio = buscarTerritorio(idTerritorio);
+
+        if (territorio.getResultado().equals("Fora de Lins")) {
+            throw new RegraNegocioException("Não é possível adicionar ou remover bairros do território 'Fora de Lins'.");
+        }
 
         List<String> bairrosDesejados = dto.bairros();
         if (bairrosDesejados == null) bairrosDesejados = List.of();
@@ -130,6 +139,10 @@ public class TerritorioService {
     @Transactional
     public void excluirPorId(Integer idTerritorio) {
         Territorio territorio = buscarTerritorio(idTerritorio);
+
+        if (territorio.getResultado().equals("Fora de Lins")) {
+            throw new RegraNegocioException("Não é possível remover o território 'Fora de Lins'.");
+        }
 
         Set<String> bairros = new HashSet<>(territorio.getBairros());
 
