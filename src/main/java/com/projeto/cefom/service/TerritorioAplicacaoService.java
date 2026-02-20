@@ -1,5 +1,6 @@
 package com.projeto.cefom.service;
 
+import com.projeto.cefom.dto.response.TerritorioPendenciasResponseDTO;
 import com.projeto.cefom.model.Endereco;
 import com.projeto.cefom.model.Territorio;
 import com.projeto.cefom.repository.EnderecoRepository;
@@ -44,5 +45,12 @@ public class TerritorioAplicacaoService {
             }
             territorio.adicionarEndereco(endereco);
         });
+    }
+
+    public TerritorioPendenciasResponseDTO obterEnderecosSemTerritorio() {
+        return new TerritorioPendenciasResponseDTO(
+                enderecoRepository.countByTerritorioIsNull(),
+                enderecoRepository.listarBairrosSemTerritorio()
+        );
     }
 }

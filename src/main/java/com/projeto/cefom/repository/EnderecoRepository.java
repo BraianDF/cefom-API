@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface EnderecoRepository extends JpaRepository<Endereco, Integer> {
@@ -24,4 +25,13 @@ public interface EnderecoRepository extends JpaRepository<Endereco, Integer> {
         AND UPPER(TRIM(e.bairro)) = UPPER(TRIM(:bairro))
     """)
     List<Endereco> findByCidadeAndBairro(String cidade, String bairro);
+
+    Integer countByTerritorioIsNull();
+
+    @Query("""
+        SELECT DISTINCT e.bairro
+        FROM Endereco e
+        WHERE e.territorio IS NULL
+    """)
+    Set<String> listarBairrosSemTerritorio();
 }

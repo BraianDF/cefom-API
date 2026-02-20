@@ -3,6 +3,7 @@ package com.projeto.cefom.service;
 import com.projeto.cefom.dto.request.TerritorioBairroRequestDTO;
 import com.projeto.cefom.dto.response.TerritorioListarResponseDTO;
 import com.projeto.cefom.dto.request.TerritorioRequestDTO;
+import com.projeto.cefom.dto.response.TerritorioPendenciasResponseDTO;
 import com.projeto.cefom.dto.response.TerritorioResponseDTO;
 import com.projeto.cefom.exceptions.RecursoNaoEncontradoException;
 import com.projeto.cefom.exceptions.RegraNegocioException;
@@ -129,6 +130,11 @@ public class TerritorioService {
     public void excluirPorId(Integer idTerritorio) {
         Territorio territorio = buscarTerritorio(idTerritorio);
         territorioRepository.deleteById(idTerritorio);
+    }
+
+    @Transactional(readOnly = true)
+    public TerritorioPendenciasResponseDTO enderecosSemTerritorio() {
+        return territorioAplicacaoService.obterEnderecosSemTerritorio();
     }
 
     @Transactional(readOnly = true)
