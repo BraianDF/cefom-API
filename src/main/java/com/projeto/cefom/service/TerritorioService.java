@@ -73,6 +73,16 @@ public class TerritorioService {
                 .filter(b -> !desejados.contains(b))
                 .forEach(territorio::removerBairro);
 
+        //Valida os bairros
+        desejados.stream()
+                .filter(b -> !atuais.contains(b))
+                .forEach(bairro -> {
+                    territorioRepository.findByBairro(bairro)
+                            .ifPresent(t -> {
+                                throw new RegraNegocioException("O bairro "+bairro+" já está cadastrado no territirótio "+t.getResultado()+".");
+                            });
+                });
+
         //Adiciona os bairros
         desejados.stream()
                 .filter(b -> !atuais.contains(b))
@@ -81,28 +91,6 @@ public class TerritorioService {
         Territorio territorioSalvo = territorioRepository.save(territorio);
         return territorioMapper.toResponseDTO(territorioSalvo);
     }
-
-    /* //Adicionando Bairros, usando duas listas uma para adicionar e outra para remover
-    @Transactional
-    public TerritorioResponseDTO atualizarBairros(Integer idTerritorio, TerritorioBairroRequestDTO dto) {
-        Territorio territorio = buscarTerritorio(idTerritorio);
-
-        //Adiciona os bairros
-        if(dto.adicionar() != null && !dto.adicionar().isEmpty()) {
-            dto.adicionar().forEach(territorio::adicionarBairro);
-        }
-
-        //Remove os bairros
-        if(dto.remover() != null && !dto.remover().isEmpty()) {
-            dto.remover().forEach(territorio::removerBairro);
-        }
-
-        Territorio territorioSalvo = territorioRepository.save(territorio);
-        return territorioMapper.toResponseDTO(territorioSalvo);
-
-    }
-
-    */
 
     @Transactional(readOnly = true)
     public TerritorioResponseDTO buscarPorId(Integer idTerritorio) {
