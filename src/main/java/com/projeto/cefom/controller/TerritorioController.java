@@ -3,6 +3,7 @@ package com.projeto.cefom.controller;
 import com.projeto.cefom.dto.request.TerritorioBairroRequestDTO;
 import com.projeto.cefom.dto.request.TerritorioRequestDTO;
 import com.projeto.cefom.dto.response.TerritorioListarResponseDTO;
+import com.projeto.cefom.dto.response.TerritorioPendenciasResponseDTO;
 import com.projeto.cefom.dto.response.TerritorioResponseDTO;
 import com.projeto.cefom.service.TerritorioService;
 import jakarta.validation.Valid;
@@ -56,5 +57,11 @@ public class TerritorioController {
     public ResponseEntity<Void> excluir(@PathVariable Integer idTerritorio) {
         territorioService.excluirPorId(idTerritorio);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/pendencias")
+    public ResponseEntity<TerritorioPendenciasResponseDTO> enderecosSemTerritorio() {
+        TerritorioPendenciasResponseDTO response = territorioService.enderecosSemTerritorio();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

@@ -21,7 +21,7 @@ public class Territorio implements Serializable {
     @CollectionTable(name = "territorioBairros", joinColumns = @JoinColumn(name = "idTerritorio"), uniqueConstraints = { @UniqueConstraint(columnNames = {"idTerritorio", "bairro"})})
     @Column(name = "bairro")
     private Set<String> bairros = new HashSet<>();
-    @OneToMany(mappedBy = "territorio")
+    @OneToMany(mappedBy = "territorio", cascade = CascadeType.ALL)
     private List<Endereco> enderecos = new ArrayList<>();
 
     public Territorio() {

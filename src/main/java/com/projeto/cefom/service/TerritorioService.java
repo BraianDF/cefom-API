@@ -3,6 +3,7 @@ package com.projeto.cefom.service;
 import com.projeto.cefom.dto.request.TerritorioBairroRequestDTO;
 import com.projeto.cefom.dto.response.TerritorioListarResponseDTO;
 import com.projeto.cefom.dto.request.TerritorioRequestDTO;
+import com.projeto.cefom.dto.response.TerritorioPendenciasResponseDTO;
 import com.projeto.cefom.dto.response.TerritorioResponseDTO;
 import com.projeto.cefom.exceptions.RecursoNaoEncontradoException;
 import com.projeto.cefom.exceptions.RegraNegocioException;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,10 +24,12 @@ public class TerritorioService {
 
     private final TerritorioRepository territorioRepository;
     private final TerritorioMapper territorioMapper;
+    private final TerritorioAplicacaoService territorioAplicacaoService;
 
-    public TerritorioService(TerritorioRepository territorioRepository, TerritorioMapper territorioMapper) {
+    public TerritorioService(TerritorioRepository territorioRepository, TerritorioMapper territorioMapper, TerritorioAplicacaoService territorioAplicacaoService) {
         this.territorioRepository = territorioRepository;
         this.territorioMapper = territorioMapper;
+        this.territorioAplicacaoService = territorioAplicacaoService;
     }
 
     @Transactional
@@ -47,6 +51,11 @@ public class TerritorioService {
         }
 
         Territorio territorio = buscarTerritorio(idTerritorio);
+
+        if (territorio.getResultado().equals("Fora de Lins")) {
+            throw new RegraNegocioException("Não é possível renomear o território 'Fora de Lins'.");
+        }
+
         territorio.setResultado(dto.territorio());
 
         Territorio territorioSalvo = salvar(territorio);
@@ -57,6 +66,10 @@ public class TerritorioService {
     @Transactional
     public TerritorioResponseDTO atualizarBairros(Integer idTerritorio, TerritorioBairroRequestDTO dto) {
         Territorio territorio = buscarTerritorio(idTerritorio);
+
+        if (territorio.getResultado().equals("Fora de Lins")) {
+            throw new RegraNegocioException("Não é possível adicionar ou remover bairros do território 'Fora de Lins'.");
+        }
 
         List<String> bairrosDesejados = dto.bairros();
         if (bairrosDesejados == null) bairrosDesejados = List.of();
@@ -71,38 +84,32 @@ public class TerritorioService {
         //Remove os bairros
         atuais.stream()
                 .filter(b -> !desejados.contains(b))
-                .forEach(territorio::removerBairro);
+                .forEach(b -> {
+                    territorio.removerBairro(b);
+                    territorioAplicacaoService.removerTerritorioEnderecos(b);
+                });
+
+        //Valida os bairros
+        desejados.stream()
+                .filter(b -> !atuais.contains(b))
+                .forEach(bairro -> {
+                    territorioRepository.findByBairro(bairro)
+                            .ifPresent(t -> {
+                                throw new RegraNegocioException("O bairro "+bairro+" já está cadastrado no territirótio "+t.getResultado()+".");
+                            });
+                });
 
         //Adiciona os bairros
         desejados.stream()
                 .filter(b -> !atuais.contains(b))
-                .forEach(territorio::adicionarBairro);
+                .forEach(b -> {
+                    territorio.adicionarBairro(b);
+                    territorioAplicacaoService.adicionarTerritorioEnderecos(b,territorio);
+                });
 
         Territorio territorioSalvo = territorioRepository.save(territorio);
         return territorioMapper.toResponseDTO(territorioSalvo);
     }
-
-    /* //Adicionando Bairros, usando duas listas uma para adicionar e outra para remover
-    @Transactional
-    public TerritorioResponseDTO atualizarBairros(Integer idTerritorio, TerritorioBairroRequestDTO dto) {
-        Territorio territorio = buscarTerritorio(idTerritorio);
-
-        //Adiciona os bairros
-        if(dto.adicionar() != null && !dto.adicionar().isEmpty()) {
-            dto.adicionar().forEach(territorio::adicionarBairro);
-        }
-
-        //Remove os bairros
-        if(dto.remover() != null && !dto.remover().isEmpty()) {
-            dto.remover().forEach(territorio::removerBairro);
-        }
-
-        Territorio territorioSalvo = territorioRepository.save(territorio);
-        return territorioMapper.toResponseDTO(territorioSalvo);
-
-    }
-
-    */
 
     @Transactional(readOnly = true)
     public TerritorioResponseDTO buscarPorId(Integer idTerritorio) {
@@ -132,7 +139,24 @@ public class TerritorioService {
     @Transactional
     public void excluirPorId(Integer idTerritorio) {
         Territorio territorio = buscarTerritorio(idTerritorio);
+
+        if (territorio.getResultado().equals("Fora de Lins")) {
+            throw new RegraNegocioException("Não é possível remover o território 'Fora de Lins'.");
+        }
+
+        Set<String> bairros = new HashSet<>(territorio.getBairros());
+
+        bairros.stream().forEach(b -> {
+            territorio.removerBairro(b);
+            territorioAplicacaoService.removerTerritorioEnderecos(b);
+        });
+
         territorioRepository.deleteById(idTerritorio);
+    }
+
+    @Transactional(readOnly = true)
+    public TerritorioPendenciasResponseDTO enderecosSemTerritorio() {
+        return territorioAplicacaoService.obterEnderecosSemTerritorio();
     }
 
     @Transactional(readOnly = true)
