@@ -1,6 +1,7 @@
 package com.projeto.cefom.model;
 
 import com.projeto.cefom.enums.*;
+import com.projeto.cefom.utils.TextoUtils;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -102,7 +103,7 @@ public class Adolescente implements Serializable {
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.nome = TextoUtils.normalizar(nome);;
     }
 
     public Genero getGenero() {
@@ -126,7 +127,7 @@ public class Adolescente implements Serializable {
     }
 
     public void setCidadeNascimento(String cidadeNascimento) {
-        this.cidadeNascimento = cidadeNascimento;
+        this.cidadeNascimento = TextoUtils.normalizar(cidadeNascimento);
     }
 
     public Estado getEstadoNascimento() {
@@ -142,7 +143,7 @@ public class Adolescente implements Serializable {
     }
 
     public void setPaisNascimento(String paisNascimento) {
-        this.paisNascimento = paisNascimento;
+        this.paisNascimento = TextoUtils.normalizar(paisNascimento);
     }
 
     public Naturalidade getNaturalidade() {
@@ -166,7 +167,7 @@ public class Adolescente implements Serializable {
     }
 
     public void setMae(String mae) {
-        this.mae = mae;
+        this.mae = TextoUtils.normalizar(mae);
     }
 
     public String getPai() {
@@ -174,7 +175,7 @@ public class Adolescente implements Serializable {
     }
 
     public void setPai(String pai) {
-        this.pai = pai;
+        this.pai = TextoUtils.normalizar(pai);
     }
 
     public String getConjuge() {
@@ -182,7 +183,7 @@ public class Adolescente implements Serializable {
     }
 
     public void setConjuge(String conjuge) {
-        this.conjuge = conjuge;
+        this.conjuge = TextoUtils.normalizar(conjuge);
     }
 
     public Situacao getSituacao() {
