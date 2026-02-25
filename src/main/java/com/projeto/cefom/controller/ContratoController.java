@@ -9,6 +9,7 @@ import com.projeto.cefom.service.ContratoService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public class ContratoController {
     }
 
     @GetMapping("/contratos")
-    public ResponseEntity<Page<ContratoListarResponseDTO>> listar(@PathVariable Integer idAdolescente, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+    public ResponseEntity<Page<ContratoListarResponseDTO>> listar(@PathVariable Integer idAdolescente, @PageableDefault(page = 0, size = 10, sort = "dataInicio", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<ContratoListarResponseDTO> response = contratoService.listar(idAdolescente, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
