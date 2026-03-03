@@ -32,7 +32,7 @@ public class AfastamentoMapper {
                 afastamento.getDataFim(),
                 afastamento.getQtdeDias(),
                 afastamento.getMotivoAfastamento(),
-                TextoUtils.textualizar(afastamento.getOutroMotivoAfastamento()),
+                TextoUtils.capitalizar(afastamento.getOutroMotivoAfastamento()),
                 TextoUtils.textualizar(afastamento.getObservacao())
         );
     }
