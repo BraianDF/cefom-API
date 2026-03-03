@@ -6,6 +6,7 @@ import com.projeto.cefom.dto.response.CargoSelectResponseDTO;
 import com.projeto.cefom.model.Cargo;
 import com.projeto.cefom.model.Contrato;
 import com.projeto.cefom.model.VinculoContratoCargo;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -30,7 +31,7 @@ public class CargoMapper {
         return new CargoResponseDTO(
                 cargo.getIdCargo(),
                 cargo.getCbo(),
-                cargo.getFuncao()
+                TextoUtils.capitalizar(cargo.getFuncao())
         );
     }
 
@@ -39,7 +40,7 @@ public class CargoMapper {
 
         return new CargoListarResponseDTO(
                 cargo.getIdCargo(),
-                cargo.getFuncao()
+                TextoUtils.capitalizar(cargo.getFuncao())
         );
     }
 
@@ -48,7 +49,7 @@ public class CargoMapper {
 
         return new CargoSelectResponseDTO(
                 cargo.getIdCargo(),
-                cargo.getFuncao()
+                TextoUtils.capitalizar(cargo.getFuncao())
         );
     }
 }

@@ -9,6 +9,7 @@ import com.projeto.cefom.dto.response.CargoResponseDTO;
 import com.projeto.cefom.mapper.CargoMapper;
 import com.projeto.cefom.model.Cargo;
 import com.projeto.cefom.repository.CargoRepository;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class CargoService {
     @Transactional
     public CargoResponseDTO criar(CargoRequestDTO dto) {
 
-        if (cargoRepository.existsByFuncao(dto.funcao())) {
+        if (cargoRepository.existsByFuncao(TextoUtils.normalizar(dto.funcao()))) {
             throw new RegraNegocioException("Cargo já cadastrado.");
         }
 
@@ -43,7 +44,7 @@ public class CargoService {
     @Transactional
     public CargoResponseDTO atualizar(Integer idCargo, CargoRequestDTO dto) {
 
-        if (cargoRepository.existsByFuncaoAndIdCargoNot(dto.funcao(), idCargo)) {
+        if (cargoRepository.existsByFuncaoAndIdCargoNot(TextoUtils.normalizar(dto.funcao()), idCargo)) {
             throw new RegraNegocioException("Cargo já cadastrado.");
         }
 
