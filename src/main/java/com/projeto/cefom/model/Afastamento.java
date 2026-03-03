@@ -1,6 +1,7 @@
 package com.projeto.cefom.model;
 
 import com.projeto.cefom.enums.MotivoAfastamento;
+import com.projeto.cefom.utils.TextoUtils;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -68,7 +69,7 @@ public class Afastamento extends Vigencia implements Serializable {
     }
 
     public void setOutroMotivoAfastamento(String outroMotivoAfastamento) {
-        this.outroMotivoAfastamento = outroMotivoAfastamento;
+        this.outroMotivoAfastamento = TextoUtils.normalizar(outroMotivoAfastamento);
     }
 
     public String getObservacao() {
@@ -76,7 +77,7 @@ public class Afastamento extends Vigencia implements Serializable {
     }
 
     public void setObservacao(String observacao) {
-        this.observacao = observacao;
+        this.observacao = TextoUtils.normalizar(observacao);
     }
 
     public Contrato getContrato() {

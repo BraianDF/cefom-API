@@ -56,6 +56,12 @@ public final class TextoUtils {
         return resultado.toString().trim();
     }
 
+    public static String textualizar(String string) {
+        if (string == null || string.isBlank()) return null;
+        //Implementar método
+        return string;
+    }
+
     public static String manterSomenteNumeros(String string) {
         if (string == null || string.isBlank()) return null;
 
