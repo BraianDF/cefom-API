@@ -56,10 +56,16 @@ public final class TextoUtils {
         return resultado.toString().trim();
     }
 
-    public static String textualizar(String string) {
+    public static String capitalizarPrimeiraLetra(String string) {
         if (string == null || string.isBlank()) return null;
-        //Implementar método
-        return string;
+
+        String texto = string.trim().toLowerCase();
+
+        if (texto.length() == 1) {
+            return texto.toUpperCase();
+        }
+
+        return Character.toUpperCase(texto.charAt(0)) + texto.substring(1);
     }
 
     public static String manterSomenteNumeros(String string) {
