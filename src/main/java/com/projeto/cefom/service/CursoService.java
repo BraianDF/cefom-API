@@ -9,6 +9,7 @@ import com.projeto.cefom.dto.response.CursoResponseDTO;
 import com.projeto.cefom.mapper.CursoMapper;
 import com.projeto.cefom.model.Curso;
 import com.projeto.cefom.repository.CursoRepository;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class CursoService {
     @Transactional
     public CursoResponseDTO criar(CursoRequestDTO dto) {
 
-        if (cursoRepository.existsByProtocoloAprovacao(dto.protocoloAprovacao())) {
+        if (cursoRepository.existsByProtocoloAprovacao(TextoUtils.manterSomenteNumeros(dto.protocoloAprovacao()))) {
             throw new RegraNegocioException("Curso já cadastrado.");
         }
 
@@ -48,7 +49,7 @@ public class CursoService {
     @Transactional
     public CursoResponseDTO atualizar(Integer idCurso, CursoRequestDTO dto) {
 
-        if (cursoRepository.existsByProtocoloAprovacaoAndIdCursoNot(dto.protocoloAprovacao(), idCurso)) {
+        if (cursoRepository.existsByProtocoloAprovacaoAndIdCursoNot(TextoUtils.manterSomenteNumeros(dto.protocoloAprovacao()), idCurso)) {
             throw new RegraNegocioException("Curso já cadastrado.");
         }
 
@@ -75,7 +76,7 @@ public class CursoService {
             return cursoRepository.findAll(pageable)
                     .map(cursoMapper::toListarResponseDTO);
         }
-        return cursoRepository.findByNomeCursoContainingIgnoreCase(nome, pageable)
+        return cursoRepository.findByNomeCursoContainingIgnoreCase(TextoUtils.normalizar(nome), pageable)
                 .map(cursoMapper::toListarResponseDTO);
     }
 

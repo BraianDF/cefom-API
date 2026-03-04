@@ -1,6 +1,7 @@
 package com.projeto.cefom.model;
 
 import com.projeto.cefom.enums.ModalidadeCurso;
+import com.projeto.cefom.utils.TextoUtils;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -69,7 +70,7 @@ public class Curso extends Vigencia implements Serializable {
     }
 
     public void setNomeCurso(String nomeCurso) {
-        this.nomeCurso = nomeCurso;
+        this.nomeCurso = TextoUtils.normalizar(nomeCurso);
     }
 
     public String getNomePrograma() {
@@ -77,7 +78,7 @@ public class Curso extends Vigencia implements Serializable {
     }
 
     public void setNomePrograma(String nomePrograma) {
-        this.nomePrograma = nomePrograma;
+        this.nomePrograma = TextoUtils.normalizar(nomePrograma);
     }
 
     public ModalidadeCurso getModalidadeCurso() {
@@ -93,7 +94,7 @@ public class Curso extends Vigencia implements Serializable {
     }
 
     public void setProtocoloAprovacao(String protocoloAprovacao) {
-        this.protocoloAprovacao = protocoloAprovacao;
+        this.protocoloAprovacao = TextoUtils.manterSomenteNumeros(protocoloAprovacao);
     }
 
     public BigDecimal getCargaHorariaTeorica() {
