@@ -13,6 +13,8 @@ import java.util.Comparator;
 public class TaxaAdministrativaMapper {
 
     public TaxaAdministrativaResponseDTO toResponseDTO(Empresa empresa, LocalDate data) {
+        if (empresa == null) return null;
+
         TaxaAdministrativa taxa = empresa.getTaxasAdministrativas()
                 .stream()
                 .filter(f -> f.estaValidoEm(data))
@@ -23,20 +25,24 @@ public class TaxaAdministrativaMapper {
     }
 
     public TaxaAdministrativaResponseDTO toResponseDTO(TaxaAdministrativa taxa) {
+        if (taxa == null) return null;
+
         return new TaxaAdministrativaResponseDTO(
-                taxa != null ? taxa.getIdTaxaAdministrativa() : null,
-                taxa != null ? taxa.getValorTaxa() : null,
-                taxa != null ? taxa.getDataInicio() : null,
-                taxa != null ? taxa.getDataFim() : null
+                taxa.getIdTaxaAdministrativa(),
+                taxa.getValorTaxa(),
+                taxa.getDataInicio(),
+                taxa.getDataFim()
         );
     }
 
     public TaxaAdministrativaListarResponseDTO toListarResponseDTO(TaxaAdministrativa taxa) {
+        if (taxa == null) return null;
+
         return new TaxaAdministrativaListarResponseDTO(
-                taxa != null ? taxa.getIdTaxaAdministrativa() : null,
-                taxa != null ? taxa.getDataInicio() : null,
-                taxa != null ? taxa.getDataFim() : null,
-                taxa != null ? taxa.getValorTaxa() : null
+                taxa.getIdTaxaAdministrativa(),
+                taxa.getDataInicio(),
+                taxa.getDataFim(),
+                taxa.getValorTaxa()
         );
     }
 }

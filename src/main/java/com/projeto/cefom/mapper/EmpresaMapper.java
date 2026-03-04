@@ -30,40 +30,44 @@ public class EmpresaMapper {
     }
 
     public EmpresaCriarResponseDTO toResponseDTO(Empresa empresa, LocalDate data) {
+        if (empresa == null) return null;
+
         return new EmpresaCriarResponseDTO(
-                empresa != null ? toResponseDTO(empresa) : null,
+                toResponseDTO(empresa),
 
-                empresa != null ? documentoMapper.toResponseDTO(empresa) : null,
+                documentoMapper.toResponseDTO(empresa),
 
-                empresa != null ? taxaAdministrativaMapper.toResponseDTO(empresa, data) : null,
+                taxaAdministrativaMapper.toResponseDTO(empresa, data),
 
-                empresa != null ? emailMapper.toResponseDTO(empresa, data) : null,
+                emailMapper.toResponseDTO(empresa, data),
 
-                empresa != null ? telefoneMapper.toResponseDTO(empresa, data) : null,
+                telefoneMapper.toResponseDTO(empresa, data),
 
-                empresa != null ? enderecoMapper.toResponseDTO(empresa, data) : null,
+                enderecoMapper.toResponseDTO(empresa, data),
 
-                empresa != null ? responsavelEmpresaMapper.toResponseDTO(empresa, data) : null
+                responsavelEmpresaMapper.toResponseDTO(empresa, data)
         );
     }
 
     public EmpresaResponseDTO toResponseDTO(Empresa empresa) {
+        if (empresa == null) return null;
         return new EmpresaResponseDTO(
-                empresa != null ? empresa.getIdEmpresa() : null,
-                empresa != null ? empresa.getNumConvenio() : null,
-                empresa != null ? empresa.getRazaoSocial() : null,
-                empresa != null ? empresa.getNomeFantasia() : null,
-                empresa != null ? empresa.getApelido() : null,
-                empresa != null ? empresa.getTipoEmpresa() : null,
-                empresa != null ? empresa.getContratacaoPadrao() : null
+                empresa.getIdEmpresa(),
+                empresa.getNumConvenio(),
+                empresa.getRazaoSocial(),
+                empresa.getNomeFantasia(),
+                empresa.getApelido(),
+                empresa.getTipoEmpresa(),
+                empresa.getContratacaoPadrao()
         );
     }
 
     public EmpresaListarResponseDTO toListarResponseDTO(Empresa empresa) {
+        if (empresa == null) return null;
         return new EmpresaListarResponseDTO(
-                empresa != null ? empresa.getIdEmpresa() : null,
-                empresa != null ? empresa.getApelido() : null,
-                empresa != null ? empresa.getTipoEmpresa() : null
+                empresa.getIdEmpresa(),
+                empresa.getApelido(),
+                empresa.getTipoEmpresa()
         );
     }
 
@@ -86,14 +90,16 @@ public class EmpresaMapper {
     }
 
     public EmpresaListarEntrevistaResponseDTO toListarEntrevistaResponseDTO(Empresa empresa) {
+        if (empresa == null) return null;
         return new EmpresaListarEntrevistaResponseDTO(
-                empresa != null ? empresa.getIdEmpresa() : null,
-                empresa != null ? empresa.getApelido() : null,
+                empresa.getIdEmpresa(),
+                empresa.getApelido(),
                 responsavelEmpresaMapper.toListarEntrevistaResponseDTO(empresa, LocalDate.now())
         );
     }
 
     public EmpresaEntrevistaResponseDTO toResponseDTO(Entrevista entrevista) {
+        if (entrevista == null) return null;
         return new EmpresaEntrevistaResponseDTO(
                 toResponseDTO(entrevista.getEmpresa()),
                 responsavelEmpresaMapper.toResponseDTO(entrevista)

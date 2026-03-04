@@ -23,6 +23,8 @@ public class InscricaoMapper {
     }
 
     public InscricaoCriarResponseDTO toResponseDTO(Adolescente adolescente, LocalDate data) {
+        if (adolescente == null) return null;
+
         return new InscricaoCriarResponseDTO(
                 // Inscricao
                 toResponseDTO(null),
@@ -45,6 +47,8 @@ public class InscricaoMapper {
     }
 
     public InscricaoCriarResponseDTO toResponseDTO(Inscricao inscricao, LocalDate data) {
+        if (inscricao == null) return null;
+
         Adolescente adolescente = inscricao.getAdolescente();
 
         return new InscricaoCriarResponseDTO(
@@ -69,23 +73,27 @@ public class InscricaoMapper {
     }
 
     public InscricaoResponseDTO toResponseDTO(Inscricao inscricao) {
+        if (inscricao == null) return null;
+
         return new InscricaoResponseDTO(
-                inscricao != null ? inscricao.getIdInscricao() : null,
-                inscricao != null ? inscricao.getNumInscricao() : null,
-                inscricao != null ? inscricao.getObservacao() : null,
-                inscricao != null ? inscricao.getDataInicio() : null,
-                inscricao != null ? inscricao.getDataFim() : null,
-                inscricao != null ? inscricao.getFinalizacao() : null,
-                inscricao != null ? fotoAdolescenteMapper.toResponseDTO(inscricao.getFoto()) : null
+                inscricao.getIdInscricao(),
+                inscricao.getNumInscricao(),
+                inscricao.getObservacao(),
+                inscricao.getDataInicio(),
+                inscricao.getDataFim(),
+                inscricao.getFinalizacao(),
+                fotoAdolescenteMapper.toResponseDTO(inscricao.getFoto())
         );
     }
 
     public InscricaoListarResponseDTO toListarResponseDTO(Inscricao inscricao) {
+        if (inscricao == null) return null;
+
         return new InscricaoListarResponseDTO(
-                inscricao != null ? inscricao.getIdInscricao() : null,
-                inscricao != null ? inscricao.getNumInscricao() : null,
-                inscricao != null ? inscricao.getDataInicio() : null,
-                inscricao != null ? inscricao.getDataFim() : null
+                inscricao.getIdInscricao(),
+                inscricao.getNumInscricao(),
+                inscricao.getDataInicio(),
+                inscricao.getDataFim()
         );
     }
 

@@ -13,6 +13,8 @@ import java.util.Comparator;
 public class JornadaTrabalhoMapper {
 
     public JornadaTrabalhoResponseDTO toResponseDTO (Contrato contrato, LocalDate data) {
+        if (contrato == null) return null;
+
         JornadaTrabalho jornadaTrabalho = contrato.getJornadasTrabalho()
                 .stream()
                 .filter(e -> e.estaValidoEm(data))

@@ -16,6 +16,8 @@ import java.util.Comparator;
 public class ResponsavelEmpresaMapper {
 
     public ResponsaveisEmpresaResponseDTO toResponseDTO(Empresa empresa, LocalDate data) {
+        if (empresa == null) return null;
+
         ResponsavelEmpresa responsavelEmpresa = empresa.getResponsaveis()
                 .stream()
                 .filter(f -> f.getResponsabilidade() == TipoResponsabilidade.EMPRESA)
@@ -39,33 +41,39 @@ public class ResponsavelEmpresaMapper {
 
 
         return new ResponsaveisEmpresaResponseDTO(
-                responsavelEmpresa != null ? toResponseDTO(responsavelEmpresa) : null,
-                responsavelAprendizes != null ? toResponseDTO(responsavelAprendizes) : null,
-                responsavelEntrevistas != null ? toResponseDTO(responsavelEntrevistas) : null
+                toResponseDTO(responsavelEmpresa),
+                toResponseDTO(responsavelAprendizes),
+                toResponseDTO(responsavelEntrevistas)
         );
     }
 
     public ResponsavelEmpresaResponseDTO toResponseDTO(ResponsavelEmpresa responsavel) {
+        if (responsavel == null) return null;
+
         return new ResponsavelEmpresaResponseDTO(
-                responsavel != null ? responsavel.getIdResponsavelEmpresa() : null,
-                responsavel != null ? responsavel.getNome() : null,
-                responsavel != null ? responsavel.getResponsabilidade() : null,
-                responsavel != null ? responsavel.getDataInicio() : null,
-                responsavel != null ? responsavel.getDataFim() : null
+                responsavel.getIdResponsavelEmpresa(),
+                responsavel.getNome(),
+                responsavel.getResponsabilidade(),
+                responsavel.getDataInicio(),
+                responsavel.getDataFim()
         );
     }
 
     public ResponsavelEmpresaListarResponseDTO toListarResponseDTO(ResponsavelEmpresa responsavel) {
+        if (responsavel == null) return null;
+
         return new ResponsavelEmpresaListarResponseDTO(
-                responsavel != null ? responsavel.getIdResponsavelEmpresa() : null,
-                responsavel != null ? responsavel.getDataInicio() : null,
-                responsavel != null ? responsavel.getDataFim() : null,
-                responsavel != null ? responsavel.getNome() : null
+                responsavel.getIdResponsavelEmpresa(),
+                responsavel.getDataInicio(),
+                responsavel.getDataFim(),
+                responsavel.getNome(),
 
         );
     }
 
     public ResponsavelEmpresaListarResponseDTO toListarEntrevistaResponseDTO(Empresa empresa, LocalDate data) {
+        if (empresa == null) return null;
+
         ResponsavelEmpresa responsavelEntrevistas = empresa.getResponsaveis()
                 .stream()
                 .filter(f -> f.getResponsabilidade() == TipoResponsabilidade.ENTREVISTAS)
@@ -77,6 +85,8 @@ public class ResponsavelEmpresaMapper {
     }
 
     public ResponsavelEmpresaResponseDTO toResponseDTO (Entrevista entrevista) {
+        if (entrevista == null) return null;
+
         ResponsavelEmpresa responsavelEntrevistas = entrevista.getEmpresa().getResponsaveis()
                 .stream()
                 .filter(f -> f.getResponsabilidade() == TipoResponsabilidade.ENTREVISTAS)

@@ -13,6 +13,8 @@ import java.util.Comparator;
 public class EmailMapper {
 
     public EmailResponseDTO toResponseDTO(Adolescente adolescente, LocalDate data) {
+        if (adolescente == null) return null;
+
         Email email = adolescente.getEmails()
                 .stream()
                 .filter(e -> e.estaValidoEm(data))
@@ -23,6 +25,8 @@ public class EmailMapper {
     }
 
     public EmailResponseDTO toResponseDTO(Empresa empresa, LocalDate data) {
+        if (empresa == null) return null;
+
         Email email = empresa.getEmails()
                 .stream()
                 .filter(e -> e.estaValidoEm(data))
@@ -33,21 +37,25 @@ public class EmailMapper {
     }
 
     public EmailResponseDTO toResponseDTO(Email email) {
+        if (email == null) return null;
+
         return new EmailResponseDTO(
-                email != null ? email.getIdEmail() : null,
-                email != null ? email.getEmail() : null,
-                email != null ? email.getTitular() : null,
-                email != null ? email.getDataInicio() : null,
-                email != null ? email.getDataFim() : null
+                email.getIdEmail(),
+                email.getEmail(),
+                email.getTitular(),
+                email.getDataInicio(),
+                email.getDataFim()
         );
     }
 
     public EmailListarResponseDTO toListarResponseDTO(Email email) {
+        if (email == null) return null;
+
         return new EmailListarResponseDTO(
-                email != null ? email.getIdEmail() : null,
-                email != null ? email.getDataInicio() : null,
-                email != null ? email.getDataFim() : null,
-                email != null ? email.getEmail() : null
+                email.getIdEmail(),
+                email.getDataInicio(),
+                email.getDataFim(),
+                email.getEmail()
         );
     }
 }

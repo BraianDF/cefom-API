@@ -39,6 +39,8 @@ public class MatriculaMapper {
     }
 
     public MatriculaCriarResponseDTO toResponseDTO(Adolescente adolescente, LocalDate data) {
+        if (adolescente == null) return null;
+
         return new MatriculaCriarResponseDTO(
                 toResponseDTO(null),
 
@@ -63,6 +65,8 @@ public class MatriculaMapper {
     }
 
     public MatriculaCriarResponseDTO toResponseDTO(Matricula matricula, LocalDate data) {
+        if (matricula == null) return null;
+
         Adolescente adolescente = matricula.getAdolescente();
 
         return new MatriculaCriarResponseDTO(
@@ -90,23 +94,27 @@ public class MatriculaMapper {
     }
 
     public MatriculaResponseDTO toResponseDTO(Matricula matricula) {
+        if (matricula == null) return null;
+
         return new MatriculaResponseDTO(
-                matricula != null ? matricula.getIdMatricula() : null,
-                matricula != null ? matricula.getNumMatricula() : null,
-                matricula != null ? matricula.getSituacaoMatricula() : null,
-                matricula != null ? matricula.getDataInicio() : null,
-                matricula != null ? matricula.getDataFim() : null,
-                matricula != null ? matricula.getDesligamento() : null,
-                matricula != null ? fotoAdolescenteMapper.toResponseDTO(matricula.getFoto()) : null
+                matricula.getIdMatricula(),
+                matricula.getNumMatricula(),
+                matricula.getSituacaoMatricula(),
+                matricula.getDataInicio(),
+                matricula.getDataFim(),
+                matricula.getDesligamento(),
+                fotoAdolescenteMapper.toResponseDTO(matricula.getFoto())
         );
     }
 
     public MatriculaListarResponseDTO toListarResponseDTO(Matricula matricula) {
+        if (matricula == null) return null;
+
         return new MatriculaListarResponseDTO(
-                matricula != null ? matricula.getIdMatricula() : null,
-                matricula != null ? matricula.getNumMatricula() : null,
-                matricula != null ? matricula.getDataInicio() : null,
-                matricula != null ? matricula.getDataFim() : null
+                matricula.getIdMatricula(),
+                matricula.getNumMatricula(),
+                matricula.getDataInicio(),
+                matricula.getDataFim()
         );
     }
 

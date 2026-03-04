@@ -14,6 +14,8 @@ import java.util.Comparator;
 public class TelefoneMapper {
 
     public TelefonesResponseDTO toResponseDTO(Adolescente adolescente, LocalDate data) {
+        if (adolescente == null) return null;
+
         Telefone telAdolescente = adolescente.getTelefones()
                 .stream()
                 .filter(t -> t.getTitular() == TitularContato.ADOLESCENTE)
@@ -37,13 +39,15 @@ public class TelefoneMapper {
 
 
         return new TelefonesResponseDTO(
-                telAdolescente != null ? toResponseDTO(telAdolescente) : null,
-                telResponsavel != null ? toResponseDTO(telResponsavel) : null,
-                telExtra != null ? toResponseDTO(telExtra) : null
+                toResponseDTO(telAdolescente),
+                toResponseDTO(telResponsavel),
+                toResponseDTO(telExtra)
         );
     }
 
     public TelefonesEmpresaResponseDTO toResponseDTO(Empresa empresa, LocalDate data) {
+        if (empresa == null) return null;
+
         Telefone telPrincipal = empresa.getTelefones()
                 .stream()
                 .filter(t -> t.getTitular() == TitularContato.EMPRESA)
@@ -59,27 +63,31 @@ public class TelefoneMapper {
                 .orElse(null);
 
         return new TelefonesEmpresaResponseDTO(
-                telPrincipal != null ? toResponseDTO(telPrincipal) : null,
-                telExtra != null ? toResponseDTO(telExtra) : null
+                toResponseDTO(telPrincipal),
+                toResponseDTO(telExtra)
         );
     }
 
     public TelefoneResponseDTO toResponseDTO(Telefone telefone) {
+        if (telefone == null) return null;
+
         return new TelefoneResponseDTO(
-                telefone != null ? telefone.getIdTelefone() : null,
-                telefone != null ? telefone.getNumero() : null,
-                telefone != null ? telefone.getTitular() : null,
-                telefone != null ? telefone.getDataInicio() : null,
-                telefone != null ? telefone.getDataFim() : null
+                telefone.getIdTelefone(),
+                telefone.getNumero(),
+                telefone.getTitular(),
+                telefone.getDataInicio(),
+                telefone.getDataFim()
         );
     }
 
     public TelefoneListarResponseDTO toListarResponseDTO(Telefone telefone) {
+        if (telefone == null) return null;
+
         return new TelefoneListarResponseDTO(
-                telefone != null ? telefone.getIdTelefone() : null,
-                telefone != null ? telefone.getDataInicio() : null,
-                telefone != null ? telefone.getDataFim() : null,
-                telefone != null ? telefone.getNumero() : null
+                telefone.getIdTelefone(),
+                telefone.getDataInicio(),
+                telefone.getDataFim(),
+                telefone.getNumero()
         );
     }
 }

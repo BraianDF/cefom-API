@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 public class TerritorioMapper {
 
     public TerritorioResponseDTO toResponseDTO(Territorio territorio) {
+        if (territorio == null) return null;
         return new TerritorioResponseDTO(
                 territorio.getIdTerritorio(),
                 territorio.getResultado(),
@@ -17,6 +18,7 @@ public class TerritorioMapper {
     }
 
     public TerritorioListarResponseDTO toListarResponseDTO(Territorio territorio) {
+        if (territorio == null) return null;
         return new TerritorioListarResponseDTO(
                 territorio.getIdTerritorio(),
                 territorio.getResultado()

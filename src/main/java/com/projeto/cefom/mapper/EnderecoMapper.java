@@ -15,6 +15,8 @@ import java.util.Comparator;
 public class EnderecoMapper {
 
     public EnderecoMatriculaResponseDTO toResponseDTO(Adolescente adolescente, LocalDate data) {
+        if (adolescente == null) return null;
+
         Endereco endereco = adolescente.getEnderecos()
                 .stream()
                 .filter(e -> e.estaValidoEm(data))
@@ -25,23 +27,27 @@ public class EnderecoMapper {
     }
 
     public EnderecoMatriculaResponseDTO toAdolescenteResponseDTO(Endereco endereco) {
+        if (endereco == null) return null;
+
         return new EnderecoMatriculaResponseDTO(
-                endereco != null ? endereco.getIdEndereco() : null,
-                endereco != null ? endereco.getCep() : null,
-                endereco != null ? endereco.getLogradouro() : null,
-                endereco != null ? endereco.getNumero() : null,
-                endereco != null ? endereco.getComplemento() : null,
-                endereco != null ? endereco.getBairro() : null,
-                endereco != null ? endereco.getCidade() : null,
-                endereco != null ? endereco.getEstado() : null,
-                endereco != null ? endereco.getTipoResidencia() : null,
-                endereco != null ? endereco.getTerritorio().getResultado() : null,
-                endereco != null ? endereco.getDataInicio() : null,
-                endereco != null ? endereco.getDataFim() : null
+                endereco.getIdEndereco(),
+                endereco.getCep(),
+                endereco.getLogradouro(),
+                endereco.getNumero(),
+                endereco.getComplemento(),
+                endereco.getBairro(),
+                endereco.getCidade(),
+                endereco.getEstado(),
+                endereco.getTipoResidencia(),
+                endereco.getTerritorio().getResultado(),
+                endereco.getDataInicio(),
+                endereco.getDataFim()
         );
     }
 
     public EnderecoResponseDTO toInscricaoResponseDTO(Adolescente adolescente, LocalDate data) {
+        if (adolescente == null) return null;
+
         Endereco endereco = adolescente.getEnderecos()
                 .stream()
                 .filter(e -> e.estaValidoEm(data))
@@ -52,6 +58,8 @@ public class EnderecoMapper {
     }
 
     public EnderecoResponseDTO toResponseDTO(Escola escola, LocalDate data) {
+        if (escola == null) return null;
+
         Endereco endereco = escola.getEnderecos()
                 .stream()
                 .filter(e -> e.estaValidoEm(data))
@@ -62,6 +70,8 @@ public class EnderecoMapper {
     }
 
     public EnderecoResponseDTO toResponseDTO(Empresa empresa, LocalDate data) {
+        if (empresa == null) return null;
+
         Endereco endereco = empresa.getEnderecos()
                 .stream()
                 .filter(e -> e.estaValidoEm(data))
@@ -72,27 +82,31 @@ public class EnderecoMapper {
     }
 
     public EnderecoResponseDTO toResponseDTO(Endereco endereco) {
+        if (endereco == null) return null;
+
         return new EnderecoResponseDTO(
-                endereco != null ? endereco.getIdEndereco() : null,
-                endereco != null ? endereco.getCep() : null,
-                endereco != null ? endereco.getLogradouro() : null,
-                endereco != null ? endereco.getNumero() : null,
-                endereco != null ? endereco.getComplemento() : null,
-                endereco != null ? endereco.getBairro() : null,
-                endereco != null ? endereco.getCidade() : null,
-                endereco != null ? endereco.getEstado() : null,
-                endereco != null ? endereco.getTerritorio().getResultado() : null,
-                endereco != null ? endereco.getDataInicio() : null,
-                endereco != null ? endereco.getDataFim() : null
+                endereco.getIdEndereco(),
+                endereco.getCep(),
+                endereco.getLogradouro(),
+                endereco.getNumero(),
+                endereco.getComplemento(),
+                endereco.getBairro(),
+                endereco.getCidade(),
+                endereco.getEstado(),
+                endereco.getTerritorio().getResultado(),
+                endereco.getDataInicio(),
+                endereco.getDataFim()
         );
     }
 
     public EnderecoListarResponseDTO toListarResponseDTO(Endereco endereco) {
+        if (endereco == null) return null;
+
         return new EnderecoListarResponseDTO(
-                endereco != null ? endereco.getIdEndereco() : null,
-                endereco != null ? endereco.getDataInicio() : null,
-                endereco != null ? endereco.getDataFim() : null,
-                endereco != null ? endereco.getTerritorio().getResultado() : null
+                endereco.getIdEndereco(),
+                endereco.getDataInicio(),
+                endereco.getDataFim(),
+                endereco.getTerritorio().getResultado()
         );
     }
 }

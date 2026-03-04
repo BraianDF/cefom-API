@@ -13,6 +13,8 @@ import java.util.Comparator;
 public class SalarioMapper {
 
     public SalarioResponseDTO toResponseDTO (Contrato contrato, LocalDate data) {
+        if (contrato == null) return null;
+
         Salario salario = contrato.getSalarios()
                 .stream()
                 .filter(e -> e.estaValidoEm(data))

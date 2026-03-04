@@ -14,6 +14,8 @@ import java.util.Comparator;
 public class AfastamentoMapper {
 
     public AfastamentoResponseDTO toResponseDTO (Contrato contrato, LocalDate data) {
+        if (contrato == null) return null;
+
         Afastamento afastamento = contrato.getAfastamentos()
                 .stream()
                 .filter(e -> e.estaValidoEm(data))

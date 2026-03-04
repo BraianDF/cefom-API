@@ -17,11 +17,13 @@ public class EscolaMapper {
     }
 
     public EscolaResponseDTO toResponseDTO(Escola escola, LocalDate data) {
+        if (escola == null) return null;
+
         return new EscolaResponseDTO(
-                escola != null ? escola.getIdEscola() : null,
-                escola != null ? escola.getNome() : null,
-                escola != null ? escola.getTipo() : null,
-                escola != null ? enderecoMapper.toResponseDTO(escola, data) : null
+                escola.getIdEscola(),
+                escola.getNome(),
+                escola.getTipo(),
+                enderecoMapper.toResponseDTO(escola, data)
         );
     }
 
