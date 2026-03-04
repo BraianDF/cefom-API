@@ -16,6 +16,8 @@ import java.util.Comparator;
 public class CargoMapper {
 
     public CargoResponseDTO toResponseDTO(Contrato contrato, LocalDate data) {
+        if (contrato == null) return null;
+
         VinculoContratoCargo vinculo = contrato.getCargos()
                 .stream()
                 .filter(e -> e.estaValidoEm(data))

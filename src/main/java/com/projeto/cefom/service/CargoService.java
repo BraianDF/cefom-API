@@ -71,7 +71,7 @@ public class CargoService {
             return cargoRepository.findAll(pageable)
                     .map(cargoMapper::toListarResponseDTO);
         }
-        return cargoRepository.findByFuncaoContainingIgnoreCase(nome, pageable)
+        return cargoRepository.findByFuncaoContainingIgnoreCase(TextoUtils.normalizar(nome), pageable)
                 .map(cargoMapper::toListarResponseDTO);
     }
 
