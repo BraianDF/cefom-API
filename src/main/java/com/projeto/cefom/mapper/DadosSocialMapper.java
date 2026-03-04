@@ -3,6 +3,7 @@ package com.projeto.cefom.mapper;
 import com.projeto.cefom.dto.response.*;
 import com.projeto.cefom.model.Adolescente;
 import com.projeto.cefom.model.DadosSocial;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -28,20 +29,20 @@ public class DadosSocialMapper {
         return new DadosSocialResponseDTO(
                 dadosSocial.getIdDadosSocial(),
                 dadosSocial.getComportamentoBoolean(),
-                dadosSocial.getComportamento(),
+                TextoUtils.capitalizarPrimeiraLetra(dadosSocial.getComportamento()),
                 dadosSocial.getEncaminhamentoBoolean(),
-                dadosSocial.getEncaminhamento(),
+                TextoUtils.capitalizar(dadosSocial.getEncaminhamento()),
                 dadosSocial.getBeneficioBoolean(),
                 dadosSocial.getBeneficio(),
                 dadosSocial.getBeneficioValor(),
                 dadosSocial.getProblemaSaudeBoolean(),
-                dadosSocial.getProblemaSaude(),
+                TextoUtils.capitalizarPrimeiraLetra(dadosSocial.getProblemaSaude()),
                 dadosSocial.getMedicamentoBoolean(),
-                dadosSocial.getMedicamento(),
+                TextoUtils.capitalizarPrimeiraLetra(dadosSocial.getMedicamento()),
                 dadosSocial.getEntidadeBoolean(),
-                dadosSocial.getEntidade(),
+                TextoUtils.capitalizar(dadosSocial.getEntidade()),
                 dadosSocial.getRendaFamiliar(),
-                dadosSocial.getComposicaoFamiliar(),
+                TextoUtils.capitalizar(dadosSocial.getComposicaoFamiliar()),
                 dadosSocial.getDataInicio(),
                 dadosSocial.getDataFim()
         );
