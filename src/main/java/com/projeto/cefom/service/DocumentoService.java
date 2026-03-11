@@ -13,6 +13,7 @@ import com.projeto.cefom.model.Empresa;
 import com.projeto.cefom.repository.EmpresaRepository;
 import com.projeto.cefom.repository.DocumentoRepository;
 import com.projeto.cefom.repository.FamiliarRepository;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -202,46 +203,39 @@ public class DocumentoService {
         }
     }
 
-    public String limparDocumento(String documento) {
-        if (documento == null || documento.isBlank()) {
-            throw new RegraNegocioException("Documento não pode ser vazio.");
-        }
-        return documento.replaceAll("\\D", "");
-    }
-
     public boolean isCnpj(String documento) {
-        return limparDocumento(documento).length() == 14;
+        return TextoUtils.manterSomenteNumeros(documento).length() == 14;
     }
 
     public boolean isCpf(String documento) {
-        return limparDocumento(documento).length() == 11;
+        return TextoUtils.manterSomenteNumeros(documento).length() == 11;
     }
 
     public boolean documentoIgualNormalizado(DocumentoAdolescenteRequestDTO dto, Documento d) {
 
-        String cpfNormalizado = limparDocumento(dto.cpf());
+        String cpfNormalizado = TextoUtils.manterSomenteNumeros(dto.cpf());
 
         // Regra: se ctps não vier, usa o CPF
         String ctpsNormalizada =
                 dto.ctps() != null ? dto.ctps() : cpfNormalizado;
 
-        return Objects.equals(d.getCpf(), cpfNormalizado)
-                && Objects.equals(d.getCtps(), ctpsNormalizada)
-                && Objects.equals(d.getRg(), dto.rg())
+        return TextoUtils.equalsSomenteNumero(d.getCpf(), dto.cpf())
+                && TextoUtils.equalsSomenteNumero(d.getCtps(), ctpsNormalizada)
+                && TextoUtils.equalsNormalizado(d.getRg(), dto.rg())
                 && Objects.equals(d.getDataEmissaoRG(), dto.dataEmissaoRG())
-                && Objects.equals(d.getNis(), dto.nis())
-                && Objects.equals(d.getSus(), dto.sus())
-                && Objects.equals(d.getTituloEleitor(), dto.tituloEleitor())
-                && Objects.equals(d.getZonaTE(), dto.zonaTE())
-                && Objects.equals(d.getSecaoTE(), dto.secaoTE())
-                && Objects.equals(d.getCnh(), dto.cnh())
-                && Objects.equals(d.getCategoriaCNH(), dto.categoriaCNH())
-                && Objects.equals(d.getReservista(), dto.reservista());
+                && TextoUtils.equalsSomenteNumero(d.getNis(), dto.nis())
+                && TextoUtils.equalsSomenteNumero(d.getSus(), dto.sus())
+                && TextoUtils.equalsSomenteNumero(d.getTituloEleitor(), dto.tituloEleitor())
+                && TextoUtils.equalsSomenteNumero(d.getZonaTE(), dto.zonaTE())
+                && TextoUtils.equalsSomenteNumero(d.getSecaoTE(), dto.secaoTE())
+                && TextoUtils.equalsSomenteNumero(d.getCnh(), dto.cnh())
+                && TextoUtils.equalsNormalizado(d.getCategoriaCNH(), dto.categoriaCNH())
+                && TextoUtils.equalsSomenteNumero(d.getReservista(), dto.reservista());
     }
 
     @Transactional(readOnly = true)
     public Optional<Documento> buscarPorDocumento(String documento) {
-        String documentoLimpo = limparDocumento(documento);
+        String documentoLimpo = TextoUtils.manterSomenteNumeros(documento);
         if (isCnpj(documento)) {
             return documentoRepository.findByCnpj(documentoLimpo);
         } else if (isCpf(documento)) {
@@ -284,9 +278,9 @@ public class DocumentoService {
     }
 
     private boolean documentoResponsavelIgual(DocumentoResponsavelRequestDTO dto, Documento d) {
-        return Objects.equals(d.getCpf(), limparDocumento(dto.cpf())) &&
-                Objects.equals(d.getRg(), dto.rg()) &&
-                Objects.equals(d.getNis(), dto.nis());
+        return TextoUtils.equalsSomenteNumero(d.getCpf(),dto.cpf()) &&
+                TextoUtils.equalsNormalizado(d.getRg(), dto.rg()) &&
+                TextoUtils.equalsSomenteNumero(d.getNis(), dto.nis());
     }
 
     public Documento buscarDocumentoMatricula(Integer idAdolescente, Integer idDocumento) {
@@ -327,7 +321,7 @@ public class DocumentoService {
 
     public void atualizarDocumentoEmpresa(String documento, Empresa empresa) {
         Documento documentoAtual = empresa.getDocumento();
-        String docLimpo = limparDocumento(documento);
+        String docLimpo = TextoUtils.manterSomenteNumeros(documento);
 
         if (documentoAtual == null) {
             criarDocumentoEmpresa(docLimpo, empresa);
@@ -335,12 +329,12 @@ public class DocumentoService {
         }
 
         if (isCpf(docLimpo)) {
-            if (!Objects.equals(documentoAtual.getCpf(), docLimpo)) {
+            if (!TextoUtils.equalsSomenteNumero(documentoAtual.getCpf(), docLimpo)) {
                 documentoAtual.setCpf(docLimpo);
                 documentoAtual.setCnpj(null);
             }
         } else if (isCnpj(docLimpo)) {
-            if (!Objects.equals(documentoAtual.getCnpj(), docLimpo)) {
+            if (!TextoUtils.equalsSomenteNumero(documentoAtual.getCnpj(), docLimpo)) {
                 documentoAtual.setCnpj(docLimpo);
                 documentoAtual.setCpf(null);
             }

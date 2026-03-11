@@ -1,6 +1,7 @@
 package com.projeto.cefom.model;
 
 import com.projeto.cefom.exceptions.RegraNegocioException;
+import com.projeto.cefom.utils.TextoUtils;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -39,14 +40,12 @@ public class Documento implements Serializable {
     private String categoriaCNH;
     @Column(name = "reservista", length = 15)
     private String reservista;
-
     @OneToOne
     @JoinColumn(name = "idAdolescente")
     private Adolescente adolescente;
     @OneToOne
     @JoinColumn(name = "idFamiliar")
     private Familiar familiar;
-
     @OneToOne
     @JoinColumn(name = "idEmpresa")
     private Empresa empresa;
@@ -87,7 +86,7 @@ public class Documento implements Serializable {
     }
 
     public void setCpf(String cpf) {
-        this.cpf = limparDocumento(cpf);
+        this.cpf = TextoUtils.manterSomenteNumeros(cpf);
     }
 
     public String getCtps() {
@@ -95,7 +94,7 @@ public class Documento implements Serializable {
     }
 
     public void setCtps(String ctps) {
-        this.ctps = limparDocumento(ctps);
+        this.ctps = TextoUtils.manterSomenteNumeros(ctps);
     }
 
     public String getRg() {
@@ -103,7 +102,7 @@ public class Documento implements Serializable {
     }
 
     public void setRg(String rg) {
-        this.rg = rg;
+        this.rg = TextoUtils.normalizar(rg);
     }
 
     public LocalDate getDataEmissaoRG() {
@@ -119,7 +118,7 @@ public class Documento implements Serializable {
     }
 
     public void setNis(String nis) {
-        this.nis = nis;
+        this.nis = TextoUtils.manterSomenteNumeros(nis);
     }
 
     public String getSus() {
@@ -127,7 +126,7 @@ public class Documento implements Serializable {
     }
 
     public void setSus(String sus) {
-        this.sus = sus;
+        this.sus = TextoUtils.manterSomenteNumeros(sus);
     }
 
     public String getTituloEleitor() {
@@ -135,7 +134,7 @@ public class Documento implements Serializable {
     }
 
     public void setTituloEleitor(String tituloEleitor) {
-        this.tituloEleitor = tituloEleitor;
+        this.tituloEleitor = TextoUtils.manterSomenteNumeros(tituloEleitor);
     }
 
     public String getZonaTE() {
@@ -143,7 +142,7 @@ public class Documento implements Serializable {
     }
 
     public void setZonaTE(String zonaTE) {
-        this.zonaTE = zonaTE;
+        this.zonaTE = TextoUtils.manterSomenteNumeros(zonaTE);
     }
 
     public String getSecaoTE() {
@@ -151,7 +150,7 @@ public class Documento implements Serializable {
     }
 
     public void setSecaoTE(String secaoTE) {
-        this.secaoTE = secaoTE;
+        this.secaoTE = TextoUtils.manterSomenteNumeros(secaoTE);
     }
 
     public String getCnh() {
@@ -159,7 +158,7 @@ public class Documento implements Serializable {
     }
 
     public void setCnh(String cnh) {
-        this.cnh = cnh;
+        this.cnh = TextoUtils.manterSomenteNumeros(cnh);
     }
 
     public String getCategoriaCNH() {
@@ -167,7 +166,7 @@ public class Documento implements Serializable {
     }
 
     public void setCategoriaCNH(String categoriaCNH) {
-        this.categoriaCNH = categoriaCNH;
+        this.categoriaCNH = TextoUtils.normalizar(categoriaCNH);
     }
 
     public String getReservista() {
@@ -175,7 +174,7 @@ public class Documento implements Serializable {
     }
 
     public void setReservista(String reservista) {
-        this.reservista = reservista;
+        this.reservista = TextoUtils.manterSomenteNumeros(reservista);
     }
 
     public Adolescente getAdolescente() {
@@ -199,7 +198,7 @@ public class Documento implements Serializable {
     }
 
     public void setCnpj(String cnpj) {
-        this.cnpj = limparDocumento(cnpj);
+        this.cnpj = TextoUtils.manterSomenteNumeros(cnpj);
     }
 
     public Empresa getEmpresa() {
@@ -210,19 +209,12 @@ public class Documento implements Serializable {
         this.empresa = empresa;
     }
 
-    public String limparDocumento(String documento) {
-        if (documento == null || documento.isBlank()) {
-            throw new RegraNegocioException("Documento não pode ser vazio.");
-        }
-        return documento.replaceAll("\\D", "");
-    }
-
     public boolean isCnpj(String documento) {
         /*
         if (documento == null || documento.isBlank()) {
             throw new RegraNegocioException("Documento não pode ser vazio.");
         }
         */
-        return limparDocumento(documento).length() == 14;
+        return TextoUtils.manterSomenteNumeros(documento).length() == 14;
     }
 }

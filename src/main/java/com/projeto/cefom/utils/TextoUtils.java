@@ -13,6 +13,20 @@ public final class TextoUtils {
         return normalizarSemAcento(a).equals(normalizarSemAcento(b));
     }
 
+    public static boolean equalsNormalizado(String a, String b) {
+        if (a == null && b == null) return true;
+        if (a == null || b == null) return false;
+
+        return normalizar(a).equals(normalizar(b));
+    }
+
+    public static boolean equalsSomenteNumero(String a, String b) {
+        if (a == null && b == null) return true;
+        if (a == null || b == null) return false;
+
+        return manterSomenteNumeros(a).equals(manterSomenteNumeros(b));
+    }
+
     public static boolean containsFlex(String texto, String termo) {
         if ((texto == null || texto.isBlank()) || (termo == null || termo.isBlank())) return false;
 

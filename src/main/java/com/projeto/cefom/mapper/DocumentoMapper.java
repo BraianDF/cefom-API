@@ -8,6 +8,7 @@ import com.projeto.cefom.model.Documento;
 import com.projeto.cefom.dto.response.DocumentoAdolescenteEntrevistaResponseDTO;
 import com.projeto.cefom.dto.response.DocumentoEmpresaResponseDTO;
 import com.projeto.cefom.model.Empresa;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -26,7 +27,7 @@ public class DocumentoMapper {
 
         return new DocumentoAdolescenteResponseDTO(
                 documento.getIdDocumento(),
-                documento.getCpf(),
+                TextoUtils.formatarCpf(documento.getCpf()),
                 documento.getCtps(),
                 documento.getRg(),
                 documento.getDataEmissaoRG(),
@@ -62,7 +63,7 @@ public class DocumentoMapper {
 
         return new DocumentoInscricaoResponseDTO(
                 documento.getIdDocumento(),
-                documento.getCpf()
+                TextoUtils.formatarCpf(documento.getCpf())
         );
     }
 
@@ -70,8 +71,8 @@ public class DocumentoMapper {
         if (documento == null) return null;
 
         return new DocumentoEmpresaResponseDTO(
-                documento != null ? documento.getIdDocumento() : null,
-                documento != null ? documento.getCpf() != null ? documento.getCpf() : documento.getCnpj() : null
+                documento.getIdDocumento(),
+                documento.getCpf() != null ? TextoUtils.formatarCpf(documento.getCpf()) : TextoUtils.formatarCnpj(documento.getCnpj())
         );
     }
 
@@ -80,7 +81,7 @@ public class DocumentoMapper {
 
         return new DocumentoResponsavelResponseDTO(
                 documento.getIdDocumento(),
-                documento.getCpf(),
+                TextoUtils.formatarCpf(documento.getCpf()),
                 documento.getRg(),
                 documento.getNis()
         );
@@ -90,7 +91,7 @@ public class DocumentoMapper {
         if (adolescente == null) return null;
         return new DocumentoAdolescenteEntrevistaResponseDTO(
                 adolescente.getDocumento().getIdDocumento(),
-                adolescente.getDocumento().getCpf(),
+                TextoUtils.formatarCpf(adolescente.getDocumento().getCpf()),
                 adolescente.getDocumento().getRg()
         );
     }
