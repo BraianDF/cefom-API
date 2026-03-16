@@ -5,6 +5,7 @@ import com.projeto.cefom.dto.response.EmailResponseDTO;
 import com.projeto.cefom.model.Adolescente;
 import com.projeto.cefom.model.Email;
 import com.projeto.cefom.model.Empresa;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -41,7 +42,7 @@ public class EmailMapper {
 
         return new EmailResponseDTO(
                 email.getIdEmail(),
-                email.getEmail(),
+                TextoUtils.normalizarMinusculo(email.getEmail()),
                 email.getTitular(),
                 email.getDataInicio(),
                 email.getDataFim()
@@ -55,7 +56,7 @@ public class EmailMapper {
                 email.getIdEmail(),
                 email.getDataInicio(),
                 email.getDataFim(),
-                email.getEmail()
+                TextoUtils.normalizarMinusculo(email.getEmail())
         );
     }
 }

@@ -12,6 +12,7 @@ import com.projeto.cefom.model.Email;
 import com.projeto.cefom.model.Empresa;
 import com.projeto.cefom.repository.EmpresaRepository;
 import com.projeto.cefom.repository.EmailRepository;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -127,7 +128,7 @@ public class EmailService {
             return;
         }
 
-        if (emailAtual != null && emailAtual.getEmail().equals(dto)) {
+        if (TextoUtils.equalsNormalizado(emailAtual.getEmail(),dto)) {
             return;
         }
 

@@ -41,6 +41,11 @@ public final class TextoUtils {
         return string.trim().replaceAll("\\s+", " ").toUpperCase();
     }
 
+    public static String normalizarMinusculo(String string) {
+        if (string == null || string.isBlank()) return null;
+        return string.trim().replaceAll("\\s+", " ").toLowerCase();
+    }
+
     public static String normalizarSemAcento(String string) {
         if (string == null || string.isBlank()) return null;
 

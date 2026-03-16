@@ -66,8 +66,7 @@ public class ResponsavelEmpresaMapper {
                 responsavel.getIdResponsavelEmpresa(),
                 responsavel.getDataInicio(),
                 responsavel.getDataFim(),
-                responsavel.getNome(),
-
+                responsavel.getNome()
         );
     }
 
