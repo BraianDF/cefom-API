@@ -5,6 +5,7 @@ import com.projeto.cefom.enums.TipoResponsabilidade;
 import com.projeto.cefom.model.Empresa;
 import com.projeto.cefom.model.Entrevista;
 import com.projeto.cefom.model.ResponsavelEmpresa;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -54,9 +55,9 @@ public class EmpresaMapper {
         return new EmpresaResponseDTO(
                 empresa.getIdEmpresa(),
                 empresa.getNumConvenio(),
-                empresa.getRazaoSocial(),
-                empresa.getNomeFantasia(),
-                empresa.getApelido(),
+                TextoUtils.capitalizar(empresa.getRazaoSocial()),
+                TextoUtils.capitalizar(empresa.getNomeFantasia()),
+                TextoUtils.capitalizar(empresa.getApelido()),
                 empresa.getTipoEmpresa(),
                 empresa.getContratacaoPadrao()
         );
@@ -66,7 +67,7 @@ public class EmpresaMapper {
         if (empresa == null) return null;
         return new EmpresaListarResponseDTO(
                 empresa.getIdEmpresa(),
-                empresa.getApelido(),
+                TextoUtils.capitalizar(empresa.getApelido()),
                 empresa.getTipoEmpresa()
         );
     }
@@ -83,8 +84,8 @@ public class EmpresaMapper {
 
         return new EmpresaSelectResponseDTO(
                 empresa.getIdEmpresa(),
-                empresa.getApelido(),
-                responsavelEntrevistas.getNome(),
+                TextoUtils.capitalizar(empresa.getApelido()),
+                TextoUtils.capitalizar(responsavelEntrevistas.getNome()),
                 empresa.getContratacaoPadrao()
         );
     }
@@ -93,7 +94,7 @@ public class EmpresaMapper {
         if (empresa == null) return null;
         return new EmpresaListarEntrevistaResponseDTO(
                 empresa.getIdEmpresa(),
-                empresa.getApelido(),
+                TextoUtils.capitalizar(empresa.getApelido()),
                 responsavelEmpresaMapper.toListarEntrevistaResponseDTO(empresa, LocalDate.now())
         );
     }

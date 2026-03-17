@@ -12,6 +12,7 @@ import com.projeto.cefom.dto.response.EmpresaListarResponseDTO;
 import com.projeto.cefom.mapper.EmpresaMapper;
 import com.projeto.cefom.model.Empresa;
 import com.projeto.cefom.repository.EmpresaRepository;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -182,7 +183,7 @@ public class EmpresaService {
             return empresaRepository.findAll(pageable)
                     .map(empresaMapper::toListarResponseDTO);
         }
-        return empresaRepository.findByApelidoContainingIgnoreCase(nome, pageable)
+        return empresaRepository.findByApelidoContainingIgnoreCase(TextoUtils.normalizar(nome), pageable)
                 .map(empresaMapper::toListarResponseDTO);
     }
 
