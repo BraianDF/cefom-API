@@ -3,6 +3,7 @@ package com.projeto.cefom.mapper;
 import com.projeto.cefom.dto.response.*;
 import com.projeto.cefom.image.mapper.FotoAdolescenteMapper;
 import com.projeto.cefom.model.*;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
@@ -78,7 +79,7 @@ public class InscricaoMapper {
         return new InscricaoResponseDTO(
                 inscricao.getIdInscricao(),
                 inscricao.getNumInscricao(),
-                inscricao.getObservacao(),
+                TextoUtils.capitalizarPrimeiraLetra(inscricao.getObservacao()),
                 inscricao.getDataInicio(),
                 inscricao.getDataFim(),
                 inscricao.getFinalizacao(),
@@ -101,7 +102,7 @@ public class InscricaoMapper {
         if (adolescente == null) return null;
         return new AdolescenteInscricaoResponseDTO(
                 adolescente.getIdAdolescente(),
-                adolescente.getNome(),
+                TextoUtils.capitalizar(adolescente.getNome()),
                 adolescente.getGenero(),
                 adolescente.getDataNascimento(),
                 adolescente.getIdadeEm(data),

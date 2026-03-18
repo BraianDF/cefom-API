@@ -241,7 +241,7 @@ public class InscricaoService {
         }
 
         if (Objects.equals(inscricao.getDataInicio(), dto.dataInscricao()) &&
-                Objects.equals(inscricao.getObservacao(), dto.observacao())) {
+                TextoUtils.equalsNormalizado(inscricao.getObservacao(), dto.observacao())) {
             return inscricaoMapper.toResponseDTO(inscricao);
         }
 
