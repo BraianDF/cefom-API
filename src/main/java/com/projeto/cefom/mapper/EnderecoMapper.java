@@ -7,6 +7,7 @@ import com.projeto.cefom.model.Adolescente;
 import com.projeto.cefom.model.Endereco;
 import com.projeto.cefom.model.Escola;
 import com.projeto.cefom.model.Empresa;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -31,15 +32,15 @@ public class EnderecoMapper {
 
         return new EnderecoMatriculaResponseDTO(
                 endereco.getIdEndereco(),
-                endereco.getCep(),
-                endereco.getLogradouro(),
-                endereco.getNumero(),
-                endereco.getComplemento(),
-                endereco.getBairro(),
-                endereco.getCidade(),
+                TextoUtils.formatarCep(endereco.getCep()),
+                TextoUtils.capitalizar(endereco.getLogradouro()),
+                TextoUtils.capitalizar(endereco.getNumero()),
+                TextoUtils.capitalizar(endereco.getComplemento()),
+                TextoUtils.capitalizar(endereco.getBairro()),
+                TextoUtils.capitalizar(endereco.getCidade()),
                 endereco.getEstado(),
                 endereco.getTipoResidencia(),
-                endereco.getTerritorio().getResultado(),
+                TextoUtils.capitalizar(endereco.getTerritorio().getResultado()),
                 endereco.getDataInicio(),
                 endereco.getDataFim()
         );
@@ -86,14 +87,14 @@ public class EnderecoMapper {
 
         return new EnderecoResponseDTO(
                 endereco.getIdEndereco(),
-                endereco.getCep(),
-                endereco.getLogradouro(),
-                endereco.getNumero(),
-                endereco.getComplemento(),
-                endereco.getBairro(),
-                endereco.getCidade(),
+                TextoUtils.formatarCep(endereco.getCep()),
+                TextoUtils.capitalizar(endereco.getLogradouro()),
+                TextoUtils.capitalizar(endereco.getNumero()),
+                TextoUtils.capitalizar(endereco.getComplemento()),
+                TextoUtils.capitalizar(endereco.getBairro()),
+                TextoUtils.capitalizar(endereco.getCidade()),
                 endereco.getEstado(),
-                endereco.getTerritorio().getResultado(),
+                TextoUtils.capitalizar(endereco.getTerritorio().getResultado()),
                 endereco.getDataInicio(),
                 endereco.getDataFim()
         );
@@ -106,7 +107,7 @@ public class EnderecoMapper {
                 endereco.getIdEndereco(),
                 endereco.getDataInicio(),
                 endereco.getDataFim(),
-                endereco.getTerritorio().getResultado()
+                TextoUtils.capitalizar(endereco.getTerritorio().getResultado())
         );
     }
 }

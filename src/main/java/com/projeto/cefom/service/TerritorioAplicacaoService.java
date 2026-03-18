@@ -4,6 +4,7 @@ import com.projeto.cefom.dto.response.TerritorioPendenciasResponseDTO;
 import com.projeto.cefom.model.Endereco;
 import com.projeto.cefom.model.Territorio;
 import com.projeto.cefom.repository.EnderecoRepository;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,12 +19,8 @@ public class TerritorioAplicacaoService {
         this.enderecoRepository = enderecoRepository;
     }
 
-    private String normalizar(String valor) {
-        return valor == null ? null : valor.trim().toUpperCase();
-    }
-
     public void removerTerritorioEnderecos(String bairro) {
-        List<Endereco> enderecos = enderecoRepository.findByCidadeAndBairro("LINS", normalizar(bairro));
+        List<Endereco> enderecos = enderecoRepository.findByCidadeAndBairro("LINS", TextoUtils.normalizar(bairro));
 
         enderecos.forEach(endereco -> {
             Territorio territorio = endereco.getTerritorio();
@@ -36,7 +33,7 @@ public class TerritorioAplicacaoService {
     }
 
     public void adicionarTerritorioEnderecos(String bairro, Territorio territorio) {
-        List<Endereco> enderecos = enderecoRepository.findByCidadeAndBairro("LINS", normalizar(bairro));
+        List<Endereco> enderecos = enderecoRepository.findByCidadeAndBairro("LINS", TextoUtils.normalizar(bairro));
 
         enderecos.forEach(endereco -> {
             Territorio territorioAtual = endereco.getTerritorio();
