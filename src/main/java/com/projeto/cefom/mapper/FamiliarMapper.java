@@ -3,6 +3,7 @@ package com.projeto.cefom.mapper;
 import com.projeto.cefom.dto.response.*;
 import com.projeto.cefom.model.Adolescente;
 import com.projeto.cefom.model.Familiar;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -49,12 +50,12 @@ public class FamiliarMapper {
 
         return new ResponsavelResponseDTO(
                 familiar.getIdFamiliar(),
-                familiar.getNome(),
+                TextoUtils.capitalizar(familiar.getNome()),
                 familiar.getParentesco(),
                 familiar.getIdade(),
                 familiar.getEscolaridade(),
-                familiar.getProfissao(),
-                familiar.getLocalTrabalho(),
+                TextoUtils.capitalizar(familiar.getProfissao()),
+                TextoUtils.capitalizar(familiar.getLocalTrabalho()),
                 familiar.getRenda(),
                 familiar.getReside(),
                 documentoMapper.toResponsavelResponseDTO(familiar.getDocumento()),
@@ -72,7 +73,7 @@ public class FamiliarMapper {
                 familiar.getIdFamiliar(),
                 familiar.getDataInicio(),
                 familiar.getDataFim(),
-                familiar.getNome(),
+                TextoUtils.capitalizar(familiar.getNome()),
                 familiar.isResponsavel()
         );
     }
@@ -82,12 +83,12 @@ public class FamiliarMapper {
 
         return new FamiliarResponseDTO(
                 familiar.getIdFamiliar(),
-                familiar.getNome(),
+                TextoUtils.capitalizar(familiar.getNome()),
                 familiar.getParentesco(),
                 familiar.getIdade(),
                 familiar.getEscolaridade(),
-                familiar.getProfissao(),
-                familiar.getLocalTrabalho(),
+                TextoUtils.capitalizar(familiar.getProfissao()),
+                TextoUtils.capitalizar(familiar.getLocalTrabalho()),
                 familiar.getRenda(),
                 familiar.getDataInicio(),
                 familiar.getDataFim()
