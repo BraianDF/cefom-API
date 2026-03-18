@@ -9,6 +9,7 @@ import com.projeto.cefom.exceptions.RegraNegocioException;
 import com.projeto.cefom.mapper.EscolaMapper;
 import com.projeto.cefom.model.Escola;
 import com.projeto.cefom.repository.EscolaRepository;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +37,7 @@ public class EscolaService {
             dataCriacao = LocalDate.now();
         }
 
-        if (escolaRepository.existsByNome(dto.nome())) {
+        if (escolaRepository.existsByNome(TextoUtils.normalizar(dto.nome()))) {
             throw new RegraNegocioException("Escola já cadastrada.");
         }
 
@@ -65,7 +66,7 @@ public class EscolaService {
 
         Escola escola = buscarEscola(idEscola);
 
-        if (escolaRepository.existsByNomeAndIdEscolaNot(dto.nome(), idEscola)) {
+        if (escolaRepository.existsByNomeAndIdEscolaNot(TextoUtils.normalizar(dto.nome()), idEscola)) {
             throw new RegraNegocioException("Já existe outra escola com esse nome.");
         }
 
@@ -93,7 +94,7 @@ public class EscolaService {
             return escolaRepository.findAll(pageable)
                     .map(escolaMapper::toListarResponseDTO);
         }
-        return escolaRepository.findByNomeContainingIgnoreCase(nome, pageable)
+        return escolaRepository.findByNomeContainingIgnoreCase(TextoUtils.normalizar(nome), pageable)
                 .map(escolaMapper::toListarResponseDTO);
     }
 
