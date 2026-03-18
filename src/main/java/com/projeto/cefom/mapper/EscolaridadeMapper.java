@@ -3,6 +3,7 @@ package com.projeto.cefom.mapper;
 import com.projeto.cefom.dto.response.*;
 import com.projeto.cefom.model.Adolescente;
 import com.projeto.cefom.model.Escolaridade;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -37,7 +38,7 @@ public class EscolaridadeMapper {
                 escolaridade.getSerie(),
                 escolaridade.getPeriodo(),
                 escolaridade.getRaEscolar(),
-                escolaridade.getCurso(),
+                TextoUtils.capitalizar(escolaridade.getCurso()),
                 escolaridade.getDataInicio(),
                 escolaridade.getDataFim()
         );

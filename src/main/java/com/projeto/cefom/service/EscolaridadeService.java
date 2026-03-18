@@ -11,6 +11,7 @@ import com.projeto.cefom.model.Adolescente;
 import com.projeto.cefom.model.Escola;
 import com.projeto.cefom.model.Escolaridade;
 import com.projeto.cefom.repository.EscolaridadeRepository;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -101,7 +102,7 @@ public class EscolaridadeService {
     }
 
     public boolean escolaridadeIgual(EscolaridadeRequestDTO dto, Escolaridade e) {
-        return Objects.equals(e.getCurso(), dto.curso()) &&
+        return TextoUtils.equalsNormalizado(e.getCurso(), dto.curso()) &&
                 Objects.equals(e.getSerie(), dto.serie()) &&
                 Objects.equals(e.getPeriodo(), dto.periodo()) &&
                 Objects.equals(e.getRaEscolar(), dto.raEscolar()) &&
