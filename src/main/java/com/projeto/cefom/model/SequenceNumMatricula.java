@@ -1,5 +1,6 @@
 package com.projeto.cefom.model;
 
+import com.projeto.cefom.utils.TextoUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -31,7 +32,7 @@ public class SequenceNumMatricula implements Serializable {
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.nome = TextoUtils.normalizar(nome);
     }
 
     public Integer getValor() {
