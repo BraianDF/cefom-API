@@ -3,6 +3,7 @@ package com.projeto.cefom.mapper;
 import com.projeto.cefom.dto.response.JustificativaFaltaListarResponseDTO;
 import com.projeto.cefom.dto.response.JustificativaFaltaResponseDTO;
 import com.projeto.cefom.model.JustificativaFalta;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,7 +17,7 @@ public class JustificativaFaltaMapper {
                 justificativa.getDataInicio(),
                 justificativa.getDataFim(),
                 justificativa.getQtdeDias(),
-                justificativa.getObservacao()
+                TextoUtils.capitalizarPrimeiraLetra(justificativa.getObservacao())
         );
     }
 
