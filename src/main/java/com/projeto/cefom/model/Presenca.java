@@ -1,5 +1,6 @@
 package com.projeto.cefom.model;
 
+import com.projeto.cefom.utils.TextoUtils;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -64,7 +65,7 @@ public class Presenca implements Serializable {
     }
 
     public void setObservacao(String observacao) {
-        this.observacao = observacao;
+        this.observacao = TextoUtils.normalizar(observacao);
     }
 
     public Aula getAula() {
