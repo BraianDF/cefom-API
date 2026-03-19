@@ -1,6 +1,7 @@
 package com.projeto.cefom.model;
 
 import com.projeto.cefom.enums.TitularContato;
+import com.projeto.cefom.utils.TextoUtils;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -49,7 +50,7 @@ public class Telefone extends Vigencia implements Serializable {
     }
 
     public void setNumero(String numero) {
-        this.numero = numero;
+        this.numero = TextoUtils.manterSomenteNumeros(numero);
     }
 
     public TitularContato getTitular() {

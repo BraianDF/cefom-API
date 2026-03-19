@@ -15,6 +15,7 @@ import com.projeto.cefom.dto.request.TelefonesEmpresaRequestDTO;
 import com.projeto.cefom.model.Empresa;
 import com.projeto.cefom.repository.EmpresaRepository;
 import com.projeto.cefom.repository.TelefoneRepository;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -104,11 +105,9 @@ public class TelefoneService {
             return;
         }
 
-        String numeroLimpo = limparTelefone(telefoneDto);
-
         // Se não mudou, não faz nada
         if (telefoneAtual != null &&
-                telefoneAtual.getNumero().equals(numeroLimpo)) {
+                TextoUtils.equalsSomenteNumero(telefoneDto, telefoneAtual.getNumero())) {
             return;
         }
 
@@ -118,7 +117,7 @@ public class TelefoneService {
         }
 
         // Cria novo telefone
-        criarTelefone(numeroLimpo, titular, adolescente, data);
+        criarTelefone(telefoneDto, titular, adolescente, data);
     }
 
     public void criarTelefones(TelefonesRequestDTO dto, Adolescente adolescente, LocalDate data) {
@@ -135,7 +134,7 @@ public class TelefoneService {
 
     public void criarTelefone(String numero, TitularContato titular, Adolescente adolescente, LocalDate data) {
         Telefone telefone = new Telefone();
-        telefone.setNumero(limparTelefone(numero));
+        telefone.setNumero(numero);
         telefone.setTitular(titular);
         telefone.setDataInicio(data);
 
@@ -154,7 +153,7 @@ public class TelefoneService {
 
     public void criarTelefone(String numero, TitularContato titular, Empresa empresa, LocalDate data) {
         Telefone telefone = new Telefone();
-        telefone.setNumero(limparTelefone(numero));
+        telefone.setNumero(numero);
         telefone.setTitular(titular);
         telefone.setDataInicio(data);
 
@@ -182,11 +181,9 @@ public class TelefoneService {
             return;
         }
 
-        String numeroLimpo = limparTelefone(telefoneDto);
-
         // Se não mudou, não faz nada
         if (telefoneAtual != null &&
-                telefoneAtual.getNumero().equals(numeroLimpo)) {
+                TextoUtils.equalsSomenteNumero(telefoneDto, telefoneAtual.getNumero())) {
             return;
         }
 
@@ -196,7 +193,7 @@ public class TelefoneService {
         }
 
         // Cria novo telefone
-        criarTelefone(numeroLimpo, titular, empresa, data);
+        criarTelefone(telefoneDto, titular, empresa, data);
     }
 
     public Telefone buscarTelefoneAtivo(
@@ -210,10 +207,6 @@ public class TelefoneService {
                 .filter(t -> t.estaValidoEm(data))
                 .max(Comparator.comparing(Telefone::getDataInicio))
                 .orElse(null);
-    }
-
-    public String limparTelefone(String numero) {
-        return numero.replaceAll("\\D", "");
     }
 
     private Telefone buscarTelefoneAdolescente(Integer idAdolescente, Integer idTelefone) {

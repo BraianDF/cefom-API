@@ -6,6 +6,7 @@ import com.projeto.cefom.model.Adolescente;
 import com.projeto.cefom.model.Telefone;
 import com.projeto.cefom.dto.response.TelefonesEmpresaResponseDTO;
 import com.projeto.cefom.model.Empresa;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -73,7 +74,7 @@ public class TelefoneMapper {
 
         return new TelefoneResponseDTO(
                 telefone.getIdTelefone(),
-                telefone.getNumero(),
+                TextoUtils.formatarTelefone(telefone.getNumero()),
                 telefone.getTitular(),
                 telefone.getDataInicio(),
                 telefone.getDataFim()
@@ -87,7 +88,7 @@ public class TelefoneMapper {
                 telefone.getIdTelefone(),
                 telefone.getDataInicio(),
                 telefone.getDataFim(),
-                telefone.getNumero()
+                TextoUtils.formatarTelefone(telefone.getNumero())
         );
     }
 }
