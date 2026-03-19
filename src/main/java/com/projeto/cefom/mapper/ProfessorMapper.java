@@ -2,6 +2,7 @@ package com.projeto.cefom.mapper;
 
 import com.projeto.cefom.dto.response.ProfessorResponseDTO;
 import com.projeto.cefom.model.Professor;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -10,7 +11,7 @@ public class ProfessorMapper {
         if (professor == null) return null;
         return new ProfessorResponseDTO(
                 professor.getIdProfessor(),
-                professor.getNome()
+                TextoUtils.capitalizar(professor.getNome())
         );
     }
 }
