@@ -8,6 +8,7 @@ import com.projeto.cefom.dto.response.AdolescenteMatriculaEntrevistaResponseDTO;
 import com.projeto.cefom.model.Entrevista;
 import com.projeto.cefom.model.VinculoEntrevistaMatricula;
 import com.projeto.cefom.dto.response.AlunoMatriculaResponseDTO;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
@@ -124,7 +125,7 @@ public class MatriculaMapper {
         return new MatriculaSelectResponseDTO(
                 matricula.getIdMatricula(),
                 matricula.getNumMatricula(),
-                matricula.getAdolescente().getNome()
+                TextoUtils.capitalizar(matricula.getAdolescente().getNome())
         );
     }
 
@@ -157,17 +158,17 @@ public class MatriculaMapper {
         if (adolescente == null) return null;
         return new AdolescenteMatriculaResponseDTO(
                 adolescente.getIdAdolescente(),
-                adolescente.getNome(),
+                TextoUtils.capitalizar(adolescente.getNome()),
                 adolescente.getGenero(),
                 adolescente.getDataNascimento(),
-                adolescente.getCidadeNascimento(),
+                TextoUtils.capitalizar(adolescente.getCidadeNascimento()),
                 adolescente.getEstadoNascimento(),
-                adolescente.getPaisNascimento(),
+                TextoUtils.capitalizar(adolescente.getPaisNascimento()),
                 adolescente.getNaturalidade(),
                 adolescente.getEstadoCivil(),
-                adolescente.getMae(),
-                adolescente.getPai(),
-                adolescente.getPai(),
+                TextoUtils.capitalizar(adolescente.getMae()),
+                TextoUtils.capitalizar(adolescente.getPai()),
+                TextoUtils.capitalizar(adolescente.getPai()),
                 adolescente.getIdadeEm(data),
                 adolescente.getSituacaoEm(data)
         );
@@ -179,7 +180,7 @@ public class MatriculaMapper {
                 matricula.getAdolescente().getIdAdolescente(),
                 matricula.getIdMatricula(),
                 matricula.getNumMatricula(),
-                matricula.getAdolescente().getNome(),
+                TextoUtils.capitalizar(matricula.getAdolescente().getNome()),
                 matricula.getAdolescente().getIdadeEm(data),
                 matricula.getAdolescente().getSituacaoEm(data)
         );
