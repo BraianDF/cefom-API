@@ -2,6 +2,7 @@ package com.projeto.cefom.mapper;
 
 import com.projeto.cefom.dto.response.SalaAulaResponseDTO;
 import com.projeto.cefom.model.SalaAula;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -10,7 +11,7 @@ public class SalaAulaMapper {
         if (salaAula == null) return null;
         return new SalaAulaResponseDTO(
                 salaAula.getIdSalaAula(),
-                salaAula.getNome()
+                TextoUtils.capitalizar(salaAula.getNome())
         );
     }
 }

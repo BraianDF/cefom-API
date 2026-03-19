@@ -7,6 +7,7 @@ import com.projeto.cefom.dto.response.SalaAulaResponseDTO;
 import com.projeto.cefom.mapper.SalaAulaMapper;
 import com.projeto.cefom.model.SalaAula;
 import com.projeto.cefom.repository.SalaAulaRepository;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class SalaAulaService {
 
     @Transactional
     public SalaAulaResponseDTO criar(SalaAulaRequestDTO dto) {
-        if (salaAulaRepository.existsByNome(dto.nome())) {
+        if (salaAulaRepository.existsByNome(TextoUtils.normalizar(dto.nome()))) {
             throw new RegraNegocioException("Sala de Aula já cadastrada.");
         }
         SalaAula salaAula = salvar(criarSalaAula(dto));
@@ -35,7 +36,7 @@ public class SalaAulaService {
 
     @Transactional
     public SalaAulaResponseDTO atualizar(Integer idSalaAula, SalaAulaRequestDTO dto) {
-        if (salaAulaRepository.existsByNomeAndIdSalaAulaNot(dto.nome(), idSalaAula)) {
+        if (salaAulaRepository.existsByNomeAndIdSalaAulaNot(TextoUtils.normalizar(dto.nome()), idSalaAula)) {
             throw new RegraNegocioException("Sala de Aula já cadastrada.");
         }
         SalaAula salaAula = buscarSalaAula(idSalaAula);
@@ -55,7 +56,7 @@ public class SalaAulaService {
             return salaAulaRepository.findAll(pageable)
                     .map(salaAulaMapper::toResponseDTO);
         }
-        return salaAulaRepository.findByNomeContainingIgnoreCase(nome, pageable)
+        return salaAulaRepository.findByNomeContainingIgnoreCase(TextoUtils.normalizar(nome), pageable)
                 .map(salaAulaMapper::toResponseDTO);
     }
 
