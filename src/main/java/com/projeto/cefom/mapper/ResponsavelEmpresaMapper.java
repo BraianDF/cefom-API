@@ -7,6 +7,7 @@ import com.projeto.cefom.enums.TipoResponsabilidade;
 import com.projeto.cefom.model.Empresa;
 import com.projeto.cefom.model.Entrevista;
 import com.projeto.cefom.model.ResponsavelEmpresa;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -52,7 +53,7 @@ public class ResponsavelEmpresaMapper {
 
         return new ResponsavelEmpresaResponseDTO(
                 responsavel.getIdResponsavelEmpresa(),
-                responsavel.getNome(),
+                TextoUtils.capitalizar(responsavel.getNome()),
                 responsavel.getResponsabilidade(),
                 responsavel.getDataInicio(),
                 responsavel.getDataFim()
@@ -66,7 +67,7 @@ public class ResponsavelEmpresaMapper {
                 responsavel.getIdResponsavelEmpresa(),
                 responsavel.getDataInicio(),
                 responsavel.getDataFim(),
-                responsavel.getNome()
+                TextoUtils.capitalizar(responsavel.getNome())
         );
     }
 

@@ -11,6 +11,7 @@ import com.projeto.cefom.model.Empresa;
 import com.projeto.cefom.model.ResponsavelEmpresa;
 import com.projeto.cefom.repository.EmpresaRepository;
 import com.projeto.cefom.repository.ResponsavelEmpresaRepository;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -58,8 +59,8 @@ public class ResponsavelEmpresaService {
                 .orElse(null);
 
         // Se não mudou, não faz nada
-        if (responsavelAtual != null &&
-                responsavelAtual.getNome().equals(nome)) {
+        if (responsavelAtual != null
+                && TextoUtils.equalsNormalizado(responsavelAtual.getNome(),nome)) {
             return;
         }
 
