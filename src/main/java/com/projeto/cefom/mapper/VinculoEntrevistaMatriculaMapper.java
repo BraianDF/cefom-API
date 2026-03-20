@@ -2,6 +2,7 @@ package com.projeto.cefom.mapper;
 
 import com.projeto.cefom.dto.response.VinculoEntrevistaMatriculaResponseDTO;
 import com.projeto.cefom.model.VinculoEntrevistaMatricula;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,7 +12,7 @@ public class VinculoEntrevistaMatriculaMapper {
         if (vinculo == null) return null;
         return new VinculoEntrevistaMatriculaResponseDTO(
                 vinculo.getHorarioEntrevista(),
-                vinculo.getSituacao()
+                TextoUtils.capitalizarPrimeiraLetra(vinculo.getSituacao())
         );
     }
 }
