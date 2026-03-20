@@ -5,6 +5,7 @@ import com.projeto.cefom.dto.response.TurmaListarResponseDTO;
 import com.projeto.cefom.dto.response.TurmaResponseDTO;
 import com.projeto.cefom.dto.response.TurmaSelectResponseDTO;
 import com.projeto.cefom.model.Turma;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -30,7 +31,7 @@ public class TurmaMapper {
 
         return new TurmaResponseDTO(
                 turma.getIdTurma(),
-                turma.getNome(),
+                TextoUtils.capitalizar(turma.getNome()),
                 turma.getTipo(),
                 alunos
         );
@@ -40,7 +41,7 @@ public class TurmaMapper {
         if (turma == null) return null;
         return new TurmaListarResponseDTO(
                 turma.getIdTurma(),
-                turma.getNome(),
+                TextoUtils.capitalizar(turma.getNome()),
                 turma.getTipo()
         );
     }
@@ -49,7 +50,7 @@ public class TurmaMapper {
         if (turma == null) return null;
         return new TurmaSelectResponseDTO(
                 turma.getIdTurma(),
-                turma.getNome()
+                TextoUtils.capitalizar(turma.getNome())
         );
     }
 }

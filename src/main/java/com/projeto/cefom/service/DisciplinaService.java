@@ -7,6 +7,7 @@ import com.projeto.cefom.dto.response.DisciplinaResponseDTO;
 import com.projeto.cefom.mapper.DisciplinaMapper;
 import com.projeto.cefom.model.Disciplina;
 import com.projeto.cefom.repository.DisciplinaRepository;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class DisciplinaService {
 
     @Transactional
     public DisciplinaResponseDTO criar(DisciplinaRequestDTO dto) {
-        if (disciplinaRepository.existsByNome(dto.nome())) {
+        if (disciplinaRepository.existsByNome(TextoUtils.normalizar(dto.nome()))) {
             throw new RegraNegocioException("Disciplina já cadastrada.");
         }
         Disciplina disciplina = salvar(criarDisciplina(dto));
@@ -34,7 +35,7 @@ public class DisciplinaService {
 
     @Transactional
     public DisciplinaResponseDTO atualizar(Integer idDisciplina, DisciplinaRequestDTO dto) {
-        if (disciplinaRepository.existsByNomeAndIdDisciplinaNot(dto.nome(), idDisciplina)) {
+        if (disciplinaRepository.existsByNomeAndIdDisciplinaNot(TextoUtils.normalizar(dto.nome()), idDisciplina)) {
             throw new RegraNegocioException("Disciplina já cadastrada.");
         }
         Disciplina disciplina = buscarDisciplina(idDisciplina);
@@ -54,7 +55,7 @@ public class DisciplinaService {
             return disciplinaRepository.findAll(pageable)
                     .map(disciplinaMapper::toResponseDTO);
         }
-        return disciplinaRepository.findByNomeContainingIgnoreCase(nome, pageable)
+        return disciplinaRepository.findByNomeContainingIgnoreCase(TextoUtils.normalizar(nome), pageable)
                 .map(disciplinaMapper::toResponseDTO);
     }
 

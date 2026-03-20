@@ -12,6 +12,8 @@ import java.util.Comparator;
 public class CaracteristicaMapper {
 
     public CaracteristicaResponseDTO toResponseDTO(Adolescente adolescente, LocalDate data) {
+        if (adolescente == null) return null;
+
         Caracteristica caracteristica = adolescente.getCaracteristicas()
                 .stream()
                 .filter(e -> e.estaValidoEm(data))
@@ -22,24 +24,28 @@ public class CaracteristicaMapper {
     }
 
     public CaracteristicaResponseDTO toResponseDTO(Caracteristica caracteristica) {
+        if (caracteristica == null) return null;
+
         return new CaracteristicaResponseDTO(
-                caracteristica != null ? caracteristica.getIdCaracteristica() : null,
-                caracteristica != null ? caracteristica.getCorOlhos() : null,
-                caracteristica != null ? caracteristica.getCorCabelo() : null,
-                caracteristica != null ? caracteristica.getCorPele() : null,
-                caracteristica != null ? caracteristica.getAltura() : null,
-                caracteristica != null ? caracteristica.getPeso() : null,
-                caracteristica != null ? caracteristica.getHabilidade() : null,
-                caracteristica != null ? caracteristica.getDataInicio() : null,
-                caracteristica != null ? caracteristica.getDataFim() : null
+                caracteristica.getIdCaracteristica(),
+                caracteristica.getCorOlhos(),
+                caracteristica.getCorCabelo(),
+                caracteristica.getCorPele(),
+                caracteristica.getAltura(),
+                caracteristica.getPeso(),
+                caracteristica.getHabilidade(),
+                caracteristica.getDataInicio(),
+                caracteristica.getDataFim()
         );
     }
 
     public CaracteristicaListarResponseDTO toListarResponseDTO(Caracteristica caracteristica) {
+        if (caracteristica == null) return null;
+
         return new CaracteristicaListarResponseDTO(
-                caracteristica != null ? caracteristica.getIdCaracteristica() : null,
-                caracteristica != null ? caracteristica.getDataInicio() : null,
-                caracteristica != null ? caracteristica.getDataFim() : null
+                caracteristica.getIdCaracteristica(),
+                caracteristica.getDataInicio(),
+                caracteristica.getDataFim()
         );
     }
 }

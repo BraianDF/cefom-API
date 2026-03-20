@@ -1,6 +1,7 @@
 package com.projeto.cefom.model;
 
 import com.projeto.cefom.enums.TitularContato;
+import com.projeto.cefom.utils.TextoUtils;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -48,7 +49,7 @@ public class Email extends Vigencia implements Serializable {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = TextoUtils.normalizar(email);
     }
 
     public TitularContato getTitular() {

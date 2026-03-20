@@ -9,6 +9,7 @@ import com.projeto.cefom.service.TerritorioService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public class TerritorioController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<TerritorioListarResponseDTO>> listar(@PageableDefault(page = 0, size = 10) Pageable pageable, @RequestParam(defaultValue = "") String nome) {
+    public ResponseEntity<Page<TerritorioListarResponseDTO>> listar(@PageableDefault(page = 0, size = 10, sort = "resultado", direction = Sort.Direction.ASC) Pageable pageable, @RequestParam(defaultValue = "") String nome) {
         Page<TerritorioListarResponseDTO> response = territorioService.listar(pageable, nome);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

@@ -2,6 +2,7 @@ package com.projeto.cefom.model;
 
 import com.projeto.cefom.enums.Estado;
 import com.projeto.cefom.enums.TipoResidencia;
+import com.projeto.cefom.utils.TextoUtils;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -77,7 +78,7 @@ public class Endereco extends Vigencia implements Serializable {
     }
 
     public void setCep(String cep) {
-        this.cep = cep;
+        this.cep = TextoUtils.manterSomenteNumeros(cep);
     }
 
     public String getLogradouro() {
@@ -85,7 +86,7 @@ public class Endereco extends Vigencia implements Serializable {
     }
 
     public void setLogradouro(String logradouro) {
-        this.logradouro = logradouro;
+        this.logradouro = TextoUtils.normalizar(logradouro);
     }
 
     public String getNumero() {
@@ -93,7 +94,9 @@ public class Endereco extends Vigencia implements Serializable {
     }
 
     public void setNumero(String numero) {
-        this.numero = numero;
+        String num = TextoUtils.manterSomenteNumeros(numero);
+        if (num.isBlank() || num == null) num = "SEM NÚMERO";
+        this.numero = num;
     }
 
     public String getComplemento() {
@@ -101,7 +104,7 @@ public class Endereco extends Vigencia implements Serializable {
     }
 
     public void setComplemento(String complemento) {
-        this.complemento = complemento;
+        this.complemento = TextoUtils.normalizar(complemento);
     }
 
     public String getBairro() {
@@ -109,7 +112,7 @@ public class Endereco extends Vigencia implements Serializable {
     }
 
     public void setBairro(String bairro) {
-        this.bairro = bairro;
+        this.bairro = TextoUtils.normalizar(bairro);
     }
 
     public String getCidade() {
@@ -117,7 +120,7 @@ public class Endereco extends Vigencia implements Serializable {
     }
 
     public void setCidade(String cidade) {
-        this.cidade = cidade;
+        this.cidade = TextoUtils.normalizar(cidade);
     }
 
     public Estado getEstado() {

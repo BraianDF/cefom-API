@@ -8,6 +8,7 @@ import com.projeto.cefom.image.mapper.FotoAdolescenteMapper;
 import com.projeto.cefom.model.Adolescente;
 import com.projeto.cefom.model.Inscricao;
 import com.projeto.cefom.model.Matricula;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -48,28 +49,29 @@ public class AdolescenteMapper {
         if (adolescente == null) return null;
         return new AdolescenteMatriculaResponseDTO(
                 adolescente.getIdAdolescente(),
-                adolescente.getNome(),
+                TextoUtils.capitalizar(adolescente.getNome()),
                 adolescente.getGenero(),
                 adolescente.getDataNascimento(),
-                adolescente.getCidadeNascimento(),
+                TextoUtils.capitalizar(adolescente.getCidadeNascimento()),
                 adolescente.getEstadoNascimento(),
-                adolescente.getPaisNascimento(),
+                TextoUtils.capitalizar(adolescente.getPaisNascimento()),
                 adolescente.getNaturalidade(),
                 adolescente.getEstadoCivil(),
-                adolescente.getMae(),
-                adolescente.getPai(),
-                adolescente.getPai(),
+                TextoUtils.capitalizar(adolescente.getMae()),
+                TextoUtils.capitalizar(adolescente.getPai()),
+                TextoUtils.capitalizar(adolescente.getConjuge()),
                 adolescente.getIdadeEm(data),
                 adolescente.getSituacaoEm(data)
         );
     }
 
     public AdolescenteListarResponseDTO toListarResponseDTO(Adolescente adolescente) {
+        if (adolescente == null) return null;
         return new AdolescenteListarResponseDTO(
-                adolescente != null ? adolescente.getIdAdolescente() : null,
-                adolescente != null ? adolescente.getNome() : null,
-                adolescente != null ? adolescente.getDocumento().getCpf() : null,
-                adolescente != null ? adolescente.getSituacao() : null
+                adolescente.getIdAdolescente(),
+                TextoUtils.capitalizar(adolescente.getNome()),
+                TextoUtils.formatarCpf(adolescente.getDocumento().getCpf()),
+                adolescente.getSituacao()
         );
     }
 
@@ -77,7 +79,7 @@ public class AdolescenteMapper {
         if (adolescente == null) return null;
         return new AdolescenteInscricaoResponseDTO(
                 adolescente.getIdAdolescente(),
-                adolescente.getNome(),
+                TextoUtils.capitalizar(adolescente.getNome()),
                 adolescente.getGenero(),
                 adolescente.getDataNascimento(),
                 adolescente.getIdadeEm(data),

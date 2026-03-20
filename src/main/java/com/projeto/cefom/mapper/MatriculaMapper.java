@@ -8,6 +8,7 @@ import com.projeto.cefom.dto.response.AdolescenteMatriculaEntrevistaResponseDTO;
 import com.projeto.cefom.model.Entrevista;
 import com.projeto.cefom.model.VinculoEntrevistaMatricula;
 import com.projeto.cefom.dto.response.AlunoMatriculaResponseDTO;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
@@ -39,6 +40,8 @@ public class MatriculaMapper {
     }
 
     public MatriculaCriarResponseDTO toResponseDTO(Adolescente adolescente, LocalDate data) {
+        if (adolescente == null) return null;
+
         return new MatriculaCriarResponseDTO(
                 toResponseDTO(null),
 
@@ -63,6 +66,8 @@ public class MatriculaMapper {
     }
 
     public MatriculaCriarResponseDTO toResponseDTO(Matricula matricula, LocalDate data) {
+        if (matricula == null) return null;
+
         Adolescente adolescente = matricula.getAdolescente();
 
         return new MatriculaCriarResponseDTO(
@@ -90,23 +95,27 @@ public class MatriculaMapper {
     }
 
     public MatriculaResponseDTO toResponseDTO(Matricula matricula) {
+        if (matricula == null) return null;
+
         return new MatriculaResponseDTO(
-                matricula != null ? matricula.getIdMatricula() : null,
-                matricula != null ? matricula.getNumMatricula() : null,
-                matricula != null ? matricula.getSituacaoMatricula() : null,
-                matricula != null ? matricula.getDataInicio() : null,
-                matricula != null ? matricula.getDataFim() : null,
-                matricula != null ? matricula.getDesligamento() : null,
-                matricula != null ? fotoAdolescenteMapper.toResponseDTO(matricula.getFoto()) : null
+                matricula.getIdMatricula(),
+                matricula.getNumMatricula(),
+                matricula.getSituacaoMatricula(),
+                matricula.getDataInicio(),
+                matricula.getDataFim(),
+                matricula.getDesligamento(),
+                fotoAdolescenteMapper.toResponseDTO(matricula.getFoto())
         );
     }
 
     public MatriculaListarResponseDTO toListarResponseDTO(Matricula matricula) {
+        if (matricula == null) return null;
+
         return new MatriculaListarResponseDTO(
-                matricula != null ? matricula.getIdMatricula() : null,
-                matricula != null ? matricula.getNumMatricula() : null,
-                matricula != null ? matricula.getDataInicio() : null,
-                matricula != null ? matricula.getDataFim() : null
+                matricula.getIdMatricula(),
+                matricula.getNumMatricula(),
+                matricula.getDataInicio(),
+                matricula.getDataFim()
         );
     }
 
@@ -116,7 +125,7 @@ public class MatriculaMapper {
         return new MatriculaSelectResponseDTO(
                 matricula.getIdMatricula(),
                 matricula.getNumMatricula(),
-                matricula.getAdolescente().getNome()
+                TextoUtils.capitalizar(matricula.getAdolescente().getNome())
         );
     }
 
@@ -149,17 +158,17 @@ public class MatriculaMapper {
         if (adolescente == null) return null;
         return new AdolescenteMatriculaResponseDTO(
                 adolescente.getIdAdolescente(),
-                adolescente.getNome(),
+                TextoUtils.capitalizar(adolescente.getNome()),
                 adolescente.getGenero(),
                 adolescente.getDataNascimento(),
-                adolescente.getCidadeNascimento(),
+                TextoUtils.capitalizar(adolescente.getCidadeNascimento()),
                 adolescente.getEstadoNascimento(),
-                adolescente.getPaisNascimento(),
+                TextoUtils.capitalizar(adolescente.getPaisNascimento()),
                 adolescente.getNaturalidade(),
                 adolescente.getEstadoCivil(),
-                adolescente.getMae(),
-                adolescente.getPai(),
-                adolescente.getPai(),
+                TextoUtils.capitalizar(adolescente.getMae()),
+                TextoUtils.capitalizar(adolescente.getPai()),
+                TextoUtils.capitalizar(adolescente.getPai()),
                 adolescente.getIdadeEm(data),
                 adolescente.getSituacaoEm(data)
         );
@@ -171,7 +180,7 @@ public class MatriculaMapper {
                 matricula.getAdolescente().getIdAdolescente(),
                 matricula.getIdMatricula(),
                 matricula.getNumMatricula(),
-                matricula.getAdolescente().getNome(),
+                TextoUtils.capitalizar(matricula.getAdolescente().getNome()),
                 matricula.getAdolescente().getIdadeEm(data),
                 matricula.getAdolescente().getSituacaoEm(data)
         );

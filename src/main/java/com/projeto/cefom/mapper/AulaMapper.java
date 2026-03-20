@@ -3,6 +3,7 @@ package com.projeto.cefom.mapper;
 import com.projeto.cefom.dto.response.*;
 import com.projeto.cefom.enums.AvaliacaoAluno;
 import com.projeto.cefom.model.Aula;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -79,7 +80,7 @@ public class AulaMapper {
 
         List<PresencaAvaliacaoResponseDTO> alunos = aula.getPresencas()
                 .stream()
-                .map(a -> new PresencaAvaliacaoResponseDTO(a.getAluno().getIdMatricula(), AvaliacaoAluno.fromCodigo(a.getAvaliacao(), a.getPresente()), a.getObservacao()))
+                .map(a -> new PresencaAvaliacaoResponseDTO(a.getAluno().getIdMatricula(), AvaliacaoAluno.fromCodigo(a.getAvaliacao(), a.getPresente()), TextoUtils.capitalizarPrimeiraLetra(a.getObservacao())))
                 .toList();
 
         return new ChamadaAvaliacaoResponseDTO(alunos);

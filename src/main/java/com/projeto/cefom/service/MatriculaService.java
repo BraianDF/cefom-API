@@ -16,6 +16,7 @@ import com.projeto.cefom.model.Matricula;
 import com.projeto.cefom.model.SequenceNumMatricula;
 import com.projeto.cefom.repository.MatriculaRepository;
 import com.projeto.cefom.repository.SequenceNumMatriculaRepository;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -59,7 +60,7 @@ public class MatriculaService {
 
     @Transactional(readOnly = true)
     public StatusCpfMatriculaResponseDTO verificarCpf(String cpf) {
-        String cpfLimpo = documentoService.limparDocumento(cpf);
+        String cpfLimpo = TextoUtils.manterSomenteNumeros(cpf);
 
         Optional<Documento> documentoOpt = documentoService.buscarPorDocumento(cpfLimpo);
 
@@ -107,7 +108,7 @@ public class MatriculaService {
             dataMatricula = LocalDate.now();
         }
 
-        String cpfLimpo = documentoService.limparDocumento(dto.documento().cpf());
+        String cpfLimpo = TextoUtils.manterSomenteNumeros(dto.documento().cpf());
 
         Adolescente adolescente;
 
@@ -178,7 +179,7 @@ public class MatriculaService {
             dataMatricula = LocalDate.now();
         }
 
-        String cpfLimpo = documentoService.limparDocumento(dto.documento().cpf());
+        String cpfLimpo = TextoUtils.manterSomenteNumeros(dto.documento().cpf());
 
         Adolescente adolescente;
 

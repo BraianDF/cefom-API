@@ -4,6 +4,7 @@ import com.projeto.cefom.enums.EscolaridadeFamiliar;
 import com.projeto.cefom.enums.EstadoCivil;
 import com.projeto.cefom.enums.Naturalidade;
 import com.projeto.cefom.enums.Parentesco;
+import com.projeto.cefom.utils.TextoUtils;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -80,7 +81,7 @@ public class Familiar extends Vigencia implements Serializable {
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.nome = TextoUtils.normalizar(nome);
     }
 
     public Parentesco getParentesco() {
@@ -112,7 +113,7 @@ public class Familiar extends Vigencia implements Serializable {
     }
 
     public void setProfissao(String profissao) {
-        this.profissao = profissao;
+        this.profissao = TextoUtils.normalizar(profissao);
     }
 
     public String getLocalTrabalho() {
@@ -120,7 +121,7 @@ public class Familiar extends Vigencia implements Serializable {
     }
 
     public void setLocalTrabalho(String localTrabalho) {
-        this.localTrabalho = localTrabalho;
+        this.localTrabalho = TextoUtils.normalizar(localTrabalho);
     }
 
     public BigDecimal getRenda() {

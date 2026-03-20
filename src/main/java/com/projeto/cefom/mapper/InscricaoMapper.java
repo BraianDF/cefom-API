@@ -3,6 +3,7 @@ package com.projeto.cefom.mapper;
 import com.projeto.cefom.dto.response.*;
 import com.projeto.cefom.image.mapper.FotoAdolescenteMapper;
 import com.projeto.cefom.model.*;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
@@ -23,6 +24,8 @@ public class InscricaoMapper {
     }
 
     public InscricaoCriarResponseDTO toResponseDTO(Adolescente adolescente, LocalDate data) {
+        if (adolescente == null) return null;
+
         return new InscricaoCriarResponseDTO(
                 // Inscricao
                 toResponseDTO(null),
@@ -45,6 +48,8 @@ public class InscricaoMapper {
     }
 
     public InscricaoCriarResponseDTO toResponseDTO(Inscricao inscricao, LocalDate data) {
+        if (inscricao == null) return null;
+
         Adolescente adolescente = inscricao.getAdolescente();
 
         return new InscricaoCriarResponseDTO(
@@ -69,23 +74,27 @@ public class InscricaoMapper {
     }
 
     public InscricaoResponseDTO toResponseDTO(Inscricao inscricao) {
+        if (inscricao == null) return null;
+
         return new InscricaoResponseDTO(
-                inscricao != null ? inscricao.getIdInscricao() : null,
-                inscricao != null ? inscricao.getNumInscricao() : null,
-                inscricao != null ? inscricao.getObservacao() : null,
-                inscricao != null ? inscricao.getDataInicio() : null,
-                inscricao != null ? inscricao.getDataFim() : null,
-                inscricao != null ? inscricao.getFinalizacao() : null,
-                inscricao != null ? fotoAdolescenteMapper.toResponseDTO(inscricao.getFoto()) : null
+                inscricao.getIdInscricao(),
+                inscricao.getNumInscricao(),
+                TextoUtils.capitalizarPrimeiraLetra(inscricao.getObservacao()),
+                inscricao.getDataInicio(),
+                inscricao.getDataFim(),
+                inscricao.getFinalizacao(),
+                fotoAdolescenteMapper.toResponseDTO(inscricao.getFoto())
         );
     }
 
     public InscricaoListarResponseDTO toListarResponseDTO(Inscricao inscricao) {
+        if (inscricao == null) return null;
+
         return new InscricaoListarResponseDTO(
-                inscricao != null ? inscricao.getIdInscricao() : null,
-                inscricao != null ? inscricao.getNumInscricao() : null,
-                inscricao != null ? inscricao.getDataInicio() : null,
-                inscricao != null ? inscricao.getDataFim() : null
+                inscricao.getIdInscricao(),
+                inscricao.getNumInscricao(),
+                inscricao.getDataInicio(),
+                inscricao.getDataFim()
         );
     }
 
@@ -93,7 +102,7 @@ public class InscricaoMapper {
         if (adolescente == null) return null;
         return new AdolescenteInscricaoResponseDTO(
                 adolescente.getIdAdolescente(),
-                adolescente.getNome(),
+                TextoUtils.capitalizar(adolescente.getNome()),
                 adolescente.getGenero(),
                 adolescente.getDataNascimento(),
                 adolescente.getIdadeEm(data),

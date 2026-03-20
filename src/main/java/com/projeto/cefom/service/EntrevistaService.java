@@ -11,6 +11,7 @@ import com.projeto.cefom.mapper.EntrevistaMapper;
 import com.projeto.cefom.model.Empresa;
 import com.projeto.cefom.model.Entrevista;
 import com.projeto.cefom.repository.EntrevistaRepository;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -94,7 +95,7 @@ public class EntrevistaService {
             return entrevistaRepository.findAll(pageable)
                     .map(entrevistaMapper::toListarResponseDTO);
         }
-        return entrevistaRepository.buscarPorEmpresaApelido(nome, pageable)
+        return entrevistaRepository.buscarPorEmpresaApelido(TextoUtils.normalizar(nome), pageable)
                 .map(entrevistaMapper::toListarResponseDTO);
     }
 

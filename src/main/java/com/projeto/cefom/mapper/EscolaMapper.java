@@ -4,6 +4,7 @@ import com.projeto.cefom.dto.response.EscolaListarResponseDTO;
 import com.projeto.cefom.dto.response.EscolaResponseDTO;
 import com.projeto.cefom.dto.response.EscolaSelectResponseDTO;
 import com.projeto.cefom.model.Escola;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
@@ -17,11 +18,13 @@ public class EscolaMapper {
     }
 
     public EscolaResponseDTO toResponseDTO(Escola escola, LocalDate data) {
+        if (escola == null) return null;
+
         return new EscolaResponseDTO(
-                escola != null ? escola.getIdEscola() : null,
-                escola != null ? escola.getNome() : null,
-                escola != null ? escola.getTipo() : null,
-                escola != null ? enderecoMapper.toResponseDTO(escola, data) : null
+                escola.getIdEscola(),
+                TextoUtils.capitalizar(escola.getNome()),
+                escola.getTipo(),
+                enderecoMapper.toResponseDTO(escola, data)
         );
     }
 
@@ -30,7 +33,7 @@ public class EscolaMapper {
 
         return new EscolaListarResponseDTO(
                 escola.getIdEscola(),
-                escola.getNome()
+                TextoUtils.capitalizar(escola.getNome())
         );
     }
 
@@ -39,7 +42,7 @@ public class EscolaMapper {
 
         return new EscolaSelectResponseDTO(
                 escola.getIdEscola(),
-                escola.getNome()
+                TextoUtils.capitalizar(escola.getNome())
         );
     }
 }

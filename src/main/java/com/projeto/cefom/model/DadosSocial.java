@@ -2,6 +2,7 @@ package com.projeto.cefom.model;
 
 import com.projeto.cefom.enums.Beneficio;
 import com.projeto.cefom.enums.Parentesco;
+import com.projeto.cefom.utils.TextoUtils;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -99,7 +100,7 @@ public class DadosSocial extends Vigencia implements Serializable {
     }
 
     public void setComportamento(String comportamento) {
-        this.comportamento = comportamento;
+        this.comportamento = TextoUtils.normalizar(comportamento);
     }
 
     public Boolean getEncaminhamentoBoolean() {
@@ -115,7 +116,7 @@ public class DadosSocial extends Vigencia implements Serializable {
     }
 
     public void setEncaminhamento(String encaminhamento) {
-        this.encaminhamento = encaminhamento;
+        this.encaminhamento = TextoUtils.normalizar(encaminhamento);
     }
 
     public Boolean getBeneficioBoolean() {
@@ -155,7 +156,7 @@ public class DadosSocial extends Vigencia implements Serializable {
     }
 
     public void setProblemaSaude(String problemaSaude) {
-        this.problemaSaude = problemaSaude;
+        this.problemaSaude = TextoUtils.normalizar(problemaSaude);
     }
 
     public Boolean getMedicamentoBoolean() {
@@ -171,7 +172,7 @@ public class DadosSocial extends Vigencia implements Serializable {
     }
 
     public void setMedicamento(String medicamento) {
-        this.medicamento = medicamento;
+        this.medicamento = TextoUtils.normalizar(medicamento);
     }
 
     public Boolean getEntidadeBoolean() {
@@ -187,7 +188,7 @@ public class DadosSocial extends Vigencia implements Serializable {
     }
 
     public void setEntidade(String entidade) {
-        this.entidade = entidade;
+        this.entidade = TextoUtils.normalizar(entidade);
     }
 
     public BigDecimal getRendaFamiliar() {
@@ -268,7 +269,7 @@ public class DadosSocial extends Vigencia implements Serializable {
     }
 
     public void setComposicaoFamiliar(String composicaoFamiliar) {
-        this.composicaoFamiliar = composicaoFamiliar;
+        this.composicaoFamiliar = TextoUtils.normalizar(composicaoFamiliar);
     }
 
     public Adolescente getAdolescente() {

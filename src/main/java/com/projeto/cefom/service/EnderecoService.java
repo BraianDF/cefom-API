@@ -20,6 +20,7 @@ import com.projeto.cefom.model.Empresa;
 import com.projeto.cefom.repository.EmpresaRepository;
 import com.projeto.cefom.repository.EnderecoRepository;
 import com.projeto.cefom.repository.EscolaRepository;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -141,7 +142,7 @@ public class EnderecoService {
 
     public void criarEndereco(Adolescente adolescente, LocalDate data, String cep, String logradouro, String numero, String complemento, String bairro, String cidade, Estado estado, TipoResidencia tipoResidencia) {
         Endereco endereco = new Endereco();
-        endereco.setCep(limparCep(cep));
+        endereco.setCep(cep);
         endereco.setLogradouro(logradouro);
         endereco.setNumero(numero);
         endereco.setComplemento(complemento);
@@ -158,7 +159,7 @@ public class EnderecoService {
 
     public void criarEndereco(Escola escola, LocalDate data, String cep, String logradouro, String numero, String complemento, String bairro, String cidade, Estado estado) {
         Endereco endereco = new Endereco();
-        endereco.setCep(limparCep(cep));
+        endereco.setCep(cep);
         endereco.setLogradouro(logradouro);
         endereco.setNumero(numero);
         endereco.setComplemento(complemento);
@@ -174,7 +175,7 @@ public class EnderecoService {
 
     public void criarEndereco(Empresa empresa, LocalDate data, String cep, String logradouro, String numero, String complemento, String bairro, String cidade, Estado estado) {
         Endereco endereco = new Endereco();
-        endereco.setCep(limparCep(cep));
+        endereco.setCep(cep);
         endereco.setLogradouro(logradouro);
         endereco.setNumero(numero);
         endereco.setComplemento(complemento);
@@ -197,35 +198,28 @@ public class EnderecoService {
             throw new RegraNegocioException("Cidade é obrigatória para definir o território.");
         }
 
-        String cidade = normalizar(endereco.getCidade());
-
         Territorio territorio;
 
-        if("LINS".equals(cidade)){
+        if(TextoUtils.equalsNormalizado("LINS", endereco.getCidade())) {
             if (endereco.getBairro() == null || endereco.getBairro().isBlank()) {
                 throw new RegraNegocioException("Bairro é obrigatório para endereços da cidade de Lins.");
             }
-            String bairro = normalizar(endereco.getBairro());
-            territorio = territorioService.buscarPorBairro(bairro);
+            territorio = territorioService.buscarPorBairro(TextoUtils.normalizar(endereco.getBairro()));
         } else {
-            territorio = territorioService.buscarOuCriarPorResultado("Fora de Lins");
+            territorio = territorioService.buscarOuCriarPorResultado(TextoUtils.normalizar("Fora de Lins"));
         }
 
         territorio.adicionarEndereco(endereco);
     }
 
     public boolean enderecoIgual(Endereco e, String cep, String logradouro, String numero, String complemento, String bairro, String cidade, Estado estado) {
-        return e.getCep().equals(limparCep(cep)) &&
-                Objects.equals(e.getLogradouro(), logradouro) &&
-                Objects.equals(e.getNumero(), numero) &&
-                Objects.equals(e.getComplemento(), complemento) &&
-                Objects.equals(e.getBairro(), bairro) &&
-                Objects.equals(e.getCidade(), cidade) &&
+        return TextoUtils.equalsSomenteNumero(e.getCep(),cep) &&
+                TextoUtils.equalsNormalizado(e.getLogradouro(), logradouro) &&
+                TextoUtils.equalsSomenteNumero(e.getNumero(), numero) &&
+                TextoUtils.equalsNormalizado(e.getComplemento(), complemento) &&
+                TextoUtils.equalsNormalizado(e.getBairro(), bairro) &&
+                TextoUtils.equalsNormalizado(e.getCidade(), cidade) &&
                 Objects.equals(e.getEstado(), estado);
-    }
-
-    private String normalizar(String valor) {
-        return valor == null ? null : valor.trim().toUpperCase();
     }
 
     @Transactional
@@ -362,13 +356,6 @@ public class EnderecoService {
         }
 
         return endereco;
-    }
-
-    public String limparCep(String cep) {
-        if (cep == null || cep.isBlank()) {
-            throw new RegraNegocioException("CEP não pode ser vazio.");
-        }
-        return cep.replaceAll("\\D", "");
     }
 
 }

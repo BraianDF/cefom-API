@@ -1,5 +1,6 @@
 package com.projeto.cefom.model;
 
+import com.projeto.cefom.utils.TextoUtils;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -71,6 +72,6 @@ public class VinculoEntrevistaMatricula implements Serializable {
     }
 
     public void setSituacao(String situacao) {
-        this.situacao = situacao;
+        this.situacao = TextoUtils.capitalizar(situacao);
     }
 }

@@ -7,6 +7,7 @@ import com.projeto.cefom.service.AfastamentoService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class AfastamentoController {
     }
 
     @GetMapping("/afastamentos")
-    public ResponseEntity<Page<AfastamentoListarResponseDTO>> listar(@PathVariable Integer idAdolescente, @PathVariable Integer idMatricula, @PathVariable Integer idContrato, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+    public ResponseEntity<Page<AfastamentoListarResponseDTO>> listar(@PathVariable Integer idAdolescente, @PathVariable Integer idMatricula, @PathVariable Integer idContrato, @PageableDefault(page = 0, size = 10, sort = "dataInicio", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<AfastamentoListarResponseDTO> response = afastamentoService.listar(idAdolescente, idMatricula, idContrato, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

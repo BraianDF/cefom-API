@@ -2,6 +2,7 @@ package com.projeto.cefom.model;
 
 import com.projeto.cefom.enums.Periodo;
 import com.projeto.cefom.enums.Serie;
+import com.projeto.cefom.utils.TextoUtils;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -74,7 +75,7 @@ public class Escolaridade extends Vigencia implements Serializable {
     }
 
     public void setCurso(String curso) {
-        this.curso = curso;
+        this.curso = TextoUtils.normalizar(curso);
     }
 
     public Escola getEscola() {

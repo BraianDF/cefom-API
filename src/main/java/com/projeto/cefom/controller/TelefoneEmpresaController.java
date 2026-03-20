@@ -5,6 +5,7 @@ import com.projeto.cefom.dto.response.TelefoneResponseDTO;
 import com.projeto.cefom.service.TelefoneService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class TelefoneEmpresaController {
     }
 
     @GetMapping("/{idEmpresa}/telefones")
-    public ResponseEntity<Page<TelefoneListarResponseDTO>> listarEmpresa(@PathVariable Integer idEmpresa, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+    public ResponseEntity<Page<TelefoneListarResponseDTO>> listarEmpresa(@PathVariable Integer idEmpresa, @PageableDefault(page = 0, size = 10, sort = "dataInicio", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<TelefoneListarResponseDTO> response = telefoneService.listarEmpresa(idEmpresa, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

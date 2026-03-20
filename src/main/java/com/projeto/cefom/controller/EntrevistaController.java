@@ -9,6 +9,7 @@ import com.projeto.cefom.service.EntrevistaService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public class EntrevistaController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<EntrevistaListarResponseDTO>> listar(@PageableDefault(page = 0, size = 10) Pageable pageable, @RequestParam(defaultValue = "") String nome) {
+    public ResponseEntity<Page<EntrevistaListarResponseDTO>> listar(@PageableDefault(page = 0, size = 10, sort = "dataInicio", direction = Sort.Direction.DESC) Pageable pageable, @RequestParam(defaultValue = "") String nome) {
         Page<EntrevistaListarResponseDTO> response = entrevistaService.listar(pageable, nome);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

@@ -1,5 +1,6 @@
 package com.projeto.cefom.model;
 
+import com.projeto.cefom.utils.TextoUtils;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -44,7 +45,7 @@ public class Cargo implements Serializable {
     }
 
     public void setFuncao(String funcao) {
-        this.funcao = funcao;
+        this.funcao = TextoUtils.normalizar(funcao);
     }
 
     public String getCbo() {
@@ -52,7 +53,7 @@ public class Cargo implements Serializable {
     }
 
     public void setCbo(String cbo) {
-        this.cbo = cbo;
+        this.cbo = TextoUtils.manterSomenteNumeros(cbo);
     }
 
     public List<VinculoCursoCargo> getCursos() {

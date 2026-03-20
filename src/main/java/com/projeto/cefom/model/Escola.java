@@ -1,6 +1,7 @@
 package com.projeto.cefom.model;
 
 import com.projeto.cefom.enums.TipoEscola;
+import com.projeto.cefom.utils.TextoUtils;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class Escola implements Serializable {
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.nome = TextoUtils.normalizar(nome);
     }
 
     public TipoEscola getTipo() {

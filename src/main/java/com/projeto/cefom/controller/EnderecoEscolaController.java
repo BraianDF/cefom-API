@@ -5,6 +5,7 @@ import com.projeto.cefom.dto.response.EnderecoResponseDTO;
 import com.projeto.cefom.service.EnderecoService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class EnderecoEscolaController {
     }
 
     @GetMapping("/{idEscola}/enderecos")
-    public ResponseEntity<Page<EnderecoListarResponseDTO>> listarEscola(@PathVariable Integer idEscola, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+    public ResponseEntity<Page<EnderecoListarResponseDTO>> listarEscola(@PathVariable Integer idEscola, @PageableDefault(page = 0, size = 10, sort = "dataInicio", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<EnderecoListarResponseDTO> response = enderecoService.listarEscola(idEscola, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

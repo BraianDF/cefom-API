@@ -13,6 +13,7 @@ import com.projeto.cefom.mapper.FamiliarMapper;
 import com.projeto.cefom.model.Adolescente;
 import com.projeto.cefom.model.Familiar;
 import com.projeto.cefom.repository.FamiliarRepository;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -111,7 +112,7 @@ public class FamiliarService {
 
     private void encerrarResponsavel(Adolescente adolescente, LocalDate data) {
         adolescente.getFamiliares().stream()
-                .filter(this::isResponsavel)
+                .filter(Familiar::isResponsavel)
                 .filter(f -> f.getDataFim() == null)
                 .forEach(f -> f.setDataFim(data));
     }
@@ -136,19 +137,15 @@ public class FamiliarService {
 
         // Encerra os que não vieram no DTO
         adolescente.getFamiliares().stream()
-                .filter(f -> !isResponsavel(f))
+                .filter(f -> !f.isResponsavel())
                 .filter(f -> f.getDataFim() == null)
-                .filter(f -> dtos.stream()
-                        .noneMatch(dto ->
-                                normalizar(dto.nome())
-                                        .equals(normalizar(f.getNome()))
-                        ))
+                .filter(f -> dtos.stream().noneMatch(dto -> TextoUtils.equalsNormalizado(dto.nome(),f.getNome())))
                 .forEach(f -> f.setDataFim(data));
     }
 
     private void encerrarFamiliaresSemDocumento(Adolescente adolescente, LocalDate data) {
         adolescente.getFamiliares().stream()
-                .filter(f -> !isResponsavel(f))
+                .filter(f -> !f.isResponsavel())
                 .filter(f -> f.getDataFim() == null)
                 .forEach(f -> f.setDataFim(data));
     }
@@ -160,9 +157,7 @@ public class FamiliarService {
         }
 
         if (dto.familiares() != null) {
-            dto.familiares().forEach(f ->
-                    criarFamiliar(f, adolescente, data)
-            );
+            dto.familiares().forEach(f -> criarFamiliar(f, adolescente, data));
         }
     }
 
@@ -211,12 +206,12 @@ public class FamiliarService {
     }
 
     public boolean responsavelIgual(ResponsavelRequestDTO dto, Familiar f) {
-        return Objects.equals(f.getNome(), dto.nome()) &&
+        return TextoUtils.equalsNormalizado(f.getNome(), dto.nome()) &&
                 Objects.equals(f.getIdade(), dto.idade()) &&
                 Objects.equals(f.getParentesco(), dto.parentesco()) &&
                 Objects.equals(f.getEscolaridade(), dto.escolaridade()) &&
-                Objects.equals(f.getProfissao(), dto.profissao()) &&
-                Objects.equals(f.getLocalTrabalho(), dto.localTrabalho()) &&
+                TextoUtils.equalsNormalizado(f.getProfissao(), dto.profissao()) &&
+                TextoUtils.equalsNormalizado(f.getLocalTrabalho(), dto.localTrabalho()) &&
                 Objects.equals(f.getRenda(), dto.renda()) &&
                 Objects.equals(f.getReside(), dto.reside()) &&
                 Objects.equals(f.getNaturalidade(), dto.naturalidade()) &&
@@ -225,32 +220,19 @@ public class FamiliarService {
 
     private Familiar buscarFamiliarAtivoPorNome(Adolescente adolescente, String nome) {
         return adolescente.getFamiliares().stream()
-                .filter(f -> !isResponsavel(f))
+                .filter(f -> !f.isResponsavel())
                 .filter(f -> f.getDataFim() == null)
-                .filter(f ->
-                        normalizar(f.getNome())
-                                .equals(normalizar(nome))
-                )
+                .filter(f -> TextoUtils.equalsNormalizado(f.getNome(),nome))
                 .max(Comparator.comparing(Familiar::getDataInicio))
                 .orElse(null);
     }
 
     private Familiar buscarResponsavelAtivo(Adolescente adolescente) {
         return adolescente.getFamiliares().stream()
-                .filter(this::isResponsavel)
+                .filter(Familiar::isResponsavel)
                 .filter(f -> f.getDataFim() == null)
                 .max(Comparator.comparing(Familiar::getDataInicio))
                 .orElse(null);
-    }
-
-    private boolean isResponsavel(Familiar f) {
-        return f.getDocumento() != null;
-    }
-
-    private String normalizar(String valor) {
-        return valor == null
-                ? null
-                : valor.trim().toUpperCase();
     }
 
     private Familiar buscarFamiliarAdolescente(Integer idAdolescente, Integer idFamiliar) {

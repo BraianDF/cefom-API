@@ -2,6 +2,7 @@ package com.projeto.cefom.model;
 
 import com.projeto.cefom.enums.TipoContratacao;
 import com.projeto.cefom.enums.TipoEmpresa;
+import com.projeto.cefom.utils.TextoUtils;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -73,7 +74,7 @@ public class Empresa implements Serializable {
     }
 
     public void setRazaoSocial(String razaoSocial) {
-        this.razaoSocial = razaoSocial;
+        this.razaoSocial = TextoUtils.normalizar(razaoSocial);
     }
 
     public String getNomeFantasia() {
@@ -81,7 +82,7 @@ public class Empresa implements Serializable {
     }
 
     public void setNomeFantasia(String nomeFantasia) {
-        this.nomeFantasia = nomeFantasia;
+        this.nomeFantasia = TextoUtils.normalizar(nomeFantasia);
     }
 
     public String getApelido() {
@@ -89,7 +90,7 @@ public class Empresa implements Serializable {
     }
 
     public void setApelido(String apelido) {
-        this.apelido = apelido;
+        this.apelido = TextoUtils.normalizar(apelido);
     }
 
     public TipoContratacao getContratacaoPadrao() {

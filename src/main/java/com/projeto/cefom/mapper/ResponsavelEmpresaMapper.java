@@ -7,6 +7,7 @@ import com.projeto.cefom.enums.TipoResponsabilidade;
 import com.projeto.cefom.model.Empresa;
 import com.projeto.cefom.model.Entrevista;
 import com.projeto.cefom.model.ResponsavelEmpresa;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -16,6 +17,8 @@ import java.util.Comparator;
 public class ResponsavelEmpresaMapper {
 
     public ResponsaveisEmpresaResponseDTO toResponseDTO(Empresa empresa, LocalDate data) {
+        if (empresa == null) return null;
+
         ResponsavelEmpresa responsavelEmpresa = empresa.getResponsaveis()
                 .stream()
                 .filter(f -> f.getResponsabilidade() == TipoResponsabilidade.EMPRESA)
@@ -39,33 +42,38 @@ public class ResponsavelEmpresaMapper {
 
 
         return new ResponsaveisEmpresaResponseDTO(
-                responsavelEmpresa != null ? toResponseDTO(responsavelEmpresa) : null,
-                responsavelAprendizes != null ? toResponseDTO(responsavelAprendizes) : null,
-                responsavelEntrevistas != null ? toResponseDTO(responsavelEntrevistas) : null
+                toResponseDTO(responsavelEmpresa),
+                toResponseDTO(responsavelAprendizes),
+                toResponseDTO(responsavelEntrevistas)
         );
     }
 
     public ResponsavelEmpresaResponseDTO toResponseDTO(ResponsavelEmpresa responsavel) {
+        if (responsavel == null) return null;
+
         return new ResponsavelEmpresaResponseDTO(
-                responsavel != null ? responsavel.getIdResponsavelEmpresa() : null,
-                responsavel != null ? responsavel.getNome() : null,
-                responsavel != null ? responsavel.getResponsabilidade() : null,
-                responsavel != null ? responsavel.getDataInicio() : null,
-                responsavel != null ? responsavel.getDataFim() : null
+                responsavel.getIdResponsavelEmpresa(),
+                TextoUtils.capitalizar(responsavel.getNome()),
+                responsavel.getResponsabilidade(),
+                responsavel.getDataInicio(),
+                responsavel.getDataFim()
         );
     }
 
     public ResponsavelEmpresaListarResponseDTO toListarResponseDTO(ResponsavelEmpresa responsavel) {
-        return new ResponsavelEmpresaListarResponseDTO(
-                responsavel != null ? responsavel.getIdResponsavelEmpresa() : null,
-                responsavel != null ? responsavel.getDataInicio() : null,
-                responsavel != null ? responsavel.getDataFim() : null,
-                responsavel != null ? responsavel.getNome() : null
+        if (responsavel == null) return null;
 
+        return new ResponsavelEmpresaListarResponseDTO(
+                responsavel.getIdResponsavelEmpresa(),
+                responsavel.getDataInicio(),
+                responsavel.getDataFim(),
+                TextoUtils.capitalizar(responsavel.getNome())
         );
     }
 
     public ResponsavelEmpresaListarResponseDTO toListarEntrevistaResponseDTO(Empresa empresa, LocalDate data) {
+        if (empresa == null) return null;
+
         ResponsavelEmpresa responsavelEntrevistas = empresa.getResponsaveis()
                 .stream()
                 .filter(f -> f.getResponsabilidade() == TipoResponsabilidade.ENTREVISTAS)
@@ -77,6 +85,8 @@ public class ResponsavelEmpresaMapper {
     }
 
     public ResponsavelEmpresaResponseDTO toResponseDTO (Entrevista entrevista) {
+        if (entrevista == null) return null;
+
         ResponsavelEmpresa responsavelEntrevistas = entrevista.getEmpresa().getResponsaveis()
                 .stream()
                 .filter(f -> f.getResponsabilidade() == TipoResponsabilidade.ENTREVISTAS)

@@ -14,6 +14,7 @@ import com.projeto.cefom.image.service.FotoAdolescenteService;
 import com.projeto.cefom.mapper.InscricaoMapper;
 import com.projeto.cefom.model.*;
 import com.projeto.cefom.repository.*;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,7 +52,7 @@ public class InscricaoService {
     @Transactional(readOnly = true)
     public StatusCpfInscricaoResponseDTO verificarCpf(String cpf) {
 
-        String cpfLimpo = documentoService.limparDocumento(cpf);
+        String cpfLimpo = TextoUtils.manterSomenteNumeros(cpf);
 
         Optional<Documento> documentoOpt = documentoService.buscarPorDocumento(cpfLimpo);
 
@@ -102,7 +103,7 @@ public class InscricaoService {
             dataInscricao = LocalDate.now();
         }
 
-        String cpfLimpo = documentoService.limparDocumento(dto.documento().cpf());
+        String cpfLimpo = TextoUtils.manterSomenteNumeros(dto.documento().cpf());
 
         Adolescente adolescente;
 
@@ -166,7 +167,7 @@ public class InscricaoService {
             dataInscricao = LocalDate.now();
         }
 
-        String cpfLimpo = documentoService.limparDocumento(dto.documento().cpf());
+        String cpfLimpo = TextoUtils.manterSomenteNumeros(dto.documento().cpf());
 
         Adolescente adolescente;
 
@@ -240,7 +241,7 @@ public class InscricaoService {
         }
 
         if (Objects.equals(inscricao.getDataInicio(), dto.dataInscricao()) &&
-                Objects.equals(inscricao.getObservacao(), dto.observacao())) {
+                TextoUtils.equalsNormalizado(inscricao.getObservacao(), dto.observacao())) {
             return inscricaoMapper.toResponseDTO(inscricao);
         }
 

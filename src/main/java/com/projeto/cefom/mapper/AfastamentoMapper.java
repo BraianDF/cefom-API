@@ -4,6 +4,7 @@ import com.projeto.cefom.dto.response.AfastamentoListarResponseDTO;
 import com.projeto.cefom.dto.response.AfastamentoResponseDTO;
 import com.projeto.cefom.model.Afastamento;
 import com.projeto.cefom.model.Contrato;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -13,6 +14,8 @@ import java.util.Comparator;
 public class AfastamentoMapper {
 
     public AfastamentoResponseDTO toResponseDTO (Contrato contrato, LocalDate data) {
+        if (contrato == null) return null;
+
         Afastamento afastamento = contrato.getAfastamentos()
                 .stream()
                 .filter(e -> e.estaValidoEm(data))
@@ -31,8 +34,8 @@ public class AfastamentoMapper {
                 afastamento.getDataFim(),
                 afastamento.getQtdeDias(),
                 afastamento.getMotivoAfastamento(),
-                afastamento.getOutroMotivoAfastamento(),
-                afastamento.getObservacao()
+                TextoUtils.capitalizar(afastamento.getOutroMotivoAfastamento()),
+                TextoUtils.capitalizarPrimeiraLetra(afastamento.getObservacao())
         );
     }
 

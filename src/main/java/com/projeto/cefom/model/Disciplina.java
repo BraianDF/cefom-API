@@ -1,5 +1,6 @@
 package com.projeto.cefom.model;
 
+import com.projeto.cefom.utils.TextoUtils;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -39,7 +40,7 @@ public class Disciplina implements Serializable {
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.nome = TextoUtils.normalizar(nome);
     }
 
     public List<Lecionamento> getProfessores() {

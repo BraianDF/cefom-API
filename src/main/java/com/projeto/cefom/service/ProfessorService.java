@@ -7,6 +7,7 @@ import com.projeto.cefom.dto.response.ProfessorResponseDTO;
 import com.projeto.cefom.mapper.ProfessorMapper;
 import com.projeto.cefom.model.Professor;
 import com.projeto.cefom.repository.ProfessorRepository;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class ProfessorService {
 
     @Transactional
     public ProfessorResponseDTO criar(ProfessorRequestDTO dto) {
-        if (professorRepository.existsByNome(dto.nome())) {
+        if (professorRepository.existsByNome(TextoUtils.normalizar(dto.nome()))) {
             throw new RegraNegocioException("Professor já cadastrado.");
         }
         Professor professor = salvar(criarProfessor(dto));
@@ -35,7 +36,7 @@ public class ProfessorService {
 
     @Transactional
     public ProfessorResponseDTO atualizar(Integer idProfessor, ProfessorRequestDTO dto) {
-        if (professorRepository.existsByNomeAndIdProfessorNot(dto.nome(), idProfessor)) {
+        if (professorRepository.existsByNomeAndIdProfessorNot(TextoUtils.normalizar(dto.nome()), idProfessor)) {
             throw new RegraNegocioException("Professor já cadastrado.");
         }
         Professor professor = buscarProfessor(idProfessor);
@@ -55,7 +56,7 @@ public class ProfessorService {
             return professorRepository.findAll(pageable)
                     .map(professorMapper::toResponseDTO);
         }
-        return professorRepository.findByNomeContainingIgnoreCase(nome, pageable)
+        return professorRepository.findByNomeContainingIgnoreCase(TextoUtils.normalizar(nome), pageable)
                 .map(professorMapper::toResponseDTO);
     }
 

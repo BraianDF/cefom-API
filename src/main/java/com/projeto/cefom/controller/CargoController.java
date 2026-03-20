@@ -8,6 +8,7 @@ import com.projeto.cefom.service.CargoService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class CargoController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<CargoListarResponseDTO>> listar(@PageableDefault(page = 0, size = 10) Pageable pageable, @RequestParam(defaultValue = "") String nome) {
+    public ResponseEntity<Page<CargoListarResponseDTO>> listar(@PageableDefault(page = 0, size = 10, sort = "funcao", direction = Sort.Direction.ASC) Pageable pageable, @RequestParam(defaultValue = "") String nome) {
         Page<CargoListarResponseDTO> response = cargoService.listar(pageable, nome);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

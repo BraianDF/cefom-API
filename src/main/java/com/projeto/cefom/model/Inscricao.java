@@ -2,6 +2,7 @@ package com.projeto.cefom.model;
 
 import com.projeto.cefom.enums.FinalizacaoInscricao;
 import com.projeto.cefom.image.model.FotoAdolescente;
+import com.projeto.cefom.utils.TextoUtils;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -69,7 +70,7 @@ public class Inscricao extends Vigencia implements Serializable {
     }
 
     public void setObservacao(String observacao) {
-        this.observacao = observacao;
+        this.observacao = TextoUtils.normalizar(observacao);
     }
 
     public Usuario getResponsavelInscricao() {
