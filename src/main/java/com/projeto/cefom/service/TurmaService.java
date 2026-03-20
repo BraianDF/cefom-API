@@ -10,6 +10,7 @@ import com.projeto.cefom.dto.response.TurmaSelectResponseDTO;
 import com.projeto.cefom.mapper.TurmaMapper;
 import com.projeto.cefom.model.Turma;
 import com.projeto.cefom.repository.TurmaRepository;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class TurmaService {
 
     @Transactional
     public TurmaResponseDTO criar(TurmaRequestDTO dto) {
-        if (turmaRepository.existsByNome(dto.nome())) {
+        if (turmaRepository.existsByNome(TextoUtils.normalizar(dto.nome()))) {
             throw new RegraNegocioException("Turma já cadastrada.");
         }
         Turma turma = salvar(criarTurma(dto));
@@ -42,7 +43,7 @@ public class TurmaService {
 
     @Transactional
     public TurmaResponseDTO atualizar(Integer idTurma, TurmaRequestDTO dto) {
-        if (turmaRepository.existsByNomeAndIdTurmaNot(dto.nome(), idTurma)) {
+        if (turmaRepository.existsByNomeAndIdTurmaNot(TextoUtils.normalizar(dto.nome()), idTurma)) {
             throw new RegraNegocioException("Turma já cadastrada.");
         }
         Turma turma = buscarTurma(idTurma);
@@ -62,7 +63,7 @@ public class TurmaService {
             return turmaRepository.findAll(pageable)
                     .map(turmaMapper::toListarResponseDTO);
         }
-        return turmaRepository.findByNomeContainingIgnoreCase(nome, pageable)
+        return turmaRepository.findByNomeContainingIgnoreCase(TextoUtils.normalizar(nome), pageable)
                 .map(turmaMapper::toListarResponseDTO);
     }
 
