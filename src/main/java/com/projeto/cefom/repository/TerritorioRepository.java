@@ -23,8 +23,8 @@ public interface TerritorioRepository extends JpaRepository<Territorio, Integer>
 
     Optional<Territorio> findByResultado(String resultado);
 
-    boolean existsByResultado(String territorioResultado);
-    boolean existsByResultadoAndIdTerritorioNot(String territorioResultado, Integer idTerritorio);
-    Page<Territorio> findByResultadoContainingIgnoreCase(String nome, Pageable pageable);
+    boolean existsByResultado(String resultado);
+    boolean existsByResultadoAndIdTerritorioNot(String resultado, Integer idTerritorio);
+    Page<Territorio> findByResultadoContainingIgnoreCase(String resultado, Pageable pageable);
 
 }

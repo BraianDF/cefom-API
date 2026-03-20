@@ -1,6 +1,7 @@
 package com.projeto.cefom.model;
 
 import com.projeto.cefom.exceptions.RegraNegocioException;
+import com.projeto.cefom.utils.TextoUtils;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class Territorio implements Serializable {
     }
 
     public void setResultado(String resultado) {
-        this.resultado = resultado;
+        this.resultado = TextoUtils.normalizar(resultado);
     }
 
     public Set<String> getBairros() {
@@ -79,16 +80,14 @@ public class Territorio implements Serializable {
             throw new RegraNegocioException("Bairro inválido.");
         }
 
-        String bairroNormalizado = normalizar(bairro);
-
         boolean jaExiste = bairros.stream()
-                .anyMatch(b -> normalizar(b).equals(bairroNormalizado));
+                .anyMatch(b -> TextoUtils.equalsNormalizado(b, bairro));
 
         if (jaExiste) {
             throw new RegraNegocioException("O bairro '" + bairro + "' já está cadastrado neste território.");
         }
 
-        bairros.add(bairroNormalizado);
+        bairros.add(TextoUtils.normalizar(bairro));
     }
 
     public void removerBairro(String bairro) {
@@ -96,20 +95,13 @@ public class Territorio implements Serializable {
             throw new RegraNegocioException("Bairro inválido.");
         }
 
-        String bairroNormalizado = normalizar(bairro);
-
         boolean jaExiste = bairros.stream()
-                .map(this::normalizar)
-                .anyMatch(bairroNormalizado::equals);
+                .anyMatch(b -> TextoUtils.equalsNormalizado(b, bairro));
 
         if (!jaExiste) {
             throw new RegraNegocioException("O bairro '" + bairro + "' não está cadastrado neste território.");
         }
 
-        bairros.remove(bairroNormalizado);
-    }
-
-    private String normalizar(String valor) {
-        return valor == null ? null : valor.trim().toUpperCase();
+        bairros.remove(TextoUtils.normalizar(bairro));
     }
 }

@@ -10,6 +10,7 @@ import com.projeto.cefom.exceptions.RegraNegocioException;
 import com.projeto.cefom.mapper.TerritorioMapper;
 import com.projeto.cefom.model.Territorio;
 import com.projeto.cefom.repository.TerritorioRepository;
+import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class TerritorioService {
     @Transactional
     public TerritorioResponseDTO criar(TerritorioRequestDTO dto) {
 
-        if (territorioRepository.existsByResultado(dto.territorio())) {
+        if (territorioRepository.existsByResultado(TextoUtils.normalizar(dto.territorio()))) {
             throw new RegraNegocioException("Território já cadastrado.");
         }
 
@@ -46,13 +47,13 @@ public class TerritorioService {
     @Transactional
     public TerritorioResponseDTO atualizar(Integer idTerritorio, TerritorioRequestDTO dto) {
 
-        if (territorioRepository.existsByResultadoAndIdTerritorioNot(dto.territorio(), idTerritorio)) {
+        if (territorioRepository.existsByResultadoAndIdTerritorioNot(TextoUtils.normalizar(dto.territorio()), idTerritorio)) {
             throw new RegraNegocioException("Território já cadastrado.");
         }
 
         Territorio territorio = buscarTerritorio(idTerritorio);
 
-        if (territorio.getResultado().equals("Fora de Lins")) {
+        if (TextoUtils.equalsNormalizado(territorio.getResultado(), "Fora de Lins")) {
             throw new RegraNegocioException("Não é possível renomear o território 'Fora de Lins'.");
         }
 
@@ -67,7 +68,7 @@ public class TerritorioService {
     public TerritorioResponseDTO atualizarBairros(Integer idTerritorio, TerritorioBairroRequestDTO dto) {
         Territorio territorio = buscarTerritorio(idTerritorio);
 
-        if (territorio.getResultado().equals("Fora de Lins")) {
+        if (TextoUtils.equalsNormalizado(territorio.getResultado(), "Fora de Lins")) {
             throw new RegraNegocioException("Não é possível adicionar ou remover bairros do território 'Fora de Lins'.");
         }
 
@@ -93,7 +94,7 @@ public class TerritorioService {
         desejados.stream()
                 .filter(b -> !atuais.contains(b))
                 .forEach(bairro -> {
-                    territorioRepository.findByBairro(bairro)
+                    territorioRepository.findByBairro(TextoUtils.normalizar(bairro))
                             .ifPresent(t -> {
                                 throw new RegraNegocioException("O bairro "+bairro+" já está cadastrado no territirótio "+t.getResultado()+".");
                             });
@@ -131,7 +132,7 @@ public class TerritorioService {
             return territorioRepository.findAll(pageable)
                     .map(territorioMapper::toListarResponseDTO);
         }
-        return territorioRepository.findByResultadoContainingIgnoreCase(nome, pageable)
+        return territorioRepository.findByResultadoContainingIgnoreCase(TextoUtils.normalizar(nome), pageable)
                 .map(territorioMapper::toListarResponseDTO);
     }
 
@@ -140,7 +141,7 @@ public class TerritorioService {
     public void excluirPorId(Integer idTerritorio) {
         Territorio territorio = buscarTerritorio(idTerritorio);
 
-        if (territorio.getResultado().equals("Fora de Lins")) {
+        if (TextoUtils.equalsNormalizado(territorio.getResultado(), "Fora de Lins")) {
             throw new RegraNegocioException("Não é possível remover o território 'Fora de Lins'.");
         }
 
@@ -165,9 +166,7 @@ public class TerritorioService {
             throw new RegraNegocioException("Bairro não pode ser vazio.");
         }
 
-        String bairroNormalizado = bairro.trim().toUpperCase();
-
-        return territorioRepository.findByBairro(bairroNormalizado)
+        return territorioRepository.findByBairro(TextoUtils.normalizar(bairro))
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Território com Bairro "+bairro+" não encontrado."));
 
     }
@@ -178,7 +177,7 @@ public class TerritorioService {
             throw new RegraNegocioException("Resultado não pode ser vazio.");
         }
 
-        return territorioRepository.findByResultado(resultado)
+        return territorioRepository.findByResultado(TextoUtils.normalizar(resultado))
                 .orElseGet(() -> criarTerritorio(resultado));
     }
 
