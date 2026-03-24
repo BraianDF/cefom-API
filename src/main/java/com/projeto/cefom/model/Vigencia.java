@@ -6,6 +6,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 
 @MappedSuperclass
 public abstract class Vigencia {
@@ -50,6 +51,12 @@ public abstract class Vigencia {
         return dataInicio != null &&
                 !dataInicio.isAfter(data) &&
                 (dataFim == null || !dataFim.isBefore(data));
+    }
+
+    public static <T extends Vigencia> Comparator<T> comparator() {
+        return Comparator
+                .comparing((T v) -> v.getDataFim() == null)
+                .thenComparing(Vigencia::getDataInicio);
     }
 
     public Usuario getResponsavelInicio() {
