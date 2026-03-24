@@ -3,14 +3,10 @@ package com.projeto.cefom.mapper;
 import com.projeto.cefom.dto.response.EnderecoListarResponseDTO;
 import com.projeto.cefom.dto.response.EnderecoMatriculaResponseDTO;
 import com.projeto.cefom.dto.response.EnderecoResponseDTO;
-import com.projeto.cefom.model.Adolescente;
-import com.projeto.cefom.model.Endereco;
-import com.projeto.cefom.model.Escola;
-import com.projeto.cefom.model.Empresa;
+import com.projeto.cefom.model.*;
 import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
-import java.util.Comparator;
 
 @Component
 public class EnderecoMapper {
@@ -21,7 +17,7 @@ public class EnderecoMapper {
         Endereco endereco = adolescente.getEnderecos()
                 .stream()
                 .filter(e -> e.estaValidoEm(data))
-                .max(Comparator.comparing(Endereco::getDataInicio))
+                .max(Vigencia.comparator())
                 .orElse(null);
 
         return toAdolescenteResponseDTO(endereco);
@@ -52,7 +48,7 @@ public class EnderecoMapper {
         Endereco endereco = adolescente.getEnderecos()
                 .stream()
                 .filter(e -> e.estaValidoEm(data))
-                .max(Comparator.comparing(Endereco::getDataInicio))
+                .max(Vigencia.comparator())
                 .orElse(null);
 
         return toResponseDTO(endereco);
@@ -64,7 +60,7 @@ public class EnderecoMapper {
         Endereco endereco = escola.getEnderecos()
                 .stream()
                 .filter(e -> e.estaValidoEm(data))
-                .max(Comparator.comparing(Endereco::getDataInicio))
+                .max(Vigencia.comparator())
                 .orElse(null);
 
         return toResponseDTO(endereco);
@@ -76,7 +72,7 @@ public class EnderecoMapper {
         Endereco endereco = empresa.getEnderecos()
                 .stream()
                 .filter(e -> e.estaValidoEm(data))
-                .max(Comparator.comparing(Endereco::getDataInicio))
+                .max(Vigencia.comparator())
                 .orElse(null);
 
         return toResponseDTO(endereco);
