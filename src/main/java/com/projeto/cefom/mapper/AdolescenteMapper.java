@@ -8,6 +8,7 @@ import com.projeto.cefom.image.mapper.FotoAdolescenteMapper;
 import com.projeto.cefom.model.Adolescente;
 import com.projeto.cefom.model.Inscricao;
 import com.projeto.cefom.model.Matricula;
+import com.projeto.cefom.model.Vigencia;
 import com.projeto.cefom.utils.TextoUtils;
 import org.springframework.stereotype.Component;
 
@@ -91,18 +92,16 @@ public class AdolescenteMapper {
         if (adolescente == null) return null;
         LocalDate data = LocalDate.now();
 
-        Matricula ultimaMatricula = buscarAtivaOuUltima(
+        Matricula ultimaMatricula = Vigencia.buscarAtivoOuUltimo(
                 adolescente.getMatriculas(),
                 m -> m.estaValidoEm(data),
-                Comparator.comparing((Matricula m) -> m.getDataFim() == null)
-                        .thenComparing(Matricula::getDataInicio)
+                Vigencia.comparator()
         );
-        Inscricao ultimaInscricao = buscarAtivaOuUltima(
+
+        Inscricao ultimaInscricao = Vigencia.buscarAtivoOuUltimo(
                 adolescente.getInscricoes(),
-                i -> i.estaValidoEm(data),
-                Comparator
-                        .comparing((Inscricao i) -> i.getDataFim() == null)
-                        .thenComparing(Inscricao::getDataInicio)
+                m -> m.estaValidoEm(data),
+                Vigencia.comparator()
         );
 
         return new AdolescenteResponseDTO(
@@ -121,28 +120,6 @@ public class AdolescenteMapper {
 
                 fotoAdolescenteMapper.toResponseDTO(adolescente, data)
         );
-    }
-
-    public static <T> T buscarAtivaOuUltima(
-            Collection<T> lista,
-            Predicate<T> estaValidoEmData,
-            Comparator<T> comparator
-    ) {
-        if (lista == null || lista.isEmpty()) {
-            return null;
-        }
-
-        Optional<T> ativa = lista.stream()
-                .filter(estaValidoEmData)
-                .max(comparator);
-
-        if (ativa.isPresent()) {
-            return ativa.get();
-        }
-
-        return lista.stream()
-                .max(comparator)
-                .orElse(null);
     }
 
 }
