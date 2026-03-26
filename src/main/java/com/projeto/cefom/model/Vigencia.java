@@ -6,7 +6,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 @MappedSuperclass
 public abstract class Vigencia {
@@ -57,6 +60,28 @@ public abstract class Vigencia {
         return Comparator
                 .comparing((T v) -> v.getDataFim() == null)
                 .thenComparing(Vigencia::getDataInicio);
+    }
+
+    public static <T> T buscarAtivoOuUltimo(
+            Collection<T> lista,
+            Predicate<T> estaValidoEmData,
+            Comparator<T> comparator
+    ) {
+        if (lista == null || lista.isEmpty()) {
+            return null;
+        }
+
+        Optional<T> ativa = lista.stream()
+                .filter(estaValidoEmData)
+                .max(comparator);
+
+        if (ativa.isPresent()) {
+            return ativa.get();
+        }
+
+        return lista.stream()
+                .max(comparator)
+                .orElse(null);
     }
 
     public Usuario getResponsavelInicio() {
